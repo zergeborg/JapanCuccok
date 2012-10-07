@@ -1,0 +1,23 @@
+div#menuContainer {
+    width: 826px;
+    float: left;
+}
+div#headerBackground {
+    background-color: #be1e2d;
+    width: 826px;
+    height: 20px;
+    position: relative;
+    float: left;
+    margin-top: 10px;
+}
+#menuLeft {
+    max-width: 100%;
+    float:left;
+    left: 0;
+}
+#menuRight {
+    max-width: 0%;
+    float:right;
+    right: 0;
+    margin-right: 25px;
+}

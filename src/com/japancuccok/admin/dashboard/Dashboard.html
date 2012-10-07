@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title></title>
+    <wicket:head>
+        <link rel="stylesheet" type="text/css" href="css/adminDashboard.css"/>
+        <link rel="stylesheet" type="text/css" href="css/adminDashboard-popup.css"/>
+    </wicket:head>
+</head>
+<body>
+    <wicket:extend>
+            <div id="newProduct">
+                <div>
+                    <span wicket:id="uploadFeedback"/>
+                </div>
+                <div id="title" wicket:id="newProductTitle"></div>
+                <form wicket:id="newProductForm">
+                    <div id="left">
+                        <div>
+                            <label for="newProductName"><wicket:message key="newProductName" /></label>
+                            <input id="name" wicket:id="newProductName" type="text" />
+                        </div>
+                        <div>
+                            <label for="newProductDescription"><wicket:message key="newProductDescription" /></label>
+                            <textarea id="description" wicket:id="newProductDescription" rows="10" cols="30"></textarea>
+                        </div>
+                        <div>
+                            <label for="newProductCategory"><wicket:message key="newProductCategory" /></label>
+                            <select id="category" wicket:id="newProductCategory"></select>
+                        </div>
+                    </div>
+                    <div id="right">
+                        <div>
+                            <label for="newProductPrice"><wicket:message key="newProductPrice" /></label>
+                            <input id="price" wicket:id="newProductPrice" type="text" />
+                        </div>
+                    </div>
+                    <br/>
+                    <input id="newImageDiv" wicket:id="newImageDiv" type="button" value="Új kép!"/>
+                    <!-- This span is only a workaround  because without this container-->
+                    <!-- Wicket keeps telling that "RepeatingView has been added to the target.-->
+                    <!-- This component is a repeater and cannot be repainted via ajax directly."-->
+                    <span wicket:id="dummyRepeaterContainer">
+                        <span wicket:id="uploadRepeatingView">
+                            <!-- The UploadPanel will be inserted here programmatically -->
+                        </span>
+                    </span>
+                    <input id="newProductUpload" wicket:id="newProductUpload" type="submit" value="Feltöltés!"/>
+                </form>
+            </div>
+            <div id="uploadedProducts">
+                <div id="productHeader">
+                    <div><wicket:message key="productName" /></div>
+                    <div><wicket:message key="productPrice" /></div>
+                    <div><wicket:message key="productCategory" /></div>
+                    <div><wicket:message key="productDescription" /></div>
+                    <div><wicket:message key="productImageList" /></div>
+                    <div><wicket:message key="delete" /></div>
+                    <div><wicket:message key="edit" /></div>
+                    <div><wicket:message key="show" /></div>
+                </div>
+                <div id="productList" wicket:id="productList">
+                    <div><span wicket:id="name">(file)</span></div>
+                    <div><span wicket:id="price">(file)</span></div>
+                    <div><span wicket:id="category">(file)</span></div>
+                    <div><span wicket:id="description">(file)</span></div>
+                    <div><select wicket:id="imageList"></select></div>
+                    <div><a id="delete" href="#" wicket:id="delete"><img src="../img/delete.gif" border="0"/></a></div>
+                    <div><a id="edit" href="#" wicket:id="edit"><img src="../img/pencil.png" border="0"/></a></div>
+                    <div>
+                        <a id="showLink" href="#" wicket:id="showLink" class="showLink"><img src="../img/camera_icon.png" border="0"/></a>
+                    </div>
+                    <span wicket:id="showSpan">
+                    </span>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $('select option:first-child').attr("selected", "selected");
+            </script>
+    </wicket:extend>
+</body>
+</html>

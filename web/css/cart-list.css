@@ -1,0 +1,128 @@
+* {
+    color: white;
+}
+#selectedProduct {
+    background-color: #BE1E2D;
+    max-width: 70%;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#selectedProductPrice {
+    float: right;
+}
+#titleContainer {
+    padding-left: 45px;
+}
+#orderPanel {
+    width: 734px;
+    height: 538px;
+    background-image: url('/img/checkoutBackground.png');
+    margin: auto;
+    position: relative;
+}
+#positioningContainer {
+    padding-top: 45px;
+    position: absolute;
+    width: 100%;
+}
+#orderItemRepeatContainer {
+    display: block;
+    width: 88%;
+    height: 400px;
+    overflow: hidden;
+    margin-left: 45px;
+}
+.scroll-pane
+{
+    width: 100%;
+    overflow: auto;
+}
+.jspVerticalBar {
+    width: 12px;
+}
+#orderItemRepeatingView {
+    display: block;
+    margin: 15px;
+    width: 95%;
+    float: left;
+}
+#orderItemRepeatingView span {
+    float: left;
+}
+#deleteContainer {
+    margin-top: 16px;
+    margin-right: 10px;
+}
+#imgContainer {
+    display: block;
+    width: 15%;
+    height: 76px;
+}
+#imgContainer img {
+    max-width: 100%;
+    max-height: 100%;
+}
+#detailContainer {
+    font-size: 12px;
+    margin-top: 12px;
+    margin-left: 15px;
+    width: 75%;
+}
+#productName {
+    width: 27%;
+    float: left;
+    margin-top: 10px;
+}
+#productSize {
+    width: 20%;
+    float: left;
+    margin-top: 1px;
+    font-size: 30px;
+}
+#productAmountContainer {
+    width: 18%;
+    float: left;
+}
+#productAmountContainer input {
+    width: 35px;
+    background-color: black;
+    text-align: center;
+}
+#productAmountContainer a {
+    padding-left: 5px;
+}
+span#productPriceContainer {
+    width: 35%;
+    float: right;
+    text-align: right;
+}
+#productUnitPrice {
+    width: 100%;
+    background-color: black;
+    text-align: center;
+}
+#productPriceContainer span {
+    width: 100%;
+    text-align: center;
+}
+#submitLinkContainer {
+    text-align: center;
+}
+#sendMail {
+    bottom: 0;
+    width: 100%;
+    display: block;
+    position: absolute;
+    font-size: 30px;
+}
+hr {
+    width: 100%;
+    display: block;
+    float: left;
+    background-color: white;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

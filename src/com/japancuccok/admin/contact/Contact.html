@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title></title>
+    <wicket:head>
+        <link rel="stylesheet" type="text/css" href="css/adminDashboard.css"/>
+        <link rel="stylesheet" type="text/css" href="css/adminDashboard-popup.css"/>
+        <link rel="stylesheet" type="text/css" href="css/adminContact.css"/>
+    </wicket:head>
+</head>
+<body>
+<wicket:extend>
+    <div id="contactData">
+        <div>
+            <span wicket:id="feedback"/>
+        </div>
+        <form id="contactForm" wicket:id="contactForm">
+            <div>
+                <label for="contactDetails"><wicket:message key="contactDetails"/></label>
+                <textarea id="contactDetails" wicket:id="contactDetails" rows="20" cols="120"></textarea>
+            </div>
+            <input id="submitContact" wicket:id="submitContact" type="submit" value="Feltöltés!"/>
+        </form>
+    </div>
+</wicket:extend>
+</body>
+</html>

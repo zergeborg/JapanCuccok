@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+    <title></title>
+    <wicket:head>
+        <link rel="stylesheet" type="text/css" href="css/common.css"/>
+        <link rel="stylesheet" type="text/css" href="css/shop.css"/>
+        <link rel="stylesheet" type="text/css" href="css/product-detail.css"/>
+        <link rel="stylesheet" type="text/css" href="css/pagination.css"/>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js" type="text/javascript"></script>
+    </wicket:head>
+</head>
+<body>
+<wicket:extend>
+    <div>
+        <span wicket:id="feedback"/>
+    </div>
+    <div id="selectedProduct" wicket:id="selectedProduct">
+        <span id="selectedProductName" wicket:id="selectedProductName"></span>
+        <span id="selectedProductPrice" wicket:id="selectedProductPrice"></span>
+    </div>
+    <div id="productDetail">
+        <div id="left">
+            <span id="selectedImageSpan">
+                <img id="selectedImage" wicket:id="selectedImage" src="#" alt="selected product's image" />
+            </span>
+            <span wicket:id="dummyRepeaterContainer">
+                <span wicket:id="imgRepeatingView">
+                    <span wicket:id="imagePanel">
+                        <!-- The content is moved to ImagePanel -->
+                    </span>
+                </span>
+            </span>
+        </div>
+        <div id="right">
+            <hr/>
+            <div id="infoPanel" wicket:id="infoPanel"></div>
+            <hr/>
+            <span id="submitContainer">
+                <a id="putIntoCart" wicket:id="putIntoCart" >
+                    <wicket:message key="putIntoCart">Kosárba teszem</wicket:message>
+                </a>
+            </span>
+        </div>
+        <br/>
+    </div>
+</wicket:extend>
+</body>
+</html>

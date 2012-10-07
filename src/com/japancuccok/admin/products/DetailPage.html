@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+    <title></title>
+</head>
+<body>
+<wicket:extend>
+    <div>
+        <span wicket:id="feedback"/>
+    </div>
+    <div id="editProductDiv">
+        <form wicket:id="editProductForm">
+            <div id="left">
+                <span wicket:id="dummyRepeaterContainer">
+                    <span wicket:id="imgRepeatingView">
+                        <!-- The content is moved to ImagePanel -->
+                    </span>
+                </span>
+            </div>
+            <div id="right">
+                <div id="infoPanel" wicket:id="infoPanel"></div>
+            </div>
+            <br/>
+        </form>
+    </div>
+</wicket:extend>
+</body>
+</html>

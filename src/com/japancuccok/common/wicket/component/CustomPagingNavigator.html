@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<body>
+<wicket:panel>
+    <div class="pagination4">
+        <a wicket:id="first" class="button orange" onclick="this.blur();"><span><wicket:message key="first">első</wicket:message></span></a>
+        &nbsp;
+        <a wicket:id="prev" class="button orange" onclick="this.blur();"><span><wicket:message key="previous">previous</wicket:message></span></a>
+        <span wicket:id="navigation">
+              <a wicket:id="pageLink"  class="button orange" href="#" onclick="this.blur();"><span wicket:id="pageNumber">5</span></a>
+        </span>
+        <a wicket:id="next" class="button orange" onclick="this.blur();"><span><wicket:message key="next">next</wicket:message></span></a>
+        &nbsp;
+        <a wicket:id="last" class="button orange" onclick="this.blur();"><span><wicket:message key="last">last</wicket:message></span></a>
+    </div>
+</wicket:panel>
+</body>
+</html>

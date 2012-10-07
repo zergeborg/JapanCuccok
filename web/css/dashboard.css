@@ -1,0 +1,81 @@
+div#content>a {
+    display: none;
+}
+div#footer {
+    background-image:url('../img/footer.png');
+    width:858px;
+    height:83px;
+    left: -13px;
+    top: 13px;
+    position: relative;
+    z-index: 1;
+}
+div#copyrightContainer {
+    position: absolute;
+}
+div#copyright {
+    display: inline-block;
+    background-image:url('../img/copyrightBackground.png');
+    width:481px;
+    height:30px;
+    left: 180px;
+    top: 13px;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+img#headerBackground {
+    width:848px;
+    height:180px;
+    padding-left: 24px;
+}
+div#header {
+    position: relative;
+    width:848px;
+    left: 10px;
+    z-index: 1;
+}
+div#main {
+    display: block;
+    float: left;
+}
+img#contentBackground {
+    position: relative;
+    width:820px;
+    height:485px;
+    left: 2px;
+    z-index: 1;
+}
+div#content {
+    clear: both;
+    position: relative;
+    width: 820px;
+    height: 485px;
+    z-index: 1;
+    left: 2px;
+    margin: 0 auto;
+    text-align: center;
+    /*top: -450px;*/
+    /*float: left;*/
+}
+span#slider-wrapper {
+    display: inline-block;
+    position: relative;
+    top: 20px;
+}
+div#slider {
+}
+div#slider > ul {
+    list-style-type: none;
+}
+div#slider > ul > li > a > img {
+    display: block;
+    margin: auto;
+    max-height: 80%;
+    max-width: 100%;
+}
+div#bannerPanel {
+    position: absolute;
+    bottom: 20px;
+    left: 14%;
+}

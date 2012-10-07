@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu-HU" xmlns:wicket="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title wicket:id="dashboardTitle">
+        Lapozd végig választékunkat!
+    </title>
+
+    <wicket:head>
+        <link rel="stylesheet" type="text/css" href="css/dashboard.css"/>
+        <link rel="stylesheet" type="text/css" href="css/transparent-slider.css"/>
+    </wicket:head>
+
+</head>
+<body>
+<wicket:extend>
+    <!--a href="#" id="prev" onclick="return false;">
+        <span>&#8249;</span>
+    </a>
+    <a href="#" id="next" onclick="return false;">
+        <span>&#8250;</span>
+    </a-->
+    <span id="slider-wrapper">
+        <div id="slider" wicket:id="imageSlider">
+            <a href="#" wicket:id="imageAnchor">
+                <span wicket:id="imageWrapper" class="imageWrapper">
+                    <img wicket:id="imageTag" />
+                </span>
+                <span wicket:id="imageLabel">
+                    Szép hely!
+                </span>
+            </a>
+            <wicket:remove>
+                <a href="#">
+                    <span>
+                        <img src="./img/pillowOrig.png" width="715px" height="303px">
+                    </span>
+                    <span>
+                        Szép hely!
+                    </span>
+                </a>
+                <a href="#">
+                    <span>
+                        <img src="./img/pillowRed.png" width="715px" height="303px">
+                    </span>
+                    <span>
+                        Ejjha!
+                    </span>
+                </a>
+                <a href="#">
+                    <span>
+                        <img src="./img/pillowPurple.png" width="715px" height="303px">
+                    </span>
+                    <span>
+                        Tyű az anyja
+                    </span>
+                </a>
+                <!--a href="#">
+                    <img src="./img/pillowWeird.png" width="715px" height="303px">
+                    <span wicket:id="pillow04">
+                        Tyű az anyja
+                    </span>
+                </a-->
+            </wicket:remove>
+        </div>
+    </span>
+</wicket:extend>
+</body>
+</html>

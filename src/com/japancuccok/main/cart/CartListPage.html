@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+    <title></title>
+    <wicket:head>
+        <link rel="stylesheet" type="text/css" href="css/common.css"/>
+        <link rel="stylesheet" type="text/css" href="css/shop.css"/>
+        <link rel="stylesheet" type="text/css" href="css/cart-list.css"/>
+        <link rel="stylesheet" type="text/css" href="./css/jquery-jscrollpane-lozenge.css" media="all" />
+        <link rel="stylesheet" type="text/css" href="./css/jquery-jscrollpane.css" media="all" />
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+        <script type="text/javascript" src="./js/jquery.mousewheel.js"></script>
+        <script type="text/javascript" src="./js/jquery.jscrollpane.min.js"></script>
+    </wicket:head>
+</head>
+<body>
+    <wicket:extend>
+        <div>
+            <span wicket:id="feedback"/>
+        </div>
+        <div id="selectedProduct">
+            <wicket:message key="cart"/>
+            <span id="selectedProductPrice" wicket:id="cartSum"></span>
+        </div>
+        <div id="orderPanel">
+            <div id="positioningContainer">
+                <div id="titleContainer"><wicket:message key="orderPanelTitle" /></div>
+                <div class="scroll-pane" id="orderItemRepeatContainer" wicket:id="orderItemRepeatContainer">
+                    <div id="orderItemRepeatingView" wicket:id="orderItemRepeatingView">
+                        <!-- The content is moved to elsewhere -->
+                    </div>
+                </div>
+            </div>
+            <div id="submitLinkContainer">
+                <a id="sendMail" wicket:id="sendMail"><wicket:message key="sendMail">S</wicket:message></a>
+            </div>
+        </div>
+    </wicket:extend>
+</body>
+</html>

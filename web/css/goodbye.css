@@ -1,0 +1,12 @@
+div#content > img {
+    position: relative;
+    top: 30px;
+    left: 23%;
+}
+span#thankYouLabel {
+    position: absolute;
+    bottom: 280px;
+    left: 16%;
+    font-size: 46px;
+    color: #BE1E2D;
+}

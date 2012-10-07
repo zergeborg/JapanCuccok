@@ -1,0 +1,12 @@
+<project name="JapanCuccok" default="copy" basedir=".">
+    <property name="src" location="../src"/>
+    <property name="artifact.lib"
+              location="../../out/artifacts/JapanCuccok_war_exploded/WEB-INF/classes"/>
+    <target name="copy">
+        <copy todir="${artifact.lib}" overwrite="true">
+            <fileset dir="${src}">
+                <filename name="**/*.html"/>
+            </fileset>
+        </copy>
+    </target>
+</project>

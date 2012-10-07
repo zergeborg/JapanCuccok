@@ -1,0 +1,97 @@
+hr {
+    display: block;
+    color: #BE1E2D;
+    background-color: #BE1E2D;
+    height: 5px;
+}
+#productDetail,
+#productDetail form {
+    height:100%;
+}
+#left,
+#right {
+    max-width: 47%;
+    width: 47%;
+    height: 100%;
+    float: left;
+}
+#selectedProduct {
+    background-color: #BE1E2D;
+    color: white;
+    max-width: 70%;
+    margin: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#selectedProductPrice {
+    float: right;
+}
+#selectedImageSpan {
+    position: relative;
+    float: left;
+    width:386px;
+    height:414px;
+    background-image: url('/img/productDetailBigImage.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+#selectedImageSpan img {
+    position: relative;
+    max-height: 99%;
+    max-width: 99%;
+    top: 2px;
+}
+#imgContainer {
+    position: relative;
+    float: left;
+    width:97px;
+    height:104px;
+    background-image: url('/img/productDetailSmallImage.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    margin: 10px;
+}
+#imgContainer img {
+    position: relative;
+    max-height: 97%;
+    max-width: 97%;
+    top: 2px;
+}
+#infoPanel {
+    position: relative;
+    height: 30%;
+    color: #BE1E2D;
+}
+#sizeAnchors {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    background-color: #BE1E2D;
+    bottom: 0;
+}
+#S, #M, #L, #XL, #XXL {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+#S.selected,
+#M.selected,
+#L.selected,
+#XL.selected,
+#XXL.selected {
+    padding-left: 10px;
+    padding-right: 10px;
+    text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
+}
+#submitContainer {
+    background-color: #BE1E2D;
+    max-width: 50%;
+    display: block;
+    margin: auto;
+    text-align: center;
+}

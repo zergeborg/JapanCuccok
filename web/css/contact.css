@@ -1,0 +1,19 @@
+div#contactData {
+    width: 80%;
+    text-align: center;
+    margin: auto;
+}
+hr {
+    display: block;
+    color: hsl(354, 73%, 43%);
+    background-color: hsl(354, 73%, 43%);
+    height: 5px;
+}
+span#contactDetails {
+    width: 80%;
+    font-family: 'SansationBold';
+    font-size: 1.045em;
+    color: hsl(354, 73%, 43%);
+    background-color: white;
+    margin-left: -40px;
+}

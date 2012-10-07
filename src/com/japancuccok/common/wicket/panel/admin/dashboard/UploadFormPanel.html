@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <wicket:head>
+    </wicket:head>
+</head>
+<body>
+<wicket:panel>
+    <div id="productUploadPanel" wicket:id="productUploadPanel">
+        <fieldset>
+            <legend><wicket:message key="productUploadTitle" /></legend>
+            <p>
+            <div>
+                <label for="dashboard"><wicket:message key="newProductDashboard" /></label>
+                <input id="dashboard" wicket:id="newProductDashboard" type="checkbox" />
+            </div>
+            <div>
+                <label for="generalPage"><wicket:message key="newProductGeneralPage"/></label>
+                <input id="generalPage" wicket:id="newProductGeneralPage" type="checkbox" />
+            </div>
+            <div>
+                <label for="selector"><wicket:message key="chooseImageType"/></label>
+            </div>
+            <br/>
+            <div id="selector" wicket:id="selector">
+                <input type="radio" wicket:id="1">URL</input>
+                <input type="radio" wicket:id="2">Datastore</input>
+            </div>
+            <div id="newImageLink" wicket:id="newImageLink">
+                <!-- Panel comes here -->
+            </div>
+            <div id="newImageUpload" wicket:id="newImageUpload">
+                <!-- Panel comes here -->
+            </div>
+            </p>
+        </fieldset>
+    </div>
+</wicket:panel>
+</body>
+</html>

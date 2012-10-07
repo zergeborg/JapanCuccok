@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+    <title></title>
+    <wicket:head>
+        <link rel="stylesheet" type="text/css" href="css/common.css"/>
+        <link rel="stylesheet" type="text/css" href="css/shop.css"/>
+        <link rel="stylesheet" type="text/css" href="css/address.css"/>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js" type="text/javascript"></script>
+    </wicket:head>
+</head>
+<body>
+<wicket:extend>
+    <div>
+        <span wicket:id="feedback"/>
+    </div>
+    <div id="selectedProduct">
+        <wicket:message key="cart" />
+        <span id="selectedProductPrice" wicket:id="cartSum"></span>
+    </div>
+    <form id="addressForm" wicket:id="addressForm">
+        <div id="addressPanel">
+            <div id="positioningContainer">
+                <span class="addressPanelTitlePositioning"><wicket:message key="addressPanelTitle"/></span>
+                <div id="personalDataPanel" wicket:id="personalDataPanel"></div>
+                <div id="billingDataPanel" wicket:id="billingDataPanel"></div>
+            </div>
+            <div id="submitLinkContainer">
+                <a id="sendMail" wicket:id="sendMail"><wicket:message key="sendMail">S</wicket:message></a>
+            </div>
+        </div>
+    </form>
+</wicket:extend>
+</body>
+</html>

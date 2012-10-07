@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<body>
+<wicket:panel>
+    <span id="deleteContainer">
+        <a id="deleteLink" wicket:id="deleteLink"><wicket:message key="delete">x</wicket:message></a>
+    </span>
+    <span id="imgContainer">
+        <img src="ProductCheckoutPanel.html" alt="product image" id="productImg" wicket:id="productImg" />
+    </span>
+    <span id="detailContainer">
+        <hr/>
+        <span id="productName" wicket:id="productName" />
+        <span id="productSize" wicket:id="productSize" />
+        <span id="productAmountContainer">
+            <label for="productAmount"><wicket:message key="productAmount">productAmount</wicket:message></label>
+            <input id="productAmount" wicket:id="productAmount" type="text" />
+            <a id="plusLink" wicket:id="plusLink"><wicket:message key="plus">+</wicket:message></a>
+            <wicket:message key="forwardSlash">/</wicket:message>
+            <a id="minusLink" wicket:id="minusLink"><wicket:message key="minus">-</wicket:message></a>
+        </span>
+        <span id="productPriceContainer">
+            <input id="productUnitPrice" wicket:id="productUnitPrice" type="text" />
+            <span id="productPriceToPay" wicket:id="productPriceToPay" ></span>
+        </span>
+        <hr/>
+    </span>
+
+</wicket:panel>
+</body>
+</html>

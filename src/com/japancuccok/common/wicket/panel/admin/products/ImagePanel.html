@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
+<head>
+    <title></title>
+    <wicket:head>
+    </wicket:head>
+</head>
+<body>
+<wicket:panel>
+    <div id="imgContainer"><img src="#" alt="editedImage" wicket:id="editedImage"></div>
+    <div id="imgDetail">
+        <div>
+            <label for="dashboard"><wicket:message key="dashboard" /></label>
+            <input id="dashboard" wicket:id="dashboard" type="checkbox" />
+        </div>
+        <div>
+            <label for="productGeneralPage"><wicket:message key="generalPage" /></label>
+            <input id="productGeneralPage" wicket:id="productGeneralPage" type="checkbox" />
+        </div>
+        <div>
+            <label for="imgName"><wicket:message key="imgName" /></label>
+            <span id="imgName" wicket:id="name" />
+        </div>
+        <div id="optionsPanel" wicket:id="optionsPanel">
+            //Panel comes here
+        </div>
+    </div>
+</wicket:panel>
+</body>
+</html>

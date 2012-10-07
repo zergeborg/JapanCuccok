@@ -1,0 +1,88 @@
+#menu{
+    z-index: 3;
+    position: absolute;
+    bottom:36px;
+    width:100%;
+    line-height:normal;
+    margin-bottom: -4px;
+}
+#menu li :hover {
+    -sand-chroma-override: #666666;
+    text-shadow: 0 0 10px #fff,
+                 0 0 20px #fff,
+                 0 0 30px #fff;
+}
+#menuLeft, #menuRight {
+    margin:0;
+    list-style:none;
+    max-width: 424px;
+}
+#menuLeft li, #menuRight li {
+    text-align: center;
+    overflow: hidden;
+    padding-left: 6px;
+    padding-right: 6px;
+}
+#menuLeft {
+    float:left;
+    left: 0;
+    padding-left: 25px;
+}
+#menuRight {
+    float:right;
+    right: 0;
+}
+#menuLeft li {
+    float: left;
+}
+#menuRight li {
+    float: right;
+}
+#shop {
+    /*background: url('../img/shop.png') bottom no-repeat;
+    width:57px;*/
+    height:35px;
+}
+#shop:hover {
+    /*background: url('../img/shopHighlight.png') bottom no-repeat;*/
+}
+#about {
+    /*background: url('../img/about.png') bottom no-repeat;
+    width:96px;*/
+    height:35px;
+}
+#about:hover {
+    /*background: url('../img/aboutHighlight.png') bottom no-repeat;*/
+}
+#product {
+    /*background: url('../img/product.png') bottom no-repeat;
+    width:96px;*/
+    height:35px;
+}
+#product:hover {
+    /*background: url('../img/productHighlight.png') bottom no-repeat;*/
+}
+#contact {
+    /*background: url('../img/contact.png') bottom no-repeat;
+    width:131px;*/
+    height:35px;
+}
+#contact:hover {
+    /*background: url('../img/contactHighlight.png') bottom no-repeat;*/
+}
+#links {
+    /*background: url('../img/links.png') bottom no-repeat;
+    width:85px;*/
+    height:35px;
+}
+#links:hover {
+    /*background: url('../img/linksHighlight.png') bottom no-repeat;*/
+}
+#event {
+    /*background: url('../img/event.png') bottom no-repeat;
+    width:107px;*/
+    height:35px;
+}
+#event:hover {
+    /*background: url('../img/eventHighlight.png') bottom no-repeat;*/
+}

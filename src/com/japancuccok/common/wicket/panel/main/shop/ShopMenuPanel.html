@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <wicket:head>
+        <link rel="stylesheet" type="text/css" href="css/shop-menu.css" />
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" type="text/css" href="css/menu-ie8-and-down.css" />
+        <![endif]-->
+    </wicket:head>
+</head>
+<body>
+<wicket:panel>
+    <div id="menuContainer">
+        <div id="headerImage">
+            <div id="headerCat"></div>
+        </div>
+        <div id="headerBackground">
+            <div id="header">
+                <div id="menu">
+                    <ul id="menuLeft">
+                        <li id="tshirt"><a wicket:id="tshirt" href="#"></a></li>
+                        <li id="accessories"><a wicket:id="accessories" href="#"></a></li>
+                        <li id="stuff"><a wicket:id="stuff" href="#"></a></li>
+                        <li id="contact"><a wicket:id="contact" href="#"></a></li>
+                        <li id="about"><a href="#"><wicket:message key="about">RÓLUNK</wicket:message></a></li>
+                        <li id="services"><a href="#"><wicket:message key="services">SZOLGÁLTATÁSOK</wicket:message></a></li>
+                        <li id="events"><a href="#"><wicket:message key="events">ESEMÉNYEK</wicket:message></a></li>
+                        <li id="partners"><a href="#"><wicket:message key="partners">PARTNEREK</wicket:message></a></li>
+                    </ul>
+                    <ul id="menuRight">
+                        <li id="cart"><a href="#" wicket:id="cart"></a><span id="sumTotal" wicket:id="sumTotal"/></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</wicket:panel>
+</body>
+</html>

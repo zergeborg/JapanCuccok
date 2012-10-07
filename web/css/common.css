@@ -1,0 +1,79 @@
+@font-face {
+    font-family: 'SansationBold';
+    src: url('/font/Sansation_Bold.eot');/* IE */
+    src: local("Sansation Bold"), url('../font/Sansation_Bold.ttf') format("truetype"); /* non-IE */
+}
+.SansationBold {
+    font-family: 'SansationBold', verdana, helvetica, sans-serif;
+}
+* {
+    font-family: 'SansationBold';
+    font-size: 1.045em;
+}
+h1 {
+    position: relative;
+    text-align: center;
+    margin: 20px;
+}
+html,body,a,div,img {
+    border: none;
+    padding: 0px;
+}
+html,body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+body {
+    behavior: url("/htc/csshover3.htc");
+    /*background-image:url('../img/backgroundTile.png');*/
+    background: black;
+    font-family: 'SansationBold';
+    overflow-y: scroll;
+}
+a {
+    color: white;
+    text-decoration: none;
+}
+a .clickable {
+    display: block;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+}
+div#main {
+    display: none;
+    position:relative;
+    /* These values will be reset by jQuery */
+    top: 120px;
+    z-index:1;
+}
+
+.wordwrap {
+    white-space: pre-wrap;      /* CSS3 */
+    white-space: -moz-pre-wrap; /* Firefox */
+    white-space: -pre-wrap;     /* Opera <7 */
+    white-space: -o-pre-wrap;   /* Opera 7 */
+    word-wrap: break-word;      /* IE */
+}
+.feedbackPanel {
+    text-align: center;
+    list-style: circle;
+    list-style-position: inside;
+}
+.feedbackPanelERROR {
+    color: red;
+    font-weight: bold;
+}
+.feedbackPanelWARNING {
+    color: orange;
+    font-weight: bold;
+}
+.feedbackPanelINFO {
+    color: green;
+    font-weight: bold;
+}

@@ -1,0 +1,101 @@
+* {
+    color: black;
+    font-size: 14px;
+}
+#selectedProduct {
+    color: white;
+    background-color: #BE1E2D;
+    max-width: 70%;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+#selectedProductPrice {
+    color: white;
+    float: right;
+}
+div#addressPanel {
+    width: 734px;
+    height: 538px;
+    background-image: url('/img/checkoutBackground.png');
+    margin: auto;
+    position: relative;
+}
+div#positioningContainer {
+    padding-top: 35px;
+    position: absolute;
+    width: 100%;
+}
+.addressPanelTitlePositioning {
+    color: white;
+    padding-left: 45px;
+    padding-bottom: 10px;
+    display: block;
+    margin-top: -5px;
+}
+div#personalDataPanel {
+    padding-left: 45px;
+    padding-right: 45px;
+}
+div#billingDataPanel {
+    padding-left: 45px;
+    padding-right: 45px;
+}
+div.leftPositioning {
+    width: 33%;
+    float: left;
+}
+div#personalDataTitle {
+    color: white;
+    width: 34%;
+    float: left;
+    text-align: center;
+}
+div#billingTitle {
+    color: white;
+    width: 34%;
+    float: left;
+    text-align: center;
+}
+div.rightPositioning {
+    width: 33%;
+    float: left;
+}
+div#submitLinkContainer {
+    width: 100%;
+    position: absolute;
+    bottom: 5px;
+    float: left;
+    text-align: center;
+}
+div#submitLinkContainer > a {
+    color: white;
+    font-size: 30px;
+}
+textarea {
+    color: white;
+    float: left;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    width: 60%;
+    height: 6em;
+    background-color: black;
+}
+label {
+    float: left;
+    width: 20%;
+}
+input {
+    color: white;
+    float: left;
+    width: 60%;
+    background-color: black;
+}
+hr {
+    background-color: black;
+    color: black;
+    height: 2px;
+    border: 0;
+}

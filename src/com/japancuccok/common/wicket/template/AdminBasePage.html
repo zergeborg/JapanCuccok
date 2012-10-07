@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:wicket="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title wicket:id="headerTitle">
+        Lapozd végig választékunkat!
+    </title>
+
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js" type="text/javascript"></script>
+    <script src="js/styledPopup.js" type="text/javascript"></script>
+</head>
+<body>
+    <h1>
+        <span wicket:id="pageTitle" />
+    </h1>
+    <div id="main">
+        <div wicket:id="menuPanel">This gets replaced!</div>
+        <div id="content">
+            <wicket:child />
+        </div>
+    </div>
+    <div wicket:id="footerScriptPanel">This gets replaced!</div>
+    <script type="text/javascript">
+        var h = $(window).height();
+        var w = $(window).width();
+        // Content width is defined in separate panels
+        $("#main").css('left',((cw>w) ? 0 : Math.ceil((w-cw)/2)));
+        $("#main").show();
+        var dummyAssign = 0;
+    </script>
+</body>
+</html>
