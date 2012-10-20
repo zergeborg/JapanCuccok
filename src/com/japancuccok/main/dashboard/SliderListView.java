@@ -9,12 +9,14 @@ import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.ResourceReference;
 
@@ -68,23 +70,25 @@ public class SliderListView<T extends BaseImage> extends ListView<T> {
     }
 
 
-    private WebComponent getImage(IImage image) {
+    private WebComponent getImage(IImage image, String imageUrl) {
         WebComponent imageTag = image.asWicketImage("imageTag");
         String hidden = "visibility:hidden;";
         String maxW = "max-width:100%;";
         String maxH = "max-height:90%;";
         imageTag.add(new AttributeModifier("style", hidden+maxW+maxH));
+        imageTag.add(new AttributeModifier("src", new Model<String>(imageUrl)));
         return imageTag;
     }
 
     private String getUrl(IImage image) {
         ResourceReference imagesResourceReference = new ImageResourceReference(image.asResource("imageTag"));
+        ((WebApplication)getApplication()).mountResource("/images/${name}", imagesResourceReference);
         PageParameters imageParameters = new PageParameters();
 
         String url = null;
         if(image.getImageData() instanceof BinaryImageData) {
-            String name = image.getImageOptions().getName();
-            imageParameters.set("name", name);
+            Long imageDataId = image.getImageData().getId();
+            imageParameters.set("imageDataId", imageDataId);
             CharSequence urlForImage = getRequestCycle().urlFor(imagesResourceReference, imageParameters);
             url = urlForImage.toString();
         }
@@ -97,17 +101,23 @@ public class SliderListView<T extends BaseImage> extends ListView<T> {
     private WebMarkupContainer getImageWrapper(IImage image) {
         String imageUrl = getUrl(image);
         WebMarkupContainer imageWrapper = new WebMarkupContainer("imageWrapper");
-        imageWrapper.add(getImage(image));
+        imageWrapper.add(getImage(image, imageUrl));
         String bg = "background:url('"+imageUrl+"') no-repeat;";
         String bgSize = "background-size: cover;";
+        String mozBgSize = "-moz-background-size: cover;";
+        String oBgSize = "-o-background-size: cover;";
         String maxH = "max-height:100%;";
+        String alphaImageLoader1 = "filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='"+imageUrl+"', sizingMethod='scale');";
+        String alphaImageLoader2 = "-ms-filter: \"progid:DXImageTransform.Microsoft.AlphaImageLoader( src='"+imageUrl+"', sizingMethod='scale')\";";
         imageWrapper.add(new AttributeModifier("style",
-                new Model<String>(bg+bgSize)));
+                new Model<String>(bg+bgSize+mozBgSize+oBgSize+alphaImageLoader1+alphaImageLoader2)));
         return imageWrapper;
     }
 
     private Label getLabel(IImage image) {
-        return new Label("imageLabel", new PropertyModel<Object> (new ImageModel(image.getId()), "description"));
+        Label label = new Label("imageLabel", new DescriptionPropertyModel(new ImageModel(image.getId()), "description"));
+        label.setEscapeModelStrings(false);
+        return label;
     }
 
 }

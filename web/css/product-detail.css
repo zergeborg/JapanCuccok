@@ -1,8 +1,6 @@
 hr {
     display: block;
-    color: #BE1E2D;
-    background-color: #BE1E2D;
-    height: 5px;
+    height: 1px;
 }
 #productDetail,
 #productDetail form {
@@ -16,12 +14,12 @@ hr {
     float: left;
 }
 #selectedProduct {
-    background-color: #BE1E2D;
     color: white;
     max-width: 70%;
     margin: auto;
     padding-left: 10px;
     padding-right: 10px;
+    text-align: left;
 }
 #selectedProductPrice {
     float: right;
@@ -66,13 +64,17 @@ hr {
 #infoPanel {
     position: relative;
     height: 30%;
-    color: #BE1E2D;
+    margin: 10px 40px;
+}
+#infoPanel:first-child {
+    position: relative;
+    text-align: left;
+}
+#infoPanel > div > label {
+    color: brown;
 }
 #sizeAnchors {
-    position: absolute;
-    width: 100%;
     text-align: center;
-    background-color: #BE1E2D;
     bottom: 0;
 }
 #S, #M, #L, #XL, #XXL {
@@ -89,7 +91,6 @@ hr {
     text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
 }
 #submitContainer {
-    background-color: #BE1E2D;
     max-width: 50%;
     display: block;
     margin: auto;

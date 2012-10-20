@@ -23,32 +23,28 @@ html,body,a,div,img {
 div#main {
     display: none;
     position:relative;
-    /* These values will be reset by jQuery */
-    top: 120px;
-    z-index:1;
+    width: 100%;
+    margin: auto;
+    text-align: center;
 }
 img#contentBackground {
     z-index: 1;
     position: relative;
-    width:1037px;
     height:941px;
     top: 10px;
 }
 div#content {
-    clear: both;
-    z-index: 1;
+    height: 100%;
+}
+div#content div#upperNavigator,
+div#content div#lowerNavigator{
+    display: block;
     position: relative;
-    width:1032px;
-    height: 685px;
-    padding: 4px;
-    padding-top: 20px;
-}
-div#content > div#upperNavigator,
-div#content > div#lowerNavigator{
     width: 100%;
+    float: left;
+    margin: auto;
 }
-div#content > div#lowerNavigator{
-    width: 100%;
+div#content div#lowerNavigator{
     float: left;
 }
 div#content .productItem {
@@ -90,8 +86,6 @@ div#content #productLowerRow img {
     max-width: 97%;
 }
 div#bannerPanel {
-    position: absolute;
-    bottom: -40px;
-    width: 58%;
-    left: 22%;
+    width: 85%;
+    margin: auto;
 }

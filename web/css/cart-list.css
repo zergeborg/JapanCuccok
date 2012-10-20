@@ -1,14 +1,11 @@
-* {
-    color: white;
-}
 #selectedProduct {
-    background-color: #BE1E2D;
     max-width: 70%;
     padding-left: 10px;
     padding-right: 10px;
     margin: auto;
     margin-top: 20px;
     margin-bottom: 20px;
+    text-align: left;
 }
 #selectedProductPrice {
     float: right;
@@ -19,7 +16,6 @@
 #orderPanel {
     width: 734px;
     height: 538px;
-    background-image: url('/img/checkoutBackground.png');
     margin: auto;
     position: relative;
 }

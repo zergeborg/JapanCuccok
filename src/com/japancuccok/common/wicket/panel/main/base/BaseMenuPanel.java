@@ -22,6 +22,7 @@ public abstract class BaseMenuPanel extends Panel {
 
     public BaseMenuPanel(String id) {
         super(id);
+        setRenderBodyOnly(true);
     }
     
     public abstract Link getCartLink();

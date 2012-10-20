@@ -1,5 +1,7 @@
 package com.japancuccok.common.domain.image;
 
+import org.apache.wicket.markup.html.image.NonCachingImage;
+
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
@@ -7,13 +9,17 @@ import com.japancuccok.common.infrastructure.gaeframework.DatastoreInputStream;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.image.NonCachingImage;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.DynamicImageResource;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.util.io.ByteArrayOutputStream;
+import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.util.time.Time;
 import org.apache.wicket.util.time.TimeOfDay;
+import org.apache.wicket.util.value.LongValue;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,8 +45,8 @@ public class DatastoreImage extends NonCachingImage implements Serializable, IRe
     private int oldFileSize;
     transient private static final ImagesService imagesService = ImagesServiceFactory.getImagesService();
 
-    public DatastoreImage(String id, IModel<IImageData> iModel, ImageOptions options) {
-        super(id, iModel);
+    public DatastoreImage(String id, ImageOptions options) {
+        super(id);
         this.options = options;
     }
 
@@ -92,42 +98,42 @@ public class DatastoreImage extends NonCachingImage implements Serializable, IRe
             DatastoreImage.this.oldFileSize = -1;
         }
 
-        private byte[] getImageData() {
+        private byte[] getImageData(Long imageDataId) {
             logger.fine("Trying to return image data [ " + getId() + " ] of type [ " +
                     "" + getFormat() + " ]");
             try {
-                if(getDefaultModelObject() instanceof BinaryImageData) {
-                    BinaryImageData imageData = (BinaryImageData)getDefaultModelObject();
-                    byte[] data = imageData.getBytes();
+                ImageDataModel imageModel = new ImageDataModel<IImageData>(imageDataId);
+                BinaryImageData imageData = (BinaryImageData)imageModel.load();
+                byte[] data = imageData.getBytes();
 
-                    com.google.appengine.api.images.Image oldImage = ImagesServiceFactory.makeImage(data);
-                    oldWidth = oldImage.getWidth();
-                    oldHeight = oldImage.getHeight();
-                    oldFileSize = oldImage.getImageData().length;
+                com.google.appengine.api.images.Image oldImage = ImagesServiceFactory.makeImage(data);
+                oldWidth = oldImage.getWidth();
+                oldHeight = oldImage.getHeight();
+                oldFileSize = oldImage.getImageData().length;
 
-                    // TODO: this is not really needed
-    //                Transform resize = ImagesServiceFactory.makeResize(options.getWidth(), options.getHeight(), true);
-    //                com.google.appengine.api.images.Image newImage = imagesService.applyTransform
-    //                        (resize, oldImage, ImagesService.OutputEncoding.PNG);
-    //                newWidth = newImage.getWidth();
-    //                newHeight = newImage.getHeight();
-    //
-    //                newFileSize = newImage.getImageData().length;
-                    data = oldImage.getImageData();
-                    return data;
-                }
+                // TODO: this is not really needed
+//                Transform resize = ImagesServiceFactory.makeResize(options.getWidth(), options.getHeight(), true);
+//                com.google.appengine.api.images.Image newImage = imagesService.applyTransform
+//                        (resize, oldImage, ImagesService.OutputEncoding.PNG);
+//                newWidth = newImage.getWidth();
+//                newHeight = newImage.getHeight();
+//
+//                newFileSize = newImage.getImageData().length;
+                data = oldImage.getImageData();
+                return data;
             } catch (IllegalArgumentException e) {
                 e.printStackTrace();
                 throw new WicketRuntimeException(e);
             } finally {
                 // ...
             }
-            return new byte[] {};
         }
 
         @Override
         protected byte[] getImageData(Attributes attributes) {
-            return getImageData();
+            PageParameters parameters = attributes.getParameters();
+            Long imageDataId = parameters.get("imageDataId").toLongObject();
+            return getImageData(imageDataId);
         }
 
         @Override

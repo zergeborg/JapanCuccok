@@ -10,6 +10,7 @@ import com.japancuccok.common.wicket.template.BasePage;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 
@@ -25,6 +26,7 @@ public class Dashboard extends BasePage {
 
     public Dashboard() {
         SliderListView sliderListView = new SliderListView("imageSlider", new DashboardImageLoadStrategy(true));
+        sliderListView.setRenderBodyOnly(true);
         add(sliderListView);
     }
 
@@ -62,12 +64,14 @@ public class Dashboard extends BasePage {
 
     @Override
     public Panel getCopyrightPanel() {
-        return new DashboardCopyrightPanel("copyrightPanel");
+//        return new DashboardCopyrightPanel("copyrightPanel");
+        return new EmptyPanel("copyrightPanel");
     }
 
     @Override
     public Panel getFooterContentPanel() {
-        return new DashboardFooterContentPanel("footerContentPanel");
+//        return new DashboardFooterContentPanel("footerContentPanel");
+        return new EmptyPanel("footerContentPanel");
     }
 
     @Override

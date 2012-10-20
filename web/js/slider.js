@@ -46,7 +46,7 @@ Slider.prototype = {
     height               : 600,
     marginLeft           : 0,
     conf                 : undefined,
-    titleOpacity         : 0, // opacity of title and navigation
+    titleOpacity         : 1, // opacity of title and navigation
     titleSpeed           : 1000, // speed of title display
     titleHeight          : 50, // height of the titles
     animationFrequency   : 6000,
@@ -89,19 +89,23 @@ Slider.prototype = {
     },
 
     initPlaceHolder : function initPlaceHolder() {
-        this.placeHolder = $("<li class='ts-li' id='placeholder'/>");
+        this.placeHolder = $("<li class='ts-li' id='placeholder'><a><span class='imageWrapper'><img/></span></a></li>");
         this.placeHolder.css({'width':this.params[this.elId].width});
-        this.placeHolder.css({'float':'left'});
+//        this.placeHolder.css({'float':'left'});
     },
 
     initTitleBar: function initTitleBar(i) {
         // create title bar
-        $('#' + this.elId + i).append("<div class='ts-title' id='ts-title-" + this.elId + i +"'></div>");
-        $('#ts-title-' + this.elId + i).css({'position': 'relative', 'bottom':'0', 'left': '0'});
-        $('#ts-title-' + this.elId + i).css({'z-index': '1000'});
-        $('#ts-title-' + this.elId + i).css({'height' : this.params[this.elId].titleHeight});
-        $('#ts-title-' + this.elId + i).css({'opacity':0});
-        $('#ts-title-' + this.elId + i).html(this.titles[this.elId][i]);
+        $('#labelWrapper').append("<div class='ts-title' id='ts-title-" + this.elId + i +"'></div>");
+        var $title = $('#ts-title-' + this.elId + i);
+        $title.css({'display': 'none'});
+        $title.css({'position': 'relative'});
+        $title.css({'bottom':'0'});
+        $title.css({'left': '0'});
+        $title.css({'z-index': '1000'});
+        $title.css({'height' : this.params[this.elId].titleHeight});
+        //$title.css({color: jQuery.Color("rgba(255,255,255,0)")});
+        $title.html(this.titles[this.elId][i]);
         return this;
     },
 
@@ -109,34 +113,41 @@ Slider.prototype = {
         // create images, links and titles arrays
         var imgList = $('#slider img');
         for(var i = 0; i < imgList.length; i += 1) {
+            var $imageWrapper = $(imgList[i]).parent();
+            var $imageWrapperNext = $imageWrapper.next();
             this.images[this.elId][i] = $(imgList[i]).attr('src');
-            this.links[this.elId][i] = $(imgList[i]).parent().is('a') ? $(imgList[i]).parent().attr('href') : '';
-            this.linksTarget[this.elId][i] = $(imgList[i]).parent().is('a') ? $(imgList[i]).parent().attr('target') : '';
-            this.titles[this.elId][i] = $(imgList[i]).parent().next().is('span') ? $(imgList[i]).next().html() : '';
-            $(imgList[i]).parent().parent().wrap("<li class='ts-li'/>");
-            $(imgList[i]).parent().parent().parent().attr('id', this.elId + i);
-            $(imgList[i]).parent().parent().parent().css({'width':this.width});
-            $(imgList[i]).parent().parent().parent().css({
-                'margin-right' : 5,
-                'margin-left' : 5,
-                'float':'left'
+            this.links[this.elId][i] = $imageWrapper.is('a') ? $imageWrapper.attr('href') : '';
+            this.linksTarget[this.elId][i] = $imageWrapper.is('a') ? $imageWrapper.attr('target') : '';
+            this.titles[this.elId][i] = $imageWrapperNext.is('span') ? $imageWrapperNext.html() : '';
+            var $anchor = $imageWrapper.parent();
+            $anchor.wrap("<li class='ts-li'/>");
+            var $ts_li = $anchor.parent();
+            $ts_li.attr('id', this.elId + i);
+            $ts_li.css({'width':this.width});
+            $ts_li.css({
+                'display'      : 'inline',
+                'float'        : 'left',
+                'margin-right' : 10, //TODO This value should be a parameter
+                'margin-left' : 10 //TODO This value should be a parameter
             });
             this.initTitleBar(i);
-            $(imgList[i]).parent().next().hide();
+            $imageWrapperNext.hide();
         }
         return this;
     },
 
     initEventListener : function initEventListener() {
-        var imageWidth = this.width;
-        var imageHeight = this.height;
+        var imageWidth = this.width+40; //40px is the background
+        var imageHeight = this.height+80; //80px is the background
         var numberOfImages = this.images[this.elId].length + 1; // +1 because of the placeholder
         // set panel
-        $(this.eventListener).css({
+        $('#' + this.elId).css({
             'clear'   :'both',
             'overflow':'hidden',
             'width'   :imageWidth,
             'height'  :imageHeight,
+            //'background-color': 'rgba(255,255,255,1)',
+            'background-size': imageWidth+'px '+imageHeight+'px',
             'position':'relative'
         }).wrap("<div class='transparent-slider' id='transparent-slider-" + this.elId + "' />");
 
@@ -152,8 +163,9 @@ Slider.prototype = {
         // slideshow width should be the width of [image_width]*[nr of images]
         $('#ts-slideshow-' + this.elId).css(
             {
-                'width'  :(imageWidth * numberOfImages) + (10 * numberOfImages), // 10 equals to the left and right margins between images
+                'width'  :(imageWidth * 3) + (20 * 3), // 10 equals to the left and right margins between images
                 'height' :imageHeight-30, //30 pixels are needed to make sure the image fits in its container
+                'padding-left': 20,
                 'display':''
             }
         );
@@ -171,10 +183,9 @@ Slider.prototype = {
 
     initMarginLeft : function initMarginLeft() {
         var numberOfImages = this.images[this.elId].length + 1; // +1 because of the placeholder
-        var marginBetweenImages = numberOfImages * 10;
         this.marginLeft = (this.direction === 'left')
-            ? ((this.width * -1)-(marginBetweenImages/2)+10)
-            : ((this.width * -2)-(marginBetweenImages/2)+10);
+            ? ((this.width * 0) - 20)
+            : ((this.width * -2) - 30);
     },
 
     initPrev : function initPrev() {
@@ -193,14 +204,47 @@ Slider.prototype = {
         // Display images
         $('#' + this.elId + ' .ts-li').show();
         // Display title
-//        $('#ts-title-' + this.elId).show();
+        $(this.nextTitle).show();
     },
 
     selectNextImage : function selectNextImage() {
         if(this.direction === 'left') {
             this.nextImage = $('#ts-slideshow-' + this.elId).children().first();
+            this.firstImage = this.nextImage.next();
+            this.firstImage.css({
+                'display' : 'inline',
+                'float'   : 'left'
+            });
+            this.secondImage = this.nextImage.next().next();
+            this.secondImage.css({
+                'display' : 'inline',
+                'float'   : 'left'
+            });
+            this.thirdImage = this.nextImage.next().next().next();
+            this.thirdImage.css({
+                'display' : 'inline',
+                'float'   : 'left'
+            });
+            var currentId = this.nextImage.attr("id");
+            this.nextTitle = '#ts-title-' + currentId;
         } else {
+            this.firstImage = $('#ts-slideshow-' + this.elId).children().first();
+            this.firstImage.css({
+                'display' : 'inline',
+                'float'   : 'left'
+            });
+            this.secondImage = $('#ts-slideshow-' + this.elId).children().first().next();
+            this.secondImage.css({
+                'display' : 'inline',
+                'float'   : 'left'
+            });
             this.nextImage = $('#ts-slideshow-' + this.elId).children().last();
+            this.nextImage.css({
+                'display' : 'inline',
+                'float'   : 'left'
+            });
+            var currentId = this.nextImage.attr("id");
+            this.nextTitle = '#ts-title-' + currentId;
         }
     },
 
@@ -250,8 +294,8 @@ Slider.prototype = {
         // jQuery.animate() will use this one!
         this.animateProp = {
             marginLeft :this.indent,
-            top        :"0px",
-            paddingLeft:"0px"
+            top        :"0px"
+            //paddingLeft:"0px"
         };
         return this;
     },
@@ -266,7 +310,7 @@ Slider.prototype = {
                 easing: 'easeOutBack',
                 duration: this.animationDuraion,
                 complete: function() {
-                    //titleCallback(callbackParam);
+                    titleCallback(callbackParam);
                     buttonCallback(callbackParam);
                 }
             }
@@ -274,9 +318,9 @@ Slider.prototype = {
     },
 
     animateTitle : function animateTitle(mySelf) {
-        $('.ts-title').css({ 'opacity':0 }).animate(
+        $(mySelf.nextTitle).show().animate(
             {
-                'opacity':mySelf.titleOpacity
+                //color: jQuery.Color("rgba(255,255,255,"+mySelf.titleOpacity+")")
             },
             mySelf.titleSpeed
         );
@@ -298,7 +342,8 @@ Slider.prototype = {
     },
 
     hideTitle : function hideTitle() {
-        $('.ts-title').css({'opacity':0});
+        $('.ts-title').hide();
+        //$('.ts-title').css({color: jQuery.Color("rgba(255,255,255,0)")});
     },
 
     doActionTransition : function doActionTransition(anotherState, anotherEventType, event) {
@@ -348,9 +393,9 @@ Slider.prototype = {
             init: function init(event) {
                 this.initState();
                 this.initImages();
-                this.initMarginLeft();
                 this.initEventListener();
                 this.initSlideshowPanel();
+                this.initMarginLeft();
                 return this.doActionTransition('Inactive', 'run', event);
             },
 

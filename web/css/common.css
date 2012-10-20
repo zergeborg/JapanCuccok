@@ -1,14 +1,166 @@
 @font-face {
     font-family: 'SansationBold';
-    src: url('/font/Sansation_Bold.eot');/* IE */
-    src: local("Sansation Bold"), url('../font/Sansation_Bold.ttf') format("truetype"); /* non-IE */
+    src: url('/font/Sansation_Bold/Sansation_Bold.eot');/* IE */
+    src: local("Sansation Bold"), url('../font/Sansation_Bold/Sansation_Bold.ttf') format("truetype"); /* non-IE */
+}
+@font-face {
+    font-family: 'LindenHillRegular';
+    src: url('/font/LindenHill/linden_hill.eot');/* IE */
+    src: url('../font/LindenHill/linden_hill.eot?#iefix') format('embedded-opentype'),
+    local("Linden Hill Regular"),
+    url('../font/LindenHill/linden_hill.woff') format('woff'), /* non-IE */
+    url('../font/LindenHill/linden_hill.ttf') format('truetype'),
+    url('../font/LindenHill/linden_hill.svg#linden_hillregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'WestonFree';
+    src: url('/font/Weston/weston_free.eot');/* IE */
+    src: url('../font/Weston/weston_free.eot?#iefix') format('embedded-opentype'),
+    local("Weston-Free"),
+    url('../font/Weston/weston_free.woff') format('woff'), /* non-IE */
+    url('../font/Weston/weston_free.ttf') format('truetype'),
+    url('../font/Weston/weston_free.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'ArsNovelty';
+    src: url('/font/ArsNovelty/arsnovelty.eot');/* IE */
+    src: url('../font/ArsNovelty/arsnovelty.eot?#iefix') format('embedded-opentype'),
+    local("ARSNovelty-Bold"),
+    url('../font/ArsNovelty/arsnovelty.woff') format('woff'), /* non-IE */
+    url('../font/ArsNovelty/arsnovelty.ttf') format('truetype'),
+    url('../font/ArsNovelty/arsnovelty.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+/* A font by Jos Buivenga (exljbris) -> www.exljbris.com */
+@font-face {
+    font-family: 'MuseoSlab';
+    src: url('/font/MuseoSlab/exljbris_-_museoslab-500.eot');/* IE */
+    src: url('../font/MuseoSlab/exljbris_-_museoslab-500.eot?#iefix') format('embedded-opentype'),
+    local("MuseoSlab-900"),
+    local("Museo Slab 900 Regular"),
+    url('../font/MuseoSlab/exljbris_-_museoslab-500.woff') format('woff'), /* non-IE */
+    url('../font/MuseoSlab/exljbris_-_museoslab-500.ttf') format('truetype'),
+    url('../font/MuseoSlab/exljbris_-_museoslab-500.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'MingImperial';
+    src: url('/font/MingImperial/ming_imperial.eot');/* IE */
+    src: url('../font/MingImperial/ming_imperial.eot?#iefix') format('embedded-opentype'),
+    local("Ming Imperial"),
+    local("Ming Imperial Love"),
+    url('../font/MingImperial/ming_imperial.woff') format('woff'), /* non-IE */
+    url('../font/MingImperial/ming_imperial.ttf') format('truetype'),
+    url('../font/MingImperial/ming_imperial.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Harakiri';
+    src: url('/font/Harakiri/harakiri.eot');/* IE */
+    src: url('../font/Harakiri/harakiri.eot?#iefix') format('embedded-opentype'),
+    local("Harakiri"),
+    local("Harakiri Medium"),
+    url('../font/Harakiri/harakiri.woff') format('woff'), /* non-IE */
+    url('../font/Harakiri/harakiri.ttf') format('truetype'),
+    url('../font/Harakiri/harakiri.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Gyosho';
+    src: url('/font/Gyosho/gyosho.eot');/* IE */
+    src: url('../font/Gyosho/gyosho.eot?#iefix') format('embedded-opentype'),
+    local("Gyosho"),
+    local("Gyosho Bold"),
+    url('../font/Gyosho/gyosho.woff') format('woff'), /* non-IE */
+    url('../font/Gyosho/gyosho.ttf') format('truetype'),
+    url('../font/Gyosho/gyosho.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Schwabacher';
+    src: url('/font/Schwabacher/alteschwabacherbq.eot');/* IE */
+    src: url('../font/Schwabacher/alteschwabacherbq.eot?#iefix') format('embedded-opentype'),
+    local("AlteSchwabacherBQ"),
+    local("Alte Schwabacher BQ Regular"),
+    url('../font/Schwabacher/alteschwabacherbq.woff') format('woff'), /* non-IE */
+    url('../font/Schwabacher/alteschwabacherbq.ttf') format('truetype'),
+    url('../font/Schwabacher/alteschwabacherbq.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'CodenameCoderFree4F';
+    src: url('/font/CodenameCoderFree4F/codenamecoderfree4f-bold.eot');/* IE */
+    src: url('../font/CodenameCoderFree4F/codenamecoderfree4f-bold.eot?#iefix') format('embedded-opentype'),
+    local("CodenameCoderFree4F-Bold"),
+    local("Codename Coder Free 4F Bold"),
+    url('../font/CodenameCoderFree4F/codenamecoderfree4f-bold.woff') format('woff'), /* non-IE */
+    url('../font/CodenameCoderFree4F/codenamecoderfree4f-bold.ttf') format('truetype'),
+    url('../font/CodenameCoderFree4F/codenamecoderfree4f-bold.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Indento';
+    src: url('/font/Indento/indento-bold.eot');/* IE */
+    src: url('../font/Indento/indento-bold.eot?#iefix') format('embedded-opentype'),
+    local("Indento-Bold"),
+    local("Indento Bold Bold"),
+    url('../font/Indento/indento-bold.woff') format('woff'), /* non-IE */
+    url('../font/Indento/indento-bold.ttf') format('truetype'),
+    url('../font/Indento/indento-bold.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 .SansationBold {
     font-family: 'SansationBold', verdana, helvetica, sans-serif;
 }
+.LindenHillRegular {
+    font-family: 'LindenHillRegular', verdana, helvetica, sans-serif;
+}
+.WestonFree {
+    font-family: 'WestonFree', verdana, helvetica, sans-serif;
+}
+.ArsNovelty {
+    font-family: 'ArsNovelty', verdana, helvetica, sans-serif;
+}
+.MuseoSlab {
+    font-family: 'MuseoSlab', verdana, helvetica, sans-serif;
+}
+.MingImperial {
+    font-family: 'MingImperial', verdana, helvetica, sans-serif;
+}
+.Harakiri {
+    font-family: 'Harakiri', verdana, helvetica, sans-serif;
+}
+.Gyosho {
+    font-family: 'Gyosho', verdana, helvetica, sans-serif;
+}
+.Schwabacher {
+    font-family: 'Schwabacher', verdana, helvetica, sans-serif;
+}
+.CodenameCoderFree4F {
+    font-family: 'CodenameCoderFree4F', verdana, helvetica, sans-serif;
+}
+.Indento {
+    font-family: 'Indento', verdana, helvetica, sans-serif;
+}
 * {
-    font-family: 'SansationBold';
-    font-size: 1.045em;
+    font-family: 'Indento', 'CodenameCoderFree4F', 'Schwabacher', 'Gyosho', 'Harakiri', 'MingImperial', 'MuseoSlab', 'ArsNovelty', 'WestonFree', 'LindenHillRegular', 'SansationBold', Arial, sans-serif;
+    font-size: 16px;
+    color: slateGray;
 }
 h1 {
     position: relative;
@@ -29,14 +181,24 @@ html,body {
     overflow: hidden;
 }
 body {
-    behavior: url("/htc/csshover3.htc");
-    /*background-image:url('../img/backgroundTile.png');*/
-    background: black;
-    font-family: 'SansationBold';
+    width: 100em;
+    max-width: 100%;
     overflow-y: scroll;
+    background-image: url('../img/bokeh.jpg');
+    background-size: cover;
+}
+body:after {
+    position: absolute;
+    content: ' ';
+    width: 100%;
+    height: 200px;
+    bottom: 0px;
+    left: 0;
+    background: -moz-linear-gradient(top, transparent 0%, rgba(0, 0, 0, 1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,transparent), color-stop(100%,rgba(0, 0, 0, 1)));
+    background: linear-gradient(top, transparent 0%,rgba(0, 0, 0, 1) 100%);
 }
 a {
-    color: white;
     text-decoration: none;
 }
 a .clickable {
@@ -46,11 +208,30 @@ a .clickable {
     cursor: pointer;
 }
 div#main {
-    display: none;
+    width: 100%;
     position:relative;
-    /* These values will be reset by jQuery */
-    top: 120px;
     z-index:1;
+}
+
+div#content {
+    clear: both;
+    position: relative;
+    height: 40em;
+    z-index: 1;
+    left: 2px;
+    margin: 0 auto;
+    text-align: center;
+    background-image: url('../img/contentBackground.jpg');
+}
+
+div#container {
+    position: relative;
+    margin: auto;
+    width: 90%;
+    height: 100%;
+    background-color: rgba(220, 220, 220, 0.7);
+    box-shadow: 0px 0px 30px;
+    overflow: hidden;
 }
 
 .wordwrap {

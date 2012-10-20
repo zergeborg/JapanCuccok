@@ -1,69 +1,36 @@
-div#content>a {
-    display: none;
-}
-div#footer {
-    background-image:url('../img/footer.png');
-    width:858px;
-    height:83px;
-    left: -13px;
-    top: 13px;
-    position: relative;
-    z-index: 1;
-}
-div#copyrightContainer {
-    position: absolute;
-}
-div#copyright {
-    display: inline-block;
-    background-image:url('../img/copyrightBackground.png');
-    width:481px;
-    height:30px;
-    left: 180px;
-    top: 13px;
-    position: relative;
-    z-index: 1;
-    text-align: center;
-}
 img#headerBackground {
-    width:848px;
     height:180px;
     padding-left: 24px;
 }
 div#header {
     position: relative;
-    width:848px;
-    left: 10px;
     z-index: 1;
 }
 div#main {
     display: block;
-    float: left;
+    margin: auto;
+    text-align: center;
 }
 img#contentBackground {
     position: relative;
-    width:820px;
     height:485px;
     left: 2px;
     z-index: 1;
 }
-div#content {
-    clear: both;
-    position: relative;
-    width: 820px;
-    height: 485px;
-    z-index: 1;
-    left: 2px;
-    margin: 0 auto;
-    text-align: center;
-    /*top: -450px;*/
-    /*float: left;*/
+div#content>a {
+    display: none;
 }
 span#slider-wrapper {
-    display: inline-block;
-    position: relative;
-    top: 20px;
+    display: inline;
+    float: left;
+    top: 6em;
+    left: 2%;
 }
 div#slider {
+    /*border-radius: 7px;
+    border-color: rgba(100, 100, 100, 0.5);
+    border-width: 1px;
+    border-style: solid;*/
 }
 div#slider > ul {
     list-style-type: none;
@@ -74,8 +41,43 @@ div#slider > ul > li > a > img {
     max-height: 80%;
     max-width: 100%;
 }
-div#bannerPanel {
-    position: absolute;
+#labelWrapper {
+    width: 400px;
+    float: left;
+    top: 6em;
+    right: 2%;
+}
+#mottoWrapper {
     bottom: 20px;
-    left: 14%;
+    position: absolute;
+    width: 100%;
+    padding: 1em;
+}
+#motto {
+    display: block;
+    float: right;
+    width: 100%;
+    margin: auto;
+    height: 4em;
+    padding: 1em;
+    box-shadow: 0px 0px 30px white;
+    background-color: rgba(200, 200, 255, 0.4);
+}
+div#bannerPanel {
+    width: 85%;
+    bottom: 20px;
+    margin: auto;
+}
+div#copyrightContainer {
+    position: absolute;
+}
+div#copyright {
+    display: inline-block;
+    background-image:url('../img/copyrightBackground.png');
+    height:30px;
+    left: 180px;
+    top: 13px;
+    position: relative;
+    z-index: 1;
+    text-align: center;
 }

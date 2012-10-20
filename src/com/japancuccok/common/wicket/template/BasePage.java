@@ -36,4 +36,9 @@ public abstract class BasePage extends WebPage implements IBasePageResolver {
         return new EmptyPanel("footerContentPanel");
     }
 
+    @Override
+    public Panel getCopyrightPanel() {
+        return new EmptyPanel("copyrightPanel");
+    }
+
 }

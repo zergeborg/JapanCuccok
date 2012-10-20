@@ -18,7 +18,7 @@ import java.nio.ByteBuffer;
  *
  */
 public class DatastoreOutputStream<T> extends OutputStream {
-    public static final int DATA_CHUNK_SIZE = (int)(Bytes.megabytes(1).bytes() - Bytes.kilobytes(50).bytes());
+    public static final int DATA_CHUNK_SIZE = (int)(Bytes.megabytes(1).bytes() - Bytes.kilobytes(512).bytes());
     private GenericGaeDAO<ChunkFile> chunkFileDAO = (GenericGaeDAO<ChunkFile>) GenericGaeDAOFactory.getInstance(ChunkFile.class);
     private DatastoreService dataStoreService = CachingDatastoreServiceFactory.getDatastoreService();
     private boolean closed = false;

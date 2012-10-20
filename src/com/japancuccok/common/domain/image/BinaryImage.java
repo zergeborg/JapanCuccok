@@ -77,8 +77,7 @@ public class BinaryImage extends BaseImage implements Serializable {
 
     private DatastoreImage getDatastoreImage(String imageComponentId) {
         ImageOptions imageOptions = getImageOptions();
-        DatastoreImage selectedImage = new DatastoreImage(imageComponentId,
-                new ImageDataModel<IImageData>(getImageData().getId()), imageOptions);
+        DatastoreImage selectedImage = new DatastoreImage(imageComponentId, imageOptions);
         selectedImage.setOutputMarkupId(true);
         selectedImage.setVisible(true);
         return selectedImage;

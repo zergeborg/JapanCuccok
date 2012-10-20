@@ -17,9 +17,11 @@
         <span wicket:id="pageTitle" />
     </h1>
     <div id="main">
-        <div wicket:id="menuPanel">This gets replaced!</div>
         <div id="content">
-            <wicket:child />
+            <div wicket:id="menuPanel">This gets replaced!</div>
+            <div id="container">
+                <wicket:child />
+            </div>
         </div>
     </div>
     <div wicket:id="footerScriptPanel">This gets replaced!</div>

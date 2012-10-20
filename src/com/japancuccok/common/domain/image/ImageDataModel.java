@@ -24,7 +24,7 @@ public class ImageDataModel<T extends IImageData> extends LoadableDetachableMode
     }
 
     @Override
-    protected T load() {
+    public T load() {
         Key<BaseImageData> imageDataKeyKey = Key.create(BaseImageData.class, imageDataId);
         return (T) baseImageDataDao.get(imageDataKeyKey).get(imageDataKeyKey);
     }
