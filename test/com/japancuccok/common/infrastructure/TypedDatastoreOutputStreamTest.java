@@ -22,12 +22,8 @@ public class TypedDatastoreOutputStreamTest {
 
     private class TestOutputStream extends TypedDatastoreOutputStream {
 
-        public TestOutputStream(String fileName) {
-            super(fileName);
-        }
-
-        public TestOutputStream(String fileName, Entity gaeEntity) {
-            super(fileName, gaeEntity);
+        public TestOutputStream() {
+            super();
         }
 
         @Override
@@ -51,7 +47,7 @@ public class TypedDatastoreOutputStreamTest {
         //given
         // The user provides null argument
         Entity gaeEntity = null;
-        TypedDatastoreOutputStream outStream = new TypedDatastoreOutputStream("valami", gaeEntity);
+        TypedDatastoreOutputStream outStream = new TypedDatastoreOutputStream();
 
         //when
         //then
@@ -63,7 +59,7 @@ public class TypedDatastoreOutputStreamTest {
         //given
         // The user provides valid entity
         Entity gaeEntity = new Entity("Valami","valami");
-        TypedDatastoreOutputStream outStream = new TestOutputStream("valami", gaeEntity);
+        TypedDatastoreOutputStream outStream = new TestOutputStream();
 
         //when
         // The user calls the method

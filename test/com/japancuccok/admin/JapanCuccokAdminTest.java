@@ -57,7 +57,7 @@ public class JapanCuccokAdminTest {
     private static CountDownLatch endGate = new CountDownLatch(2);
     private static Object lockObject = new Object();
     private static final Blob blob = new Blob(new byte[]{0, 1, 2, 3, 4, 5, 6, 7});
-    private static BinaryImageData testBinaryImageData = new BinaryImageData(blob,null);
+    private static BinaryImageData testBinaryImageData = new BinaryImageData(null);
     private static ImageOptions testImageOptions = new ImageOptions(10,10,TEST_IMAGE_NAME,true,true);
     private static BinaryImage testBinaryImage = new BinaryImage(TEST_IMAGE_NAME,TEST_IMAGE_CATEGORY,"image/jpg",
             "image/jpg",TEST_IMAGE_DESCRIPTION,testImageOptions, testBinaryImageData);
@@ -188,7 +188,7 @@ public class JapanCuccokAdminTest {
 
     private void saveProduct(Product product) {
         // I put a binary image data into the datastore first
-        baseImageDataDao.saveBinary(testBinaryImageData);
+//        baseImageDataDao.saveBinary(testBinaryImageData);
         // then I put a URL image data into the datastore
         urlImageDataDao.put(testUrlImageData);
         // then I put the image options into the datastore
@@ -208,7 +208,7 @@ public class JapanCuccokAdminTest {
         // DAO is instantiated
         JapanCuccokAdmin adminWebapp = new JapanCuccokAdmin();
         // And we have image data
-        BinaryImageData imageData = new BinaryImageData(new Blob(new byte[]{0}),null);
+        BinaryImageData imageData = new BinaryImageData(null);
         // And we have an image
         BinaryImage image = new BinaryImage("dummImageName",CategoryType.ACCESSORIES,"image/jpg",
                 "image/jpg",

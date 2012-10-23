@@ -41,22 +41,13 @@
           <files-to-enhance>
             <file path="$MODULE_DIR$/src" />
           </files-to-enhance>
-          <run-enhancer-on-make>true</run-enhancer-on-make>
-          <sdk-home-path>D:/Programok/appengine-java-sdk-1.7.0</sdk-home-path>
+          <sdk-home-path>E:/Programok/appengine-java-sdk-1.7.2.1</sdk-home-path>
           <email>fogetti@gmail.com</email>
         </configuration>
       </facet>
       <facet type="webservices" name="WebServices">
         <configuration ws.engine="Glassfish / JAX-WS 2.X RI / Metro 1.X / JWSDP 2.0" />
       </facet>
-    </facet>
-    <facet type="gwt" name="GWT">
-      <configuration>
-        <setting name="compilerMaxHeapSize" value="128" />
-        <setting name="gwtScriptOutputStyle" value="DETAILED" />
-        <setting name="gwtSdkUrl" value="file://" />
-        <setting name="webFacet" value="Web" />
-      </configuration>
     </facet>
     <facet type="javaeeApplication" name="javaEEApplication">
       <configuration>
@@ -84,17 +75,14 @@
     </content>
     <orderEntry type="jdk" jdkName="1.6" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Glassfish / JAX-WS 2.X RI / Metro 1.X / JWSDP 2.0-Glassfish / JAX-WS 2.X RI / Metro 1.X / JWSDP 2.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="AppEngine ORM" level="project" />
-    <orderEntry type="library" name="Java EE 6-3.1 (2)" level="project" />
-    <orderEntry type="library" name="AppEngine User" level="project" />
-    <orderEntry type="library" name="AppEngine Dev" level="application_server_libraries" />
     <orderEntry type="library" scope="PROVIDED" name="AppEngine Impl" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="AppEngine User" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="AppEngine Dev" level="project" />
+    <orderEntry type="library" scope="TEST" name="AppEngine Testing" level="project" />
     <orderEntry type="library" name="wicket" level="project" />
     <orderEntry type="library" scope="TEST" name="JUnit" level="project" />
     <orderEntry type="library" scope="TEST" name="Powermock" level="project" />
     <orderEntry type="library" name="Selenium" level="project" />
-    <orderEntry type="library" scope="TEST" name="AppEngine Testing" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -107,17 +95,6 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library name="slf4j-jdk14-1.6.6">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/slf4j-jdk14-1.6.6.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/lib/slf4j-jdk14-1.6.6-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
@@ -127,6 +104,9 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" scope="TEST" name="AppEngine Local" level="application" />
+    <orderEntry type="library" name="slf4j" level="project" />
   </component>
 </module>
 
