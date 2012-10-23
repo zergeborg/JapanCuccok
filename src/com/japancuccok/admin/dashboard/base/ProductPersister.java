@@ -20,8 +20,12 @@ import static com.japancuccok.db.DAOService.productDao;
  */
 public class ProductPersister<T extends IImage, R extends Product> extends AbstractPersister<T, R> {
 
-    public ProductPersister(AbstractPersister successor, Component component, ProductUploadModel uploadModel) {
-        super(successor, component, uploadModel);
+    public ProductPersister(IEventHandler successor, IEventHandlerPayload payload) {
+        super(successor, payload);
+    }
+
+    public ProductPersister(IEventHandler successor) {
+        super(successor);
     }
 
     @Override
@@ -36,9 +40,10 @@ public class ProductPersister<T extends IImage, R extends Product> extends Abstr
         List<?> imageList = persistanceEvent.getPayload();
         List<BinaryImage> binaryImages = getBinaryImages(imageList);
         List<UrlImage> urlImages = getUrlImages(imageList);
-        Product product = new Product(uploadModel.getNewProductName(),
-                uploadModel.getNewProductCategory(), uploadModel.getNewProductDescription(),
-                uploadModel.getNewProductPrice(),
+        Product product = new Product(getPayload().getUploadModel().getNewProductName(),
+                getPayload().getUploadModel().getNewProductCategory(),
+                getPayload().getUploadModel().getNewProductDescription(),
+                getPayload().getUploadModel().getNewProductPrice(),
                 binaryImages, urlImages);
 
         //Check new file, delete if it already existed

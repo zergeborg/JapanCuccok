@@ -7,5 +7,6 @@ package com.japancuccok.admin.dashboard.base;
  * Time: 21:38
  */
 public interface IEventHandler {
+    public IEventHandlerPayload getPayload();
     public IEvent handleEvent(IEvent event);
 }

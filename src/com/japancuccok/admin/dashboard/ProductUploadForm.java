@@ -3,7 +3,6 @@ package com.japancuccok.admin.dashboard;
 import com.japancuccok.admin.dashboard.base.*;
 import com.japancuccok.common.domain.category.CategoryType;
 import com.japancuccok.common.domain.image.*;
-import com.japancuccok.common.domain.product.Product;
 import com.japancuccok.common.wicket.component.UrlTextField;
 import com.japancuccok.common.wicket.panel.admin.dashboard.UploadFormPanel;
 import org.apache.wicket.Component;
@@ -80,12 +79,13 @@ public class ProductUploadForm extends Form<ProductUploadModel> {
         ProductUploadModel uploadModel = ((ProductUploadModel) getDefaultModelObject());
 
         List<IImage> images = new ArrayList<IImage>();
-        AbstractPersister binaryImagePersister =
-                new BinaryImagePersister(null, this, uploadModel);
-        AbstractPersister urlImagePersister =
-                new UrlImagePersister(binaryImagePersister, this, uploadModel);
-        AbstractPersister productPersister =
-                new ProductPersister(urlImagePersister, this, uploadModel);
+        IEventHandlerPayload payload = new PersistEventHandlerPayload(this, uploadModel);
+        IEventHandler binaryImagePersister =
+                new BinaryImagePersister(null, payload);
+        IEventHandler urlImagePersister =
+                new UrlImagePersister(binaryImagePersister);
+        IEventHandler productPersister =
+                new ProductPersister(urlImagePersister);
         IEvent productStoreEvent = productPersister.handleEvent(new PersistanceEvent(images));
     }
 

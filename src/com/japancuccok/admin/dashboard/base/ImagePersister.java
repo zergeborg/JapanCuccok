@@ -18,8 +18,12 @@ import static com.japancuccok.db.DAOService.imageOptionsDao;
  */
 public class ImagePersister<T extends IImage, R extends Product> extends AbstractPersister<T, R> {
 
-    protected ImagePersister(AbstractPersister successor, Component component, ProductUploadModel uploadModel) {
-        super(successor, component, uploadModel);
+    protected ImagePersister(IEventHandler successor, IEventHandlerPayload payload) {
+        super(successor, payload);
+    }
+
+    protected ImagePersister(IEventHandler successor) {
+        super(successor);
     }
 
     protected ImageOptions storeImageOption(ImageOptions imageOption) {
@@ -42,12 +46,6 @@ public class ImagePersister<T extends IImage, R extends Product> extends Abstrac
             dao.delete(entity);
         } catch (IllegalArgumentException e) {
             // Delete was unsuccessful, since the entity is missing
-        }
-    }
-
-    protected void info(String s) {
-        if(component != null) {
-            component.info(s);
         }
     }
 

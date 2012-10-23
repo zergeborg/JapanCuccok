@@ -1,8 +1,9 @@
 package com.japancuccok.common.infrastructure.gaeframework;
 
-import com.google.appengine.api.datastore.Entity;
+import com.googlecode.objectify.Key;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,16 +13,12 @@ import java.io.IOException;
  */
 public class TypedDatastoreOutputStream<T> extends DatastoreOutputStream<T> {
 
-    public TypedDatastoreOutputStream(String fileName, Entity gaeEntity) {
-        super(fileName, gaeEntity);
-    }
-
-    public TypedDatastoreOutputStream(String fileName) {
-        super(fileName);
+    public TypedDatastoreOutputStream() {
+        super();
     }
 
     /**
-     * This is the counterpart of the flushCompleted() method. This method serves as a proxy which
+     * This is the counterpart of the flushTheCompleted() method. This method serves as a proxy which
      * will eventually call the OutputStream#write(byte[]) method
      *
      * @param b The data to be written
@@ -34,6 +31,7 @@ public class TypedDatastoreOutputStream<T> extends DatastoreOutputStream<T> {
     @Override
     public void write(int b) throws IOException {
         checkClosed();
+
         if (getGaeEntity() == null) {
             throw new IllegalStateException("The GAE entity is missing... You should have " +
                     "provided it in the constructor.");
@@ -50,8 +48,13 @@ public class TypedDatastoreOutputStream<T> extends DatastoreOutputStream<T> {
              * @return The collection of datastore keys
              * @see com.japancuccok.common.infrastructure.gaeframework.TypedDatastoreOutputStream#writeAndGetKeys(byte[])
              */
-            flushCompleted();
+            flushTheCompleted();
         }
+    }
+
+    @Override
+    public List<com.googlecode.objectify.Key<ChunkFile>> pop() {
+        return super.pop();
     }
 
 }

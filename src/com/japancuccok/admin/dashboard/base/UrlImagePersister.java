@@ -20,8 +20,12 @@ import static com.japancuccok.db.DAOService.urlImageDataDao;
  */
 public class UrlImagePersister extends ImagePersister<UrlImage, Product> {
 
-    public UrlImagePersister(AbstractPersister successor, Component component, ProductUploadModel uploadModel) {
-        super(successor, component, uploadModel);
+    public UrlImagePersister(IEventHandler successor, IEventHandlerPayload payload) {
+        super(successor, payload);
+    }
+
+    public UrlImagePersister(IEventHandler successor) {
+        super(successor);
     }
 
     @Override
@@ -34,8 +38,8 @@ public class UrlImagePersister extends ImagePersister<UrlImage, Product> {
 
     protected void handleUrls(IPersistanceEvent<List<UrlImage>, Product> persistanceEvent) {
         List images = persistanceEvent.getPayload();
-        List<ImageOptions> imageOptions = uploadModel.getImageOptions();
-        List<URL> urls = uploadModel.getUrls();
+        List<ImageOptions> imageOptions = getPayload().getUploadModel().getImageOptions();
+        List<URL> urls = getPayload().getUploadModel().getUrls();
         for (int i = 0; i<urls.size();i++)
         {
             URL imageUrl = urls.get(i);
@@ -51,7 +55,10 @@ public class UrlImagePersister extends ImagePersister<UrlImage, Product> {
 
     private UrlImage storeUrlImage(UrlImageData imageData, ImageOptions imageOpt) {
         UrlImage image = new UrlImage(imageOpt, imageData, imageData.getImageURL().toString(),
-                uploadModel.getNewProductCategory(), "", "", uploadModel.getNewProductDescription());
+                getPayload().getUploadModel().getNewProductCategory(),
+                "",
+                "",
+                getPayload().getUploadModel().getNewProductDescription());
         checkEntityExists(image);
         Key<UrlImage> result;
         result = urlImageDao.put(image);

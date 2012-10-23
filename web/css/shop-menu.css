@@ -1,5 +1,13 @@
 div#padding {
     height: 40px;
+    width: 100%;
+    margin: auto;
+    text-align: right;
+}
+div#padding > img {
+    top: 2px;
+    right: 2px;
+    position: relative;
 }
 div#headerBackground {
     height: 40px;

@@ -1,10 +1,8 @@
 package com.japancuccok.db;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.datastore.ReadPolicy;
+import com.google.appengine.api.datastore.*;
 import com.googlecode.objectify.*;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cache.CachingDatastoreServiceFactory;
 import com.googlecode.objectify.cmd.Query;
 import com.googlecode.objectify.cmd.SimpleQuery;
@@ -148,14 +146,14 @@ public final class GenericGaeDAO<T> implements GenericGaeDAOIf<T> {
     }
 
     @Override
-    public void saveBinary(IBinaryProvider IBinaryProvider) {
+    public List<Key<ChunkFile>> saveBinary(Blob blob) {
         synchronized (this) {
             // TODO: this whole process should be in a single (or two) transactions
             // TODO: in a single transaction first the datastore
             // First we put the image metadata into the DS
-            Key<T> rawKey = put((T) IBinaryProvider);
+            // Key<T> rawKey = put((T) IBinaryProvider);
             // So later the binary dao doesn't need to construct a key
-            binaryDao.saveDirectlyIntoDatastore(IBinaryProvider, rawKey);
+            return binaryDao.saveDirectlyIntoDatastore(blob);
         }
     }
 

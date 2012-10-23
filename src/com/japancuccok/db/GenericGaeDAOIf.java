@@ -1,6 +1,8 @@
 package com.japancuccok.db;
 
+import com.google.appengine.api.datastore.Blob;
 import com.googlecode.objectify.Key;
+import com.japancuccok.common.infrastructure.gaeframework.ChunkFile;
 
 import java.util.Collection;
 import java.util.List;
@@ -159,11 +161,11 @@ public interface GenericGaeDAOIf<T> {
 
     /**
      *
-     * Stores the given object
+     * Stores the given object and returns the Objectify keys of the stored elements
      *
-     * @param IBinaryProvider
+     * @param blob
      */
-    public void saveBinary(IBinaryProvider IBinaryProvider);
+    public List<Key<ChunkFile>> saveBinary(Blob blob);
 
     /**
      *

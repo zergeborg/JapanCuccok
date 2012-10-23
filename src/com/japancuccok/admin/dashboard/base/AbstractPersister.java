@@ -14,14 +14,28 @@ import java.util.List;
  */
 public class AbstractPersister<T, R> implements IEventHandler {
 
-    protected AbstractPersister successor;
-    protected Component component;
-    protected ProductUploadModel uploadModel;
+    protected IEventHandler successor;
+    protected PersistEventHandlerPayload payload;
 
-    public AbstractPersister(AbstractPersister successor, Component component, ProductUploadModel uploadModel) {
+    protected AbstractPersister(IEventHandler successor, IEventHandlerPayload payload) {
+        if(!(payload instanceof PersistEventHandlerPayload)) {
+            throw new IllegalArgumentException("Payload must be instance of PersistEventHandlerPayload");
+        }
         this.successor = successor;
-        this.component = component;
-        this.uploadModel = uploadModel;
+        this.payload = (PersistEventHandlerPayload) payload;
+    }
+
+    protected AbstractPersister(IEventHandler successor) {
+        if(successor.getPayload() == null) {
+            throw new IllegalArgumentException("Some parameters are missing. Object is in invalid state.");
+        }
+        this.successor = successor;
+        this.payload = (PersistEventHandlerPayload) successor.getPayload();
+    }
+
+    @Override
+    public PersistEventHandlerPayload getPayload() {
+        return payload;
     }
 
     @Override
@@ -53,8 +67,9 @@ public class AbstractPersister<T, R> implements IEventHandler {
     }
 
     protected void info(String s) {
-        if(component != null) {
-            component.info(s);
+        if(payload instanceof PersistEventHandlerPayload) {
+            PersistEventHandlerPayload persistPayload = (PersistEventHandlerPayload)payload;
+            persistPayload.getComponent().info(s);
         }
     }
 

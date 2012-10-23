@@ -26,53 +26,29 @@ public class BinaryImageData extends BaseImageData<BinaryImage> implements IBina
 
     public static class WithBlob {}
 
-    @Load(WithBlob.class) Blob data;
-
     public BinaryImageData() {
     }
 
-    public BinaryImageData(Blob data, Ref<BinaryImage> imageKey) {
+    public BinaryImageData(Ref<BinaryImage> imageKey) {
         super(imageKey);
-        if ((data == null)) {
-            throw new IllegalArgumentException("Image data must not be null");
-        }
         synchronized (BinaryImageData.class) {
             staticId++;
         }
-        this.data = data;
     }
 
     @Override
     public Blob getRawData() {
-        return data;
-    }
-
-    @OnLoad
-    public Blob loadRawData() {
-        if(data == null) {
-            data = new Blob(baseImageDataDao.loadBinary(this));
-        }
-        return data;
-    }
-    
-    //@OnSave
-    public void saveRawData() {
-        if(data != null) {
-            baseImageDataDao.saveBinary(this);
-            // This is an anti pattern, but explicit null is still needed,
-            // otherwise GAE session size will exceed the 1 MB size limit
-            data = null;
-        }
+        return null;
     }
 
     @Override
     public void setBytes(byte[] bytes) {
-        this.data = new Blob(bytes);
+        // Intentionally left blank
     }
 
     @Override
     public byte[] getBytes() {
-        return data.getBytes();
+        return null;
     }
 
     @Override

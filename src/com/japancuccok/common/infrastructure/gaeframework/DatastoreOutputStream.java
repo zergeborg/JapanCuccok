@@ -3,7 +3,10 @@ package com.japancuccok.common.infrastructure.gaeframework;
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.Entity;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.cache.CachingDatastoreServiceFactory;
+import com.googlecode.objectify.impl.ConcreteEntityMetadata;
 import com.japancuccok.common.domain.image.BinaryImageData;
 import com.japancuccok.db.GenericGaeDAO;
 import com.japancuccok.db.GenericGaeDAOFactory;
@@ -12,36 +15,48 @@ import org.apache.wicket.util.lang.Bytes;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.util.*;
+import java.util.logging.Logger;
 
 /**
  * @author uudashr
  *
  */
 public class DatastoreOutputStream<T> extends OutputStream {
-    public static final int DATA_CHUNK_SIZE = (int)(Bytes.megabytes(1).bytes() - Bytes.kilobytes(512).bytes());
-    private GenericGaeDAO<ChunkFile> chunkFileDAO = (GenericGaeDAO<ChunkFile>) GenericGaeDAOFactory.getInstance(ChunkFile.class);
-    private DatastoreService dataStoreService = CachingDatastoreServiceFactory.getDatastoreService();
-    private boolean closed = false;
-    protected ByteBuffer buffer = ByteBuffer.allocate(DATA_CHUNK_SIZE);
-    private int chunkIndex = 0;
+
+    public static final int DATA_CHUNK_SIZE =
+            (int)(Bytes.megabytes(1).bytes() - Bytes.kilobytes(512).bytes());
+
+    protected ByteBuffer buffer =
+            ByteBuffer.allocate(DATA_CHUNK_SIZE);
+
     int totalSize = 0;
-    private final String fileName;
+
+    private static long chunkIndex = 1;
+    private static LinkedList<com.googlecode.objectify.Key<ChunkFile>> chunkIndexes =
+            new LinkedList<com.googlecode.objectify.Key<ChunkFile>>();
+    private transient static final Logger logger =
+            Logger.getLogger(DatastoreOutputStream.class.getName());
+    private GenericGaeDAO<ChunkFile> chunkFileDAO =
+            (GenericGaeDAO<ChunkFile>) GenericGaeDAOFactory.getInstance(ChunkFile.class);
+    private DatastoreService dataStoreService =
+            CachingDatastoreServiceFactory.getDatastoreService();
+    private boolean closed = false;
     private Entity gaeEntity;
 
-    protected DatastoreOutputStream(String fileName, Entity gaeEntity) {
-        this.fileName = fileName;
-        if(gaeEntity == null) {
-            throw new IllegalArgumentException("GAE entity must not be null!");
+    public DatastoreOutputStream() {
+        Entity entity;
+
+        ConcreteEntityMetadata entityMetadata =
+                new ConcreteEntityMetadata(new ObjectifyFactory(),
+                        ChunkFile.class);
+
+        synchronized (DatastoreOutputStream.class) {
+            entity = new Entity(entityMetadata.getKeyMetadata().getKind(),
+                    chunkIndex);
         }
-        this.gaeEntity = gaeEntity;
-    }
 
-    public DatastoreOutputStream(String fileName) {
-        this.fileName = fileName;
-    }
-
-    protected String getFileName() {
-        return fileName;
+        this.gaeEntity = entity;
     }
 
     protected DatastoreService getDataStoreService() {
@@ -55,37 +70,37 @@ public class DatastoreOutputStream<T> extends OutputStream {
     @Override
     public void write(int b) throws IOException {
         checkClosed();
-        if (getGaeEntity() == null) {
-            gaeEntity = new Entity("File", fileName);
-            gaeEntity.setProperty("name", fileName);
-            dataStoreService.put(gaeEntity);
-        }
 
         if (buffer.hasRemaining()) {
             buffer.put((byte)b);
             totalSize++;
         } else {
-            flushCompleted();
+            flushTheCompleted();
         }
     }
 
-    protected void flushCompleted() {
-        if (getGaeEntity() != null) {
-            int length = buffer.position();
-            byte[] data = new byte[length]; buffer.flip(); buffer.get(data);
+    protected void flushTheCompleted() {
+        logger.info("Buffer is full. Flushing...");
 
-            com.googlecode.objectify.Key<?> objectifyKey =
-                    com.googlecode.objectify.Key.create(getGaeEntity().getKey());
-            ChunkFile chunkFile = new ChunkFile("cf"+chunkIndex, new Blob(data),length, (com.googlecode.objectify.Key<BinaryImageData>) objectifyKey);
-            chunkFileDAO.put(chunkFile);
-            
-            buffer.clear();
-            
-            // update size
-            getGaeEntity().setProperty("size", new Long(totalSize));
-            chunkIndex++;
-        } else {
-        }
+        int length = buffer.position();
+        byte[] data = new byte[length]; buffer.flip(); buffer.get(data);
+
+        com.googlecode.objectify.Key<?> objectifyKey =
+                com.googlecode.objectify.Key.create(getGaeEntity().getKey());
+        ChunkFile chunkFile =
+                new ChunkFile("cf"+chunkIndex,
+                        new Blob(data),length, (com.googlecode.objectify.Key<BinaryImageData>) objectifyKey);
+        logger.info(chunkFile+" created");
+        com.googlecode.objectify.Key<ChunkFile> chunkFileKey =
+                chunkFileDAO.put(chunkFile);
+        logger.info(chunkFile+" is about to save asynchronously");
+
+        buffer.clear();
+
+        // update size
+        getGaeEntity().setProperty("size", new Long(totalSize));
+        chunkIndex++;
+        chunkIndexes.addFirst(chunkFileKey);
     }
     
     protected void checkClosed() throws IOException {
@@ -98,7 +113,7 @@ public class DatastoreOutputStream<T> extends OutputStream {
     public void close() throws IOException {
         checkClosed();
         if (buffer.hasRemaining()) {
-            flushCompleted();
+            flushTheCompleted();
         }
         closed = true;
         buffer = null;
@@ -107,5 +122,18 @@ public class DatastoreOutputStream<T> extends OutputStream {
     @Override
     protected void finalize() throws Throwable {
         buffer = null;
+    }
+
+    /**
+     * Returns all the latest available chunk file indexes on the stack and clears
+     * the collection.
+     *
+     * @return
+     */
+    protected List<com.googlecode.objectify.Key<ChunkFile>> pop() {
+        List<com.googlecode.objectify.Key<ChunkFile>> list =
+                new ArrayList<Key<ChunkFile>>(chunkIndexes);
+        chunkIndexes.clear();
+        return list;
     }
 }

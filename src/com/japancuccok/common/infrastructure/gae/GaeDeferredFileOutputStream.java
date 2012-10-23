@@ -167,7 +167,7 @@ public class GaeDeferredFileOutputStream extends ThresholdingOutputStream
 	protected void thresholdReached() throws IOException
 	{
 	    byte[] data = memoryOutputStream.toByteArray();
-        OutputStream fos = new DatastoreOutputStream(fileName);
+        OutputStream fos = new DatastoreOutputStream();
         fos.write(data);
         currentOutputStream = fos;
         memoryOutputStream = null;

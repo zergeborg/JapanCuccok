@@ -1,6 +1,5 @@
 package com.japancuccok.main.dashboard;
 
-import org.apache.lucene.analysis.LetterTokenizer;
 import org.apache.wicket.model.PropertyModel;
 
 /**

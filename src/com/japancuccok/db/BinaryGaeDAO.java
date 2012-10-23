@@ -1,5 +1,6 @@
 package com.japancuccok.db;
 
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.Entity;
 import com.googlecode.objectify.Key;
@@ -7,6 +8,7 @@ import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.cache.CachingDatastoreServiceFactory;
 import com.googlecode.objectify.impl.ConcreteEntityMetadata;
+import com.japancuccok.common.infrastructure.gaeframework.ChunkFile;
 import com.japancuccok.common.infrastructure.gaeframework.DatastoreInputStream;
 import com.japancuccok.common.infrastructure.gaeframework.TypedDatastoreOutputStream;
 import org.apache.wicket.WicketRuntimeException;
@@ -14,6 +16,7 @@ import org.apache.wicket.util.io.ByteArrayOutputStream;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,7 +28,6 @@ public class BinaryGaeDAO<T> {
 
     private final Objectify objectify;
     private final Class<T> clazz;
-    private long binaryIndex = 0;
     final DatastoreService dsService;
 
     public BinaryGaeDAO(Class<T> clazz, Objectify objectify) {
@@ -34,18 +36,12 @@ public class BinaryGaeDAO<T> {
         this.dsService = CachingDatastoreServiceFactory.getDatastoreService();
     }
 
-    void saveDirectlyIntoDatastore(IBinaryProvider object, Key<T> key) {
-        ConcreteEntityMetadata entityMetadata = new ConcreteEntityMetadata(new ObjectifyFactory()
-                , object.getClass());
-        String entityName = "binary" + binaryIndex++;
-        Entity entity = new Entity(entityMetadata.getKeyMetadata().getKind(), binaryIndex, key.getRaw());
-        TypedDatastoreOutputStream typedStream = new TypedDatastoreOutputStream
-                (entityName, entity);
+    List<Key<ChunkFile>> saveDirectlyIntoDatastore(Blob blob) {
+        TypedDatastoreOutputStream typedStream = new TypedDatastoreOutputStream();
         try {
-            typedStream.writeBytes(object.getBytes());
+            typedStream.writeBytes(blob.getBytes());
         } catch (IOException e) {
-            throw new WicketRuntimeException("Could not save the given object " +
-                    "with the following key: [ " + entity.getKey().getName() + " ]", e);
+            throw new WicketRuntimeException("Could not save the given object [" + blob + " ]", e);
         } finally {
             try {
                 typedStream.close();
@@ -53,6 +49,7 @@ public class BinaryGaeDAO<T> {
                 //
             }
         }
+        return typedStream.pop();
     }
 
     byte[] loadDirectlyFromDatastore(IBinaryProvider object) {
