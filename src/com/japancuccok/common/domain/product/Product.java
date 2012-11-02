@@ -33,8 +33,8 @@ public class Product implements Serializable, ProductIf {
     List<UrlImage> urlImageList;
 
     private static Long staticId = 0l;
-    private String name;
-    private CategoryType category;
+    @Index private String name;
+    @Index private CategoryType category;
     private String description;
     private int price;
 

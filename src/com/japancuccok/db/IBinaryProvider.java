@@ -1,6 +1,10 @@
 package com.japancuccok.db;
 
 import com.google.appengine.api.datastore.Blob;
+import com.googlecode.objectify.Key;
+import com.japancuccok.common.infrastructure.gaeframework.ChunkFile;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,5 +19,7 @@ public interface IBinaryProvider<T> extends Identifiable {
     public byte[] getBytes();
 
     Blob getRawData();
+
+    public List<Key<ChunkFile>> getChunkFileKeys();
 
 }

@@ -4,16 +4,17 @@ import com.google.appengine.api.datastore.*;
 import com.googlecode.objectify.*;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cache.CachingDatastoreServiceFactory;
+import com.googlecode.objectify.cmd.LoadType;
 import com.googlecode.objectify.cmd.Query;
 import com.googlecode.objectify.cmd.SimpleQuery;
 import com.japancuccok.common.infrastructure.gaeframework.ChunkFile;
-import com.japancuccok.common.infrastructure.gaeframework.DatastoreInputStream;
 
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.*;
 import java.util.logging.Logger;
+
+import static com.japancuccok.db.DAOService.chunkFileDAO;
 
 /**
  * Created with IntelliJ IDEA.
@@ -100,7 +101,7 @@ public final class GenericGaeDAO<T> implements GenericGaeDAOIf<T> {
     }
 
     @Override
-    public Map<Key<T>, T> getAll(Collection<T> objects) {
+    public Map<Key<T>, T> getAll(Collection<?> objects) {
         synchronized (this) {
             return objectify.load().values(objects);
         }
@@ -119,6 +120,26 @@ public final class GenericGaeDAO<T> implements GenericGaeDAOIf<T> {
     public <E> List<T> load(Class<E>... loadGroupClazz) {
         synchronized (this) {
             return objectify.load().group(loadGroupClazz).type(clazz).list();
+        }
+    }
+
+    @Override
+    public <E> List<T> load(Map<String, Object> conditions, Class<E>... loadGroupClazz) {
+        synchronized (this) {
+            LoadType<T> loadType = objectify.load().group(loadGroupClazz).type(clazz);
+            Iterator<Map.Entry<String,Object>> conditionIterator = conditions.entrySet().iterator();
+            Query<T> query = null;
+            if(conditionIterator.hasNext()) {
+                Map.Entry<String,Object> entry = conditionIterator.next();
+                query = loadType.filter(entry.getKey(),
+                                        entry.getValue());
+            }
+            while(conditionIterator.hasNext()) {
+                Map.Entry<String,Object> entry = conditionIterator.next();
+                query = query.filter(entry.getKey(),
+                                     entry.getValue());
+            }
+            return query.list();
         }
     }
 
@@ -158,10 +179,10 @@ public final class GenericGaeDAO<T> implements GenericGaeDAOIf<T> {
     }
 
     @Override
-    public void deleteBinary(IBinaryProvider IBinaryProvider) {
+    public void deleteBinary(IBinaryProvider iBinaryProvider) {
         synchronized (this) {
             // First we get the key of the image metadata from DS
-            Key<?> entityKey = Key.create(clazz, IBinaryProvider.getId());
+            Key<?> entityKey = Key.create(clazz, iBinaryProvider.getId());
             DatastoreService cachingDatastoreService = CachingDatastoreServiceFactory.getDatastoreService();
             Entity entity = null;
             try {
@@ -170,28 +191,17 @@ public final class GenericGaeDAO<T> implements GenericGaeDAOIf<T> {
                 entity = cachingDatastoreService.get(entityKey.getRaw());
             } catch (EntityNotFoundException e) {
                 logger.severe("Delete failed");
-                logger.severe("No entity was found with the following ID ["+ IBinaryProvider.getId()+"]");
+                logger.severe("No entity was found with the following ID ["+ iBinaryProvider.getId()+"]");
                 logger.severe(toString(e));
                 return;
             }
-            DatastoreInputStream dsInputStream = null;
-            try {
-                dsInputStream = new DatastoreInputStream(Key.create(entity.getKey()));
-                Iterator<ChunkFile> iterator = dsInputStream.getEntities();
-                GenericGaeDAO<ChunkFile> chunkFileDAO = (GenericGaeDAO<ChunkFile>)GenericGaeDAOFactory.getInstance(ChunkFile.class);
-                while (iterator.hasNext()) {
-                    ChunkFile chunkFile = iterator.next();
-                    chunkFileDAO.delete(chunkFile);
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            delete((T) IBinaryProvider);
+            chunkFileDAO.deleteAll(iBinaryProvider.getChunkFileKeys());
+            delete((T) iBinaryProvider);
         }
     }
 
     @Override
-    public void deleteAll(Collection<T> objects) {
+    public void deleteAll(Collection<?> objects) {
         synchronized (this) {
             objectify.delete().entities(objects).now();
         }

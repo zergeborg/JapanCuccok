@@ -8,10 +8,9 @@ import com.japancuccok.common.domain.image.*;
 import com.japancuccok.common.domain.product.Product;
 import com.japancuccok.db.IBinaryProvider;
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -62,27 +61,32 @@ public class UploadedProductListView extends ListView<Product> {
     @Override
     protected void populateItem(ListItem<Product> listItem)
     {
+        Panel showSpan = ImageUpdateHelper.getShowSpan(listItem.getIndex());
+        Product product = listItem.getModelObject();
+        Link<Void> showLink = getShowLink(listItem.getIndex());
+        Component wicketImage =
+                ImageUpdateHelper.getWicketImage("image", selectedImage, product, this);
+        IModel<List<? extends IImage>> imageChoices = getImageChoices(product);
+        CompoundPropertyModel<Product> productModel = new CompoundPropertyModel<Product>(product);
+
         setOutputMarkupId(true);
 
-        Product product = listItem.getModelObject();
-        CompoundPropertyModel<Product> productModel = new CompoundPropertyModel<Product>(product);
+        wicketImage.add(new AttributeModifier("style", "max-width: 100%; max-height: 100%;"));
+        showSpan.add(wicketImage);
 
         listItem.setModel(productModel);
         listItem.add(new Label("name"));
         listItem.add(new Label("price"));
         listItem.add(new Label("category"));
         listItem.add(new Label("description"));
-        Link<Void> showLink = getShowLink(listItem.getIndex());
         listItem.add(showLink);
-        Panel showSpan = ImageUpdateHelper.getShowSpan(listItem.getIndex());
-        WebComponent wicketImage = ImageUpdateHelper.getWicketImage(selectedImage, product);
-        showSpan.add(wicketImage);
         listItem.add(showSpan);
         listItem.add(getDeleteLink(product));
         listItem.add(getEditLink(product));
-        IModel<List<? extends IImage>> imageChoices = getImageChoices(product);
-        DropDownChoice<IImage> images = getImageDropdown(showSpan, showLink, imageChoices, listItem);
-        listItem.add(images);
+
+        DropDownChoice<IImage> imageDropdown =
+                getImageDropdown(showSpan, showLink, imageChoices, listItem);
+        listItem.add(imageDropdown);
         listItem.setVersioned(true);
     }
 

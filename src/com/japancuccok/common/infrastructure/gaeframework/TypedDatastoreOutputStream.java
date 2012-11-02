@@ -1,7 +1,5 @@
 package com.japancuccok.common.infrastructure.gaeframework;
 
-import com.googlecode.objectify.Key;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -13,8 +11,8 @@ import java.util.List;
  */
 public class TypedDatastoreOutputStream<T> extends DatastoreOutputStream<T> {
 
-    public TypedDatastoreOutputStream() {
-        super();
+    public TypedDatastoreOutputStream(int length) {
+        super(length);
     }
 
     /**
@@ -32,23 +30,11 @@ public class TypedDatastoreOutputStream<T> extends DatastoreOutputStream<T> {
     public void write(int b) throws IOException {
         checkClosed();
 
-        if (getGaeEntity() == null) {
-            throw new IllegalStateException("The GAE entity is missing... You should have " +
-                    "provided it in the constructor.");
-        }
-
         if (buffer.hasRemaining()) {
             buffer.put((byte)b);
-            totalSize++;
         } else {
-            /**
-             * This is a dirty hack. The sole purpose of this method is calling its super method and saving
-             * the keys produced during the last write operation. The saved keys will be used later during
-             * calling the writeAndGetKeys() method
-             * @return The collection of datastore keys
-             * @see com.japancuccok.common.infrastructure.gaeframework.TypedDatastoreOutputStream#writeAndGetKeys(byte[])
-             */
             flushTheCompleted();
+            write(b);
         }
     }
 

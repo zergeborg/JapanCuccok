@@ -2,11 +2,11 @@ package com.japancuccok.admin.dashboard.base;
 
 import com.japancuccok.common.domain.image.IImage;
 import com.japancuccok.common.domain.product.Product;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.form.DropDownChoice;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -51,7 +51,9 @@ public class ImageUpdater extends AjaxFormComponentUpdatingBehavior {
             } else {
                 showLink.setVisible(true);
                 IImage selectedImage = (IImage) categories.getDefaultModelObject();
-                WebComponent wicketImage = ImageUpdateHelper.getWicketImage(selectedImage, null);
+                Component wicketImage =
+                        ImageUpdateHelper.getWicketImage("image", selectedImage, null, showSpan);
+                wicketImage.add(new AttributeModifier("style", "max-width: 100%; max-height: 100%;"));
                 showSpan.addOrReplace(wicketImage);
                 target.add(showSpan);
             }

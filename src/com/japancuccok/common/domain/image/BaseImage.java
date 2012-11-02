@@ -27,6 +27,8 @@ public class BaseImage implements IImage, Serializable {
     @Id
     Long id;
 
+    @Index
+    @Embed
     @Load({WithImageOptions.class})
     ImageOptions imageOptions;
 

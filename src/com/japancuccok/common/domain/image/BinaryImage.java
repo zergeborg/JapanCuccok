@@ -13,7 +13,7 @@ import java.io.Serializable;
  * Date: 2012.06.12.
  * Time: 20:58
  */
-@EntitySubclass
+@EntitySubclass(index=true)
 @Cache
 public class BinaryImage extends BaseImage implements Serializable {
 

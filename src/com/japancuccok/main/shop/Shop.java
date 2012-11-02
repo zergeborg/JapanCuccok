@@ -18,7 +18,7 @@ public class Shop extends ShopBasePage {
 
     public Shop() {
         ProductListView productListView = new ProductListView("productRow",
-                new ImageLoadStrategy(true));
+                new ImageLoadStrategy());
         CustomPagingNavigator upperNavigator = new CustomPagingNavigator("upperNavigator",
                 productListView);
         CustomPagingNavigator lowerNavigator = new CustomPagingNavigator("lowerNavigator",

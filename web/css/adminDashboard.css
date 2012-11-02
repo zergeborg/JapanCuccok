@@ -177,13 +177,13 @@ input[type=submit] {
     width: 12.5%;
     position: relative;
     float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 #productList > div > a {
     top: 0;
     left: 7px;
-}
-#productList > div > a.showLink {
-    position: absolute;
 }
 #productList > div > select {
     width: 100%;

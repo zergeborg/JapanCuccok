@@ -2,21 +2,19 @@ package com.japancuccok.common.infrastructure.gaeframework;
 
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.Entity;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.cache.CachingDatastoreServiceFactory;
-import com.googlecode.objectify.impl.ConcreteEntityMetadata;
-import com.japancuccok.common.domain.image.BinaryImageData;
-import com.japancuccok.db.GenericGaeDAO;
-import com.japancuccok.db.GenericGaeDAOFactory;
 import org.apache.wicket.util.lang.Bytes;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
+
+import static com.japancuccok.db.DAOService.chunkFileDAO;
 
 /**
  * @author uudashr
@@ -30,41 +28,18 @@ public class DatastoreOutputStream<T> extends OutputStream {
     protected ByteBuffer buffer =
             ByteBuffer.allocate(DATA_CHUNK_SIZE);
 
-    int totalSize = 0;
+    int completeFileSize = 0;
 
-    private static long chunkIndex = 1;
-    private static LinkedList<com.googlecode.objectify.Key<ChunkFile>> chunkIndexes =
+    private static LinkedList<com.googlecode.objectify.Key<ChunkFile>> chunkFileKeys =
             new LinkedList<com.googlecode.objectify.Key<ChunkFile>>();
     private transient static final Logger logger =
             Logger.getLogger(DatastoreOutputStream.class.getName());
-    private GenericGaeDAO<ChunkFile> chunkFileDAO =
-            (GenericGaeDAO<ChunkFile>) GenericGaeDAOFactory.getInstance(ChunkFile.class);
     private DatastoreService dataStoreService =
             CachingDatastoreServiceFactory.getDatastoreService();
     private boolean closed = false;
-    private Entity gaeEntity;
 
-    public DatastoreOutputStream() {
-        Entity entity;
-
-        ConcreteEntityMetadata entityMetadata =
-                new ConcreteEntityMetadata(new ObjectifyFactory(),
-                        ChunkFile.class);
-
-        synchronized (DatastoreOutputStream.class) {
-            entity = new Entity(entityMetadata.getKeyMetadata().getKind(),
-                    chunkIndex);
-        }
-
-        this.gaeEntity = entity;
-    }
-
-    protected DatastoreService getDataStoreService() {
-        return dataStoreService;
-    }
-
-    protected Entity getGaeEntity() {
-        return gaeEntity;
+    public DatastoreOutputStream(int completeFileSize) {
+        this.completeFileSize = completeFileSize;
     }
 
     @Override
@@ -73,9 +48,9 @@ public class DatastoreOutputStream<T> extends OutputStream {
 
         if (buffer.hasRemaining()) {
             buffer.put((byte)b);
-            totalSize++;
         } else {
             flushTheCompleted();
+            write(b);
         }
     }
 
@@ -85,11 +60,8 @@ public class DatastoreOutputStream<T> extends OutputStream {
         int length = buffer.position();
         byte[] data = new byte[length]; buffer.flip(); buffer.get(data);
 
-        com.googlecode.objectify.Key<?> objectifyKey =
-                com.googlecode.objectify.Key.create(getGaeEntity().getKey());
         ChunkFile chunkFile =
-                new ChunkFile("cf"+chunkIndex,
-                        new Blob(data),length, (com.googlecode.objectify.Key<BinaryImageData>) objectifyKey);
+                new ChunkFile(new Blob(data), length, completeFileSize);
         logger.info(chunkFile+" created");
         com.googlecode.objectify.Key<ChunkFile> chunkFileKey =
                 chunkFileDAO.put(chunkFile);
@@ -97,10 +69,9 @@ public class DatastoreOutputStream<T> extends OutputStream {
 
         buffer.clear();
 
-        // update size
-        getGaeEntity().setProperty("size", new Long(totalSize));
-        chunkIndex++;
-        chunkIndexes.addFirst(chunkFileKey);
+        synchronized (DatastoreOutputStream.class) {
+            chunkFileKeys.add(chunkFileKey);
+        }
     }
     
     protected void checkClosed() throws IOException {
@@ -131,9 +102,11 @@ public class DatastoreOutputStream<T> extends OutputStream {
      * @return
      */
     protected List<com.googlecode.objectify.Key<ChunkFile>> pop() {
-        List<com.googlecode.objectify.Key<ChunkFile>> list =
-                new ArrayList<Key<ChunkFile>>(chunkIndexes);
-        chunkIndexes.clear();
+        List<com.googlecode.objectify.Key<ChunkFile>> list;
+        synchronized (DatastoreOutputStream.class) {
+            list = new ArrayList<Key<ChunkFile>>(chunkFileKeys);
+            chunkFileKeys.clear();
+        }
         return list;
     }
 }

@@ -2,12 +2,9 @@ package com.japancuccok.db;
 
 import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.Entity;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
-import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.cache.CachingDatastoreServiceFactory;
-import com.googlecode.objectify.impl.ConcreteEntityMetadata;
 import com.japancuccok.common.infrastructure.gaeframework.ChunkFile;
 import com.japancuccok.common.infrastructure.gaeframework.DatastoreInputStream;
 import com.japancuccok.common.infrastructure.gaeframework.TypedDatastoreOutputStream;
@@ -37,7 +34,7 @@ public class BinaryGaeDAO<T> {
     }
 
     List<Key<ChunkFile>> saveDirectlyIntoDatastore(Blob blob) {
-        TypedDatastoreOutputStream typedStream = new TypedDatastoreOutputStream();
+        TypedDatastoreOutputStream typedStream = new TypedDatastoreOutputStream(blob.getBytes().length);
         try {
             typedStream.writeBytes(blob.getBytes());
         } catch (IOException e) {
@@ -53,44 +50,12 @@ public class BinaryGaeDAO<T> {
     }
 
     byte[] loadDirectlyFromDatastore(IBinaryProvider object) {
-        ConcreteEntityMetadata entityMetadata = new ConcreteEntityMetadata(new ObjectifyFactory()
-                , object.getClass());
-        Entity entity = entityMetadata.getKeyMetadata().initEntity(object);
-        return getBytes(entity.getKey());
+        return getBytes(object);
     }
 
-//    void deleteDirectlyFromDatastore(Entity entity) {
-//        DatastoreInputStream dsInputStream = null;
-//        try {
-//            dsInputStream = new DatastoreInputStream(entity.getKey());
-//            Iterator<ChunkFile> iterator = dsInputStream.getEntities();
-//            while(iterator.hasNext()) {
-//                Entity nextEntity = iterator.next();
-//                dsService.delete(nextEntity.getKey());
-//            }
-//            dsService.delete(entity.getKey());
-//        } catch (FileNotFoundException e) {
-//            throw new WicketRuntimeException("Could not delete the given object " +
-//                    "with the following key: [ " + entity.getKey().getName() + " ]", e);
-//        } finally {
-//            if(dsInputStream != null) {
-//                try {
-//                    dsInputStream.close();
-//                } catch (IOException e) {
-//                    //
-//                }
-//            }
-//        }
-//    }
-
-    byte[] getBytes(com.google.appengine.api.datastore.Key entityKey) {
+    byte[] getBytes(IBinaryProvider binaryProvider) {
         DatastoreInputStream typedStream = null;
-        try {
-            typedStream = new DatastoreInputStream(Key.create(entityKey));
-        } catch (FileNotFoundException e) {
-            throw new WicketRuntimeException("Could not load the given object " +
-                    "with the following key: [ " + entityKey.getName() + " ]", e);
-        }
+        typedStream = new DatastoreInputStream(binaryProvider.getChunkFileKeys());
         return getImageData(typedStream);
     }
 

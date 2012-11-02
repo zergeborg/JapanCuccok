@@ -16,7 +16,7 @@ import java.io.Serializable;
  * Date: 2012.07.27.
  * Time: 23:14
  */
-@EntitySubclass
+@EntitySubclass(index=true)
 @Cache
 public class UrlImage extends BaseImage implements Serializable {
 

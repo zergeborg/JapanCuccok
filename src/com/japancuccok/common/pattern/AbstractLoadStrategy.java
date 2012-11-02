@@ -16,17 +16,14 @@ public abstract class AbstractLoadStrategy<T> extends LoadableDetachableModel<Li
 
     private static final long serialVersionUID = 3957867693741442293L;
 
-    protected final boolean all;
     protected final CategoryType categoryType;
+
+    protected AbstractLoadStrategy() {
+        this.categoryType = null;
+    }
 
     protected AbstractLoadStrategy(CategoryType categoryType) {
         this.categoryType = categoryType;
-        this.all = false;
-    }
-
-    protected AbstractLoadStrategy(boolean all) {
-        this.all = all;
-        this.categoryType = null;
     }
 
     @Override

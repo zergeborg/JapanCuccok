@@ -22,14 +22,10 @@ public class TypedDatastoreOutputStreamTest {
 
     private class TestOutputStream extends TypedDatastoreOutputStream {
 
-        public TestOutputStream() {
-            super();
+        public TestOutputStream(int length) {
+            super(length);
         }
 
-        @Override
-        protected DatastoreService getDataStoreService() {
-            return dataStoreServiceMock;
-        }
     }
 
     @Before
@@ -42,24 +38,12 @@ public class TypedDatastoreOutputStreamTest {
         TestServiceProvider.end();
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testIllegalArgumentException() throws Exception {
-        //given
-        // The user provides null argument
-        Entity gaeEntity = null;
-        TypedDatastoreOutputStream outStream = new TypedDatastoreOutputStream();
-
-        //when
-        //then
-        // The constructor throws IllegalArgumentException
-    }
-
     @Test
     public void testVaildWrite_BufferIsEmpty() throws Exception {
         //given
         // The user provides valid entity
         Entity gaeEntity = new Entity("Valami","valami");
-        TypedDatastoreOutputStream outStream = new TestOutputStream();
+        TypedDatastoreOutputStream outStream = new TestOutputStream(1);
 
         //when
         // The user calls the method

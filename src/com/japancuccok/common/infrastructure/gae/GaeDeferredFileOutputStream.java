@@ -158,8 +158,8 @@ public class GaeDeferredFileOutputStream extends ThresholdingOutputStream
 
 	/**
 	 * Switches the underlying output stream from a memory based stream to one that is backed by
-	 * disk. This is the point at which we realize that too much data is being written to keep in
-	 * memory, so we elect to switch to disk-based storage.
+	 * datastore. This is the point at which we realize that too much data is being written to keep
+     * in memory, so we elect to switch to datastore-based storage.
 	 * 
 	 * @exception IOException
 	 *                if an error occurs.
@@ -167,7 +167,7 @@ public class GaeDeferredFileOutputStream extends ThresholdingOutputStream
 	protected void thresholdReached() throws IOException
 	{
 	    byte[] data = memoryOutputStream.toByteArray();
-        OutputStream fos = new DatastoreOutputStream();
+        OutputStream fos = new DatastoreOutputStream(data.length);
         fos.write(data);
         currentOutputStream = fos;
         memoryOutputStream = null;

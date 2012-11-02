@@ -10,6 +10,7 @@ import com.japancuccok.base.TestServiceProvider;
 import com.japancuccok.common.domain.category.CategoryType;
 import com.japancuccok.common.domain.image.*;
 import com.japancuccok.common.domain.product.Product;
+import com.japancuccok.common.infrastructure.gaeframework.ChunkFile;
 import com.japancuccok.db.GenericGaeDAO;
 import com.japancuccok.db.GenericGaeDAOFactory;
 import com.japancuccok.db.IBinaryProvider;
@@ -56,8 +57,9 @@ public class JapanCuccokAdminTest {
     private static CountDownLatch startGate = new CountDownLatch(1);
     private static CountDownLatch endGate = new CountDownLatch(2);
     private static Object lockObject = new Object();
-    private static final Blob blob = new Blob(new byte[]{0, 1, 2, 3, 4, 5, 6, 7});
-    private static BinaryImageData testBinaryImageData = new BinaryImageData(null);
+    private static final Blob testBlob = new Blob(new byte[]{0, 1, 2, 3, 4, 5, 6, 7});
+    private static List<Key<ChunkFile>> testKeyList;
+    private static BinaryImageData testBinaryImageData = new BinaryImageData(null, testKeyList);
     private static ImageOptions testImageOptions = new ImageOptions(10,10,TEST_IMAGE_NAME,true,true);
     private static BinaryImage testBinaryImage = new BinaryImage(TEST_IMAGE_NAME,TEST_IMAGE_CATEGORY,"image/jpg",
             "image/jpg",TEST_IMAGE_DESCRIPTION,testImageOptions, testBinaryImageData);
@@ -124,7 +126,6 @@ public class JapanCuccokAdminTest {
         assertEquals(2, baseImageDataDao.list().size());
         IBinaryProvider imageData = (IBinaryProvider) baseImageDataDao.list().get(0);
         // Containing a simple blob with byte array data
-        Blob testBlob = new Blob(new byte[]{0, 1, 2, 3, 4, 5, 6, 7});
         assertTrue(imageData.getRawData().equals(testBlob));
         // And I can retrieve and delete the product
         assert productDao.list() != null;
@@ -188,7 +189,9 @@ public class JapanCuccokAdminTest {
 
     private void saveProduct(Product product) {
         // I put a binary image data into the datastore first
-//        baseImageDataDao.saveBinary(testBinaryImageData);
+        testKeyList = baseImageDataDao.saveBinary(testBlob);
+        testBinaryImageData.setChunkFileKeys(testKeyList);
+        baseImageDataDao.put(testBinaryImageData);
         // then I put a URL image data into the datastore
         urlImageDataDao.put(testUrlImageData);
         // then I put the image options into the datastore
@@ -208,7 +211,7 @@ public class JapanCuccokAdminTest {
         // DAO is instantiated
         JapanCuccokAdmin adminWebapp = new JapanCuccokAdmin();
         // And we have image data
-        BinaryImageData imageData = new BinaryImageData(null);
+        BinaryImageData imageData = new BinaryImageData(null, null);
         // And we have an image
         BinaryImage image = new BinaryImage("dummImageName",CategoryType.ACCESSORIES,"image/jpg",
                 "image/jpg",

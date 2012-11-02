@@ -3,8 +3,6 @@ package com.japancuccok.main.dashboard;
 import com.japancuccok.common.pattern.DashboardImageLoadStrategy;
 import com.japancuccok.common.wicket.panel.main.base.BaseMenuPanel;
 import com.japancuccok.common.wicket.panel.main.dashboard.DashboardBannerPanel;
-import com.japancuccok.common.wicket.panel.main.dashboard.DashboardCopyrightPanel;
-import com.japancuccok.common.wicket.panel.main.dashboard.DashboardFooterContentPanel;
 import com.japancuccok.common.wicket.panel.main.dashboard.DashboardFooterScriptPanel;
 import com.japancuccok.common.wicket.template.BasePage;
 import org.apache.wicket.AttributeModifier;
@@ -25,7 +23,7 @@ public class Dashboard extends BasePage {
     private static final long serialVersionUID = 1338162580971321018L;
 
     public Dashboard() {
-        SliderListView sliderListView = new SliderListView("imageSlider", new DashboardImageLoadStrategy(true));
+        SliderListView sliderListView = new SliderListView("imageSlider", new DashboardImageLoadStrategy());
         sliderListView.setRenderBodyOnly(true);
         add(sliderListView);
     }

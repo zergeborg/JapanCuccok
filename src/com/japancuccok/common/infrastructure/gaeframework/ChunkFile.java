@@ -1,9 +1,9 @@
 package com.japancuccok.common.infrastructure.gaeframework;
 
 import com.google.appengine.api.datastore.Blob;
-import com.googlecode.objectify.Key;
-import com.googlecode.objectify.annotation.*;
-import com.japancuccok.common.domain.image.BinaryImageData;
+import com.googlecode.objectify.annotation.Cache;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
 
 import java.io.Serializable;
 
@@ -18,23 +18,27 @@ import java.io.Serializable;
  */
 @Entity
 @Cache
-public class ChunkFile implements Serializable {
+public class ChunkFile implements Serializable, Comparable {
 
     private static final long serialVersionUID = 8635461503296085569L;
 
-    @Id String id;
+    @Id
+    Long id;
     public Blob data;
     public int length;
-    @Parent Key<BinaryImageData> imageDataKey;
+    public long fileSizeInBytes;
 
     public ChunkFile() {
     }
 
-    public ChunkFile(String id, Blob data, int length, Key<BinaryImageData> imageDataKey) {
-        this.id = id;
+    public ChunkFile(Blob data, int length, long fileSizeInBytes) {
         this.data = data;
         this.length = length;
-        this.imageDataKey = imageDataKey;
+        this.fileSizeInBytes = fileSizeInBytes;
+    }
+
+    public long getFileSizeInBytes() {
+        return fileSizeInBytes;
     }
 
     @Override
@@ -45,9 +49,6 @@ public class ChunkFile implements Serializable {
         ChunkFile chunkFile = (ChunkFile) o;
 
         if (id != null ? !id.equals(chunkFile.id) : chunkFile.id != null) return false;
-        if (imageDataKey != null ? !imageDataKey.equals(chunkFile.imageDataKey) : chunkFile
-                .imageDataKey != null)
-            return false;
 
         return true;
     }
@@ -55,7 +56,6 @@ public class ChunkFile implements Serializable {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (imageDataKey != null ? imageDataKey.hashCode() : 0);
         return result;
     }
 
@@ -64,7 +64,12 @@ public class ChunkFile implements Serializable {
         return "ChunkFile{" +
                 "id='" + id + '\'' +
                 ", length=" + length +
-                ", imageDataKey=" + imageDataKey +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Object object) {
+        ChunkFile chunkFile = (ChunkFile) object;
+        return id.compareTo(chunkFile.id);
     }
 }

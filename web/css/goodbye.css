@@ -3,8 +3,7 @@ div#content > img {
     top: 30px;
     left: 23%;
 }
-span#thankYouLabel {
-    position: absolute;
+#thankYouLabel {
     bottom: 280px;
     left: 16%;
     font-size: 46px;

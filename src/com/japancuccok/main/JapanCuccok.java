@@ -1,21 +1,20 @@
 package com.japancuccok.main;
 
-import com.japancuccok.common.domain.image.ImageResourceReference;
+import com.japancuccok.common.domain.product.Product;
 import com.japancuccok.common.infrastructure.gae.GaeCompressRequestCycleListener;
 import com.japancuccok.common.infrastructure.gae.GaeMaintenanceAwareSessionStore;
 import com.japancuccok.common.infrastructure.gae.GaeWebSessionStoreProvider;
 import com.japancuccok.common.pattern.ProductLoadStrategy;
-import com.japancuccok.common.domain.product.Product;
 import com.japancuccok.common.wicket.component.DummyPackageResourceGuard;
 import com.japancuccok.common.wicket.session.JapanCuccokSession;
+import com.japancuccok.main.accessories.Accessories;
 import com.japancuccok.main.cart.CartListPage;
 import com.japancuccok.main.contact.Contact;
+import com.japancuccok.main.dashboard.Dashboard;
 import com.japancuccok.main.done.Goodbye;
 import com.japancuccok.main.order.AddressPage;
-import com.japancuccok.main.stuff.Stuff;
-import com.japancuccok.main.dashboard.Dashboard;
-import com.japancuccok.main.accessories.Accessories;
 import com.japancuccok.main.shop.Shop;
+import com.japancuccok.main.stuff.Stuff;
 import com.japancuccok.main.tshirt.Tshirt;
 import org.apache.wicket.Application;
 import org.apache.wicket.DefaultPageManagerProvider;
@@ -95,7 +94,7 @@ public class JapanCuccok extends WebApplication {
     }
 
     public List<Product> getProducts() {
-        return new ProductLoadStrategy(true).load();
+        return new ProductLoadStrategy().load();
     }
 
     private void initResourceGuard() {

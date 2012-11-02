@@ -25,13 +25,14 @@ hr {
     float: right;
 }
 #selectedImageSpan {
+    border-color: rgb(192, 44, 44);
+    border-width: 2px;
+    border-style: solid;
+    background-color: rgba(192, 44, 44, 0.4);
     position: relative;
     float: left;
     width:386px;
     height:414px;
-    background-image: url('/img/productDetailBigImage.png');
-    background-repeat: no-repeat;
-    background-position: center;
     text-align: center;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -45,13 +46,14 @@ hr {
     top: 2px;
 }
 #imgContainer {
+    border-color: rgb(192, 44, 44);
+    border-width: 2px;
+    border-style: solid;
+    background-color: rgba(192, 44, 44, 0.4);
     position: relative;
     float: left;
     width:97px;
     height:104px;
-    background-image: url('/img/productDetailSmallImage.png');
-    background-repeat: no-repeat;
-    background-position: center;
     text-align: center;
     margin: 10px;
 }

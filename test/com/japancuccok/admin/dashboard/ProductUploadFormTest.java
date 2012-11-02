@@ -6,7 +6,6 @@ import com.japancuccok.base.TestServiceProvider;
 import com.japancuccok.common.domain.category.CategoryType;
 import com.japancuccok.common.domain.image.*;
 import com.japancuccok.common.domain.product.Product;
-
 import com.japancuccok.db.IBinaryProvider;
 import org.apache.wicket.Page;
 import org.apache.wicket.feedback.FeedbackMessage;
@@ -17,14 +16,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.google.appengine.api.datastore.FetchOptions.Builder.withLimit;
+import static com.google.appengine.api.datastore.FetchOptions.Builder.*;
 import static com.japancuccok.db.DAOService.*;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -40,29 +37,32 @@ public class ProductUploadFormTest {
     protected final String NAME_ERROR_MSG = "A(z) 'Név' mező kitöltése kötelező.";
     protected final String CATEGORY_ERROR_MSG = "A(z) 'Kategória' mező kitöltése kötelező.";
     protected final String PRICE_ERROR_MSG = "A(z) 'Ár' mező kitöltése kötelező.";
-    protected final String FILE_MISSING_ERROR_MSG = "Nem adtál meg URL-t és képet sem töltöttél fel";
+    protected final String FILE_MISSING_ERROR_MSG =
+            "Nem adtál meg URL-t és képet sem töltöttél fel";
     protected final String IMAGE_DATA_SAVED = "Saved image data: ";
-    protected final String IMAGE_SAVED = "Saved image: motos_suzuki_022.jpg";
+    protected final String IMAGE_SAVED = "Saved image: %s";
     protected final String IMAGE_URL_SAVED = "Saved image: http://google.hu";
     protected final String PRODUCT_SAVED = "Saved product: Test Name";
 
-    private DatastoreService dsService = DatastoreServiceFactory.getDatastoreService();
-    private List<Entity> entities;
+    protected DatastoreService dsService = DatastoreServiceFactory.getDatastoreService();
+    protected List<Entity> entities;
+    protected WicketTester tester;
 
     protected class ProductData {
 
-        protected String  PRODUCT_NAME = "Test Name";
-        protected String  PRODUCT_DESCRIPTION = "Test Description";
+        protected String PRODUCT_NAME = "Test Name";
+        protected String PRODUCT_DESCRIPTION = "Test Description";
         protected Integer PRODUCT_CATEGORY = 1;
-        protected String  PRODUCT_PRICE = "1200";
+        protected String PRODUCT_PRICE = "1200";
     }
 
     protected class TestProduct extends Product {
+
         private static final long serialVersionUID = -6390819295763761722L;
 
         public TestProduct(String name, CategoryType categoryType, String description, int price,
                            List<BinaryImage> binaryImageList, List<UrlImage> urlImageList) {
-            super(name,categoryType,description,price,binaryImageList, urlImageList);
+            super(name, categoryType, description, price, binaryImageList, urlImageList);
         }
 
         @Override
@@ -70,7 +70,7 @@ public class ProductUploadFormTest {
             super.setId(id);
         }
     }
-    
+
     static {
         try {
             TestServiceProvider.setUpServlet();
@@ -84,39 +84,20 @@ public class ProductUploadFormTest {
     @Before
     public void setUp() throws Exception {
         TestServiceProvider.begin();
+        tester = openDashboard();
     }
 
     @After
     public void tearDown() throws Exception {
-        for(IImageData imageData : baseImageDataDao.list()) {
-            System.out.println("Cleaning up " + imageData.toString());
-            if(imageData instanceof IBinaryProvider) {
-                IBinaryProvider binaryImageData = (IBinaryProvider) imageData;
-                baseImageDataDao.deleteBinary(binaryImageData);
-            } else {
-                baseImageDataDao.delete((BaseImageData) imageData);
-            }
-        }
-        for(IImageData imageData : urlImageDataDao.list()) {
-            System.out.println("Cleaning up " + imageData.toString());
-            urlImageDataDao.delete((UrlImageData) imageData);
-        }
-        System.out.println("Cleaning up image options");
-        imageOptionsDao.deleteAll(imageOptionsDao.list());
-        System.out.println("Cleaning up binary images");
-        binaryImageDao.deleteAll(binaryImageDao.list());
-        System.out.println("Cleaning up URL images");
-        urlImageDao.deleteAll(urlImageDao.list());
-        System.out.println("Cleaning up products");
-        productDao.deleteAll(productDao.list());
+        deleteBaseImageData();
+        deleteUrlImageData();
+        deleteTheRest();
         TestServiceProvider.end();
     }
 
     @Test
     public void testOnSubmit_Init() throws Exception {
-        //given the user opens the page
-        WicketTester tester = new WicketTester(new JapanCuccokAdmin());
-        tester.startPage(Dashboard.class);
+        //given the user opens the page in setUp
 
         //when no action happens
         FormTester formTester = tester.newFormTester("newProductForm");
@@ -128,52 +109,86 @@ public class ProductUploadFormTest {
 
     @Test
     public void testOnSubmit_oneBinaryOneUrl() throws Exception {
-        // given the user opens the page
-        WicketTester tester = new WicketTester(new JapanCuccokAdmin());
-        tester.startPage(Dashboard.class);
+        String imageFileName = "motos_suzuki_022.jpg";
+        String[] fileNames = new String[]{imageFileName};
+
+        //given the user opens the page in setUp
 
         // when clicks the "New image!" button twice
-        showNewImagePanel(tester);
-        showNewImagePanel(tester);
+        showNewImagePanel();
+        showNewImagePanel();
         // and clicks the Datastore radio button once
-        clickOnDatastoreRadioBtn(tester, 1);
-        final FormSubmitter formSubmitter = new FormSubmitter() {
-            @Override
-            public void setFile(FormTester formTester) throws URISyntaxException {
-                // and he uploads a binary file
-                formTester.setFile("dummyRepeaterContainer:uploadRepeatingView:" + 1 +
-                        ":productUploadPanel:newImageUpload:uploads",
-                        getFile("motos_suzuki_022.jpg"),
-                        "multipart/form-data");
-            }
+        clickOnDatastoreRadioBtn(1);
+
+        final FormSubmitter formSubmitter = new FormSubmitter(fileNames) {
             @Override
             public void setUrl(FormTester formTester) {
                 // and he provides a URL
-                formTester.setValue(
-                        "dummyRepeaterContainer:uploadRepeatingView:2:productUploadPanel" +
-                                ":newImageLink:newImageUrl",
-                        "http://google.hu");
+                formTester.setValue("dummyRepeaterContainer:uploadRepeatingView:2" +
+                                            ":productUploadPanel" + ":newImageLink:newImageUrl",
+                                    "http://google.hu");
             }
         };
         // and submits a filled-in form with valid data
         formSubmitter.submit(tester, new ProductData());
 
-        System.out.println(tester.getMessages(FeedbackMessage.SUCCESS));
-        System.out.println(tester.getMessages(FeedbackMessage.INFO));
-        System.out.println(tester.getMessages(FeedbackMessage.ERROR));
+        printFeedback(tester);
 
         //then
         // then info messages appear about successful saving
-        tester.assertInfoMessages(IMAGE_DATA_SAVED+"1", IMAGE_SAVED, IMAGE_DATA_SAVED+"4", IMAGE_URL_SAVED, PRODUCT_SAVED);
+        tester.assertInfoMessages(IMAGE_DATA_SAVED + "1", String.format(IMAGE_SAVED,
+                                                                        imageFileName),
+                                  IMAGE_DATA_SAVED + "4", IMAGE_URL_SAVED, PRODUCT_SAVED);
+        // and we will have a new productList
+        assertTrue(tester.getTagsByWicketId("productList").size() == 1);
+    }
+
+    @Test
+    public void testOnSubmit_threeBinaries() throws Exception {
+        String imageFileName1 =
+                "Japan_Nature_1920x1440_HD_Wallpapers_Pack_2-16" +
+                        ".jpg_Japanese_Garden_Royal_Roads_University_British_Columbia.png";
+        String imageFileName2 =
+                "japanese_maple_wallpaper_plants_nature_wallpaper_1280_960_1174.png";
+        String imageFileName3 = "japan-nature-wallpaper1.png";
+        String[] fileNames = new String[]{imageFileName1, imageFileName2, imageFileName3};
+
+        //given the user opens the page in setUp
+
+        // when clicks the "New image!" button three times
+        showNewImagePanel();
+        showNewImagePanel();
+        showNewImagePanel();
+        // and clicks the Datastore radio button three times
+        clickOnDatastoreRadioBtn(1);
+        clickOnDatastoreRadioBtn(2);
+        clickOnDatastoreRadioBtn(3);
+        final FormSubmitter formSubmitter = new FormSubmitter(fileNames) {
+            @Override
+            public void setUrl(FormTester formTester) {
+                // intentionally left blank
+            }
+        };
+        // and submits a filled-in form with valid data
+        formSubmitter.submit(tester, new ProductData());
+
+        printFeedback(tester);
+
+        // then info messages appear about successful saving
+        tester.assertInfoMessages(IMAGE_DATA_SAVED + "1", String.format(IMAGE_SAVED,
+                                                                        imageFileName1),
+                                  IMAGE_DATA_SAVED + "4", String.format(IMAGE_SAVED,
+                                                                        imageFileName2),
+                                  IMAGE_DATA_SAVED + "7", String.format(IMAGE_SAVED,
+                                                                        imageFileName3),
+                                  PRODUCT_SAVED);
         // and we will have a new productList
         assertTrue(tester.getTagsByWicketId("productList").size() == 1);
     }
 
     @Test
     public void testOnSubmit_EmptyForm() throws Exception {
-        //given the user opens the page
-        WicketTester tester = new WicketTester(new JapanCuccokAdmin());
-        tester.startPage(Dashboard.class);
+        //given the user opens the page in setUp
 
         //when submits the empty form
         FormTester formTester = tester.newFormTester("newProductForm");
@@ -181,180 +196,209 @@ public class ProductUploadFormTest {
 
         //then error messages appear
         tester.assertErrorMessages(NAME_ERROR_MSG, CATEGORY_ERROR_MSG, PRICE_ERROR_MSG,
-                FILE_MISSING_ERROR_MSG);
+                                   FILE_MISSING_ERROR_MSG);
     }
 
     @Test
     public void testOnSubmit_AllDataValid() throws Exception {
-        // given the user opens the page
-        WicketTester tester = new WicketTester(new JapanCuccokAdmin());
-        Page dashboardPage = tester.startPage(Dashboard.class);
+        String imageFileName = "motos_suzuki_022.jpg";
+        String[] fileNames = new String[]{imageFileName};
+
+        //given the user opens the page in setUp
 
         // when clicks the "New image!" button
-        showNewImagePanel(tester);
+        showNewImagePanel();
         // and clicks the Datastore radio button
-        clickOnDatastoreRadioBtn(tester, 1);
+        clickOnDatastoreRadioBtn(1);
         // and submits a filled-in form with valid data
         // tester.dumpPage();
-        final FormSubmitter formSubmitter = new FormSubmitter() {
-            @Override
-            public void setFile(FormTester formTester) throws URISyntaxException {
-                formTester.setFile("dummyRepeaterContainer:uploadRepeatingView:" + 1 +
-                        ":productUploadPanel:newImageUpload:uploads",
-                        getFile("motos_suzuki_022.jpg"),
-                        "multipart/form-data");
-            }
-
+        final FormSubmitter formSubmitter = new FormSubmitter(fileNames) {
             @Override
             public void setUrl(FormTester formTester) {
+                // intentionally left blank
             }
         };
         formSubmitter.submit(tester, new ProductData());
 
-        System.out.println(tester.getMessages(FeedbackMessage.SUCCESS));
-        System.out.println(tester.getMessages(FeedbackMessage.INFO));
-        System.out.println(tester.getMessages(FeedbackMessage.ERROR));
+        printFeedback(tester);
         // then info messages appear about successful saving
-        tester.assertInfoMessages(IMAGE_DATA_SAVED+"1", IMAGE_SAVED, PRODUCT_SAVED);
+        tester.assertInfoMessages(IMAGE_DATA_SAVED + "1", String.format(IMAGE_SAVED,
+                                                                        imageFileName),
+                                  PRODUCT_SAVED);
         // and we will have a new productList
         assertTrue(tester.getTagsByWicketId("productList").size() == 1);
     }
 
-    private void clickOnDatastoreRadioBtn(WicketTester tester, int index) {
-        tester.executeAjaxEvent("newProductForm:dummyRepeaterContainer:uploadRepeatingView:" + index +
-                ":productUploadPanel:selector:2", "onchange");
-        tester.assertComponentOnAjaxResponse("newProductForm:dummyRepeaterContainer:uploadRepeatingView:"
-                + index + ":productUploadPanel:newImageUpload");
-    }
-
     @Test
     public void testTwoConsecutiveUploads() throws Exception {
-        List<BinaryImage> dummyBinaryImageList = new ArrayList<BinaryImage>();
-        dummyBinaryImageList.add(new BinaryImage());
-        List<UrlImage> dummyUrlImageList = new ArrayList<UrlImage>();
-        dummyUrlImageList.add(new UrlImage());
-        TestProduct product1 = new TestProduct("Test Name",CategoryType.STUFF,"Test Description",
-                1200,dummyBinaryImageList,dummyUrlImageList);
-        product1.setId(new Long(4));
-        TestProduct product2 = new TestProduct("Test Name 2",CategoryType.ACCESSORIES,
-                "Test Description 2",1200,dummyBinaryImageList,dummyUrlImageList);
-        product2.setId(new Long(8));
+        String imageFileName = "motos_suzuki_022.jpg";
+        String[] fileNames = new String[]{imageFileName};
+        TestProduct product1 = null;
+        TestProduct product2 = null;
+        ProductData productData = new ProductData();
         List<Product> productList = new ArrayList<Product>();
+        List<UrlImage> dummyUrlImageList = new ArrayList<UrlImage>();
+        List<BinaryImage> dummyBinaryImageList = new ArrayList<BinaryImage>();
+
+        dummyUrlImageList.add(new UrlImage());
+        dummyBinaryImageList.add(new BinaryImage());
+
+        product1 = new TestProduct("Test Name", CategoryType.STUFF, "Test Description", 1200,
+                                   dummyBinaryImageList, dummyUrlImageList);
+
+        product2 = new TestProduct("Test Name 2", CategoryType.ACCESSORIES, "Test Description 2",
+                                   1200, dummyBinaryImageList, dummyUrlImageList);
+
+        product1.setId(new Long(4));
+        product2.setId(new Long(8));
         productList.add(product1);
         productList.add(product2);
-        // given the user opens the page
-        WicketTester tester = new WicketTester(new JapanCuccokAdmin());
-        Page dashboardPage = tester.startPage(Dashboard.class);
+
+        // given the user opens the page in setUp
 
         // when clicks the "New image!" button
-        showNewImagePanel(tester);
-        // and clicks the Datastore radio button
-        clickOnDatastoreRadioBtn(tester, 1);
-        // and submits a filled-in form with valid data twice
-        ProductData productData = new ProductData();
-        final FormSubmitter formSubmitter = new FormSubmitter() {
-            @Override
-            public void setFile(FormTester formTester) throws URISyntaxException {
-                formTester.setFile("dummyRepeaterContainer:uploadRepeatingView:" + 1 +
-                        ":productUploadPanel:newImageUpload:uploads",
-                        getFile("motos_suzuki_022.jpg"),
-                        "multipart/form-data");
-            }
+        showNewImagePanel();
 
+        // and clicks the Datastore radio button
+        clickOnDatastoreRadioBtn(1);
+
+        // and submits a filled-in form with valid data twice
+        final FormSubmitter formSubmitter = new FormSubmitter(fileNames) {
             @Override
             public void setUrl(FormTester formTester) {
+                // intentionally left blank
             }
         };
         formSubmitter.submit(tester, productData);
-        tester.assertInfoMessages(IMAGE_DATA_SAVED+"1", IMAGE_SAVED, PRODUCT_SAVED);
+        tester.assertInfoMessages(IMAGE_DATA_SAVED + "1", String.format(IMAGE_SAVED,
+                                                                        imageFileName),
+                                  PRODUCT_SAVED);
 
-        System.out.println(tester.getMessages(FeedbackMessage.SUCCESS));
-        System.out.println(tester.getMessages(FeedbackMessage.INFO));
-        System.out.println(tester.getMessages(FeedbackMessage.ERROR));
+        printFeedback(tester);
 
         productData.PRODUCT_NAME = "Test Name 2";
         productData.PRODUCT_DESCRIPTION = "Test Description 2";
         productData.PRODUCT_CATEGORY = 2;
         formSubmitter.submit(tester, productData);
 
-        System.out.println(tester.getMessages(FeedbackMessage.SUCCESS));
-        System.out.println(tester.getMessages(FeedbackMessage.INFO));
-        System.out.println(tester.getMessages(FeedbackMessage.ERROR));
+        printFeedback(tester);
 
         // then we get two productLists
         assertTrue(tester.getTagsByWicketId("productList").size() == 2);
-        tester.assertListView("productList", productList);
+        tester.assertListView("uploadedProductForm:uploadedProductContainer:productList",productList);
     }
 
     @Test
     public void testDelete() throws Exception {
+        String filename1 = "motos_suzuki_022.jpg";
+        String filename2 = "motos_suzuki_028.jpg";
+        String filename3 = "motos_suzuki_032.jpg";
+        String filename4 = "motos_suzuki_039.jpg";
+        String filename5 = "motos_suzuki_041.jpg";
+        String[] fileNames = new String[]{filename1, filename2, filename3, filename4, filename5};
+        final FormSubmitter formSubmitter = new FormSubmitter(fileNames) {
+            @Override
+            public void setUrl(FormTester formTester) {
+                // intentionally left blank
+            }
+        };
+
         // given the user opens the page
-        WicketTester tester = new WicketTester(new JapanCuccokAdmin());
         tester.getSession().invalidateNow();
         Page dashboardPage = tester.startPage(Dashboard.class);
+
         // which is initially empty
         assertTrue(tester.getTagsByWicketId("productList").size() == 0);
         assertDelete();
+
         // when he clicks the "New image!" button 5 times
         // and clicks the Datastore radio button  5 times
-        for(int i = 0; i < 5; i++) {
-            showNewImagePanel(tester);
-            clickOnDatastoreRadioBtn(tester, i+1);
+        for (int i = 0; i < 5; i++) {
+            showNewImagePanel();
+            clickOnDatastoreRadioBtn(i + 1);
         }
-        // and he uploads a product with 5 images
-        final FormSubmitter formSubmitter = new FormSubmitter() {
-            @Override
-            public void setFile(FormTester formTester) throws URISyntaxException {
-                formTester.setFile("dummyRepeaterContainer:uploadRepeatingView:" + 1 +
-                        ":productUploadPanel:newImageUpload:uploads",
-                        getFile("motos_suzuki_022.jpg"),
-                        "multipart/form-data");
-                formTester.setFile("dummyRepeaterContainer:uploadRepeatingView:" + 2 +
-                        ":productUploadPanel:newImageUpload:uploads",
-                        getFile("motos_suzuki_028.jpg"),
-                        "multipart/form-data");
-                formTester.setFile("dummyRepeaterContainer:uploadRepeatingView:" + 3 +
-                        ":productUploadPanel:newImageUpload:uploads",
-                        getFile("motos_suzuki_032.jpg"),
-                        "multipart/form-data");
-                formTester.setFile("dummyRepeaterContainer:uploadRepeatingView:" + 4 +
-                        ":productUploadPanel:newImageUpload:uploads",
-                        getFile("motos_suzuki_039.jpg"),
-                        "multipart/form-data");
-                formTester.setFile("dummyRepeaterContainer:uploadRepeatingView:" + 5 +
-                        ":productUploadPanel:newImageUpload:uploads",
-                        getFile("motos_suzuki_041.jpg"),
-                        "multipart/form-data");
-            }
 
-            @Override
-            public void setUrl(FormTester formTester) {
-            }
-        };
+        // and he uploads a product with 5 images
         ProductData productData = new ProductData();
         formSubmitter.submit(tester, productData);
 
-        System.out.println(tester.getMessages(FeedbackMessage.SUCCESS));
-        System.out.println(tester.getMessages(FeedbackMessage.INFO));
-        System.out.println(tester.getMessages(FeedbackMessage.ERROR));
+        printFeedback(tester);
 
         //when
         // he clicks on the delete icon
-        tester.clickLink("productList:0:delete");
+        tester.clickLink("uploadedProductForm:uploadedProductContainer:productList:0:delete");
 
-        System.out.println(tester.getMessages(FeedbackMessage.SUCCESS));
-        System.out.println(tester.getMessages(FeedbackMessage.INFO));
-        System.out.println(tester.getMessages(FeedbackMessage.ERROR));
+        printFeedback(tester);
 
         //then
         assertDelete();
 
     }
 
+    private WicketTester openDashboard() {
+        //given the user opens the page
+        WicketTester tester = new WicketTester(new JapanCuccokAdmin());
+        tester.startPage(Dashboard.class);
+        return tester;
+    }
+
+    private void clickOnDatastoreRadioBtn(int index) {
+        tester.executeAjaxEvent("newProductForm:dummyRepeaterContainer:uploadRepeatingView:" +
+                                        index +
+                                        ":productUploadPanel:selector:2", "onchange");
+        tester.assertComponentOnAjaxResponse
+                       ("newProductForm:dummyRepeaterContainer:uploadRepeatingView:" + index +
+                                ":productUploadPanel:newImageUpload");
+    }
+
+    private void deleteUrlImageData() {
+        for (IImageData imageData : urlImageDataDao.list()) {
+            System.out.println("Cleaning up " + imageData.toString());
+            urlImageDataDao.delete((UrlImageData) imageData);
+        }
+    }
+
+    private PreparedQuery load(String kind) throws FileNotFoundException {
+        Query query = new Query(kind);
+
+        query.addSort("index");
+        return dsService.prepare(query);
+    }
+
+    private void showNewImagePanel() {
+        tester.executeAjaxEvent("newProductForm:newImageDiv", "onclick");
+        tester.assertComponentOnAjaxResponse("newProductForm:dummyRepeaterContainer");
+    }
+
+    private void deleteBaseImageData() {
+        for (IImageData imageData : baseImageDataDao.list()) {
+            System.out.println("Cleaning up " + imageData.toString());
+            if (imageData instanceof IBinaryProvider) {
+                IBinaryProvider binaryImageData = (IBinaryProvider) imageData;
+                baseImageDataDao.deleteBinary(binaryImageData);
+            }
+            else {
+                baseImageDataDao.delete((BaseImageData) imageData);
+            }
+        }
+    }
+
+    private void deleteTheRest() {
+        System.out.println("Cleaning up image options");
+        imageOptionsDao.deleteAll(imageOptionsDao.list());
+        System.out.println("Cleaning up binary images");
+        binaryImageDao.deleteAll(binaryImageDao.list());
+        System.out.println("Cleaning up URL images");
+        urlImageDao.deleteAll(urlImageDao.list());
+        System.out.println("Cleaning up products");
+        productDao.deleteAll(productDao.list());
+    }
+
     private void assertDelete() throws FileNotFoundException {
         // The image data chunks are deleted first
         PreparedQuery pQuery = load("ChunkFile");
         FetchOptions fetchOptions = withLimit(1);
+
         entities = pQuery.asList(fetchOptions);
         assertEquals(0, entities.size());
         // Then the image data items are deleted also
@@ -367,19 +411,9 @@ public class ProductUploadFormTest {
         assertEquals(0, productDao.list().size());
     }
 
-    private PreparedQuery load(String kind) throws FileNotFoundException {
-        Query query = new Query(kind);
-        query.addSort("index");
-        return dsService.prepare(query);
-    }
-
-    private void showNewImagePanel(WicketTester tester) {
-        tester.executeAjaxEvent("newProductForm:newImageDiv", "onclick");
-        tester.assertComponentOnAjaxResponse("newProductForm:dummyRepeaterContainer");
-    }
-
-    private org.apache.wicket.util.file.File getFile(String fileName) throws URISyntaxException {
-        File imageFile = new File(this.getClass().getResource(fileName).toURI());
-        return new org.apache.wicket.util.file.File(imageFile);
+    private void printFeedback(WicketTester tester) {
+        System.out.println(tester.getMessages(FeedbackMessage.SUCCESS));
+        System.out.println(tester.getMessages(FeedbackMessage.INFO));
+        System.out.println(tester.getMessages(FeedbackMessage.ERROR));
     }
 }

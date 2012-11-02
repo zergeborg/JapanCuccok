@@ -85,18 +85,19 @@ public interface GenericGaeDAOIf<T> {
     public Collection<Key<T>> putAll(Collection<T> objects);
 
     /**
-     * This method will return all the objects with the given keys in a single round
+     * This method will return all the completely constructed objects of the given keys/objects in
+     * a single round
      *
-     * @param objects The key(s) of the desired object(s)
+     * @param objectsOrKeys The key(s) or object(s) of the desired domain object(s)
      */
-    public Map<Key<T>, T> getAll(Collection<T> objects);
+    public Map<Key<T>, T> getAll(Collection<?> objectsOrKeys);
 
     /**
      * Deletes all the specified entiti(es).
      *
      * @param objects The entiti(es) to be deleted
      */
-    public void deleteAll(Collection<T> objects);
+    public void deleteAll(Collection<?> objects);
 
     /**
      * Returns all the partial entities of the actual type
@@ -132,6 +133,15 @@ public interface GenericGaeDAOIf<T> {
      * @return The list of fully initialized objects
      */
     public <E> List<T> load(Class<E>... loadGroupClazz);
+
+    /**
+     * Returns all the full entities belonging to the given load group
+     *
+     * @param conditions The filtering condition - value pairs
+     * @param loadGroupClazz The load group(s) to be used during loading
+     * @return The list of fully initialized objects
+     */
+    public <E> List<T> load(Map<String, Object> conditions, Class<E>... loadGroupClazz);
 
     /**
      * Returns a fully loaded entity of the given object belonging to the given load group

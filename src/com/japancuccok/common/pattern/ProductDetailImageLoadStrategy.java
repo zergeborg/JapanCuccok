@@ -1,6 +1,5 @@
 package com.japancuccok.common.pattern;
 
-import com.japancuccok.common.domain.category.CategoryType;
 import com.japancuccok.common.domain.image.BinaryImage;
 import com.japancuccok.common.domain.image.IImage;
 import com.japancuccok.common.domain.image.UrlImage;
@@ -10,7 +9,7 @@ import com.japancuccok.common.domain.product.ProductModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.japancuccok.db.DAOService.productDao;
+import static com.japancuccok.db.DAOService.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,13 +24,11 @@ public class ProductDetailImageLoadStrategy<T extends IImage> extends AbstractLo
     private transient final ProductModel productToShowModel;
 
     public ProductDetailImageLoadStrategy(Product productToShow) {
-        super(true);
         this.productToShowModel = null;
         this.productToShow = productToShow;
     }
 
     public ProductDetailImageLoadStrategy(ProductModel productToShowModel) {
-        super(true);
         this.productToShow = null;
         this.productToShowModel = productToShowModel;
     }
@@ -40,15 +37,15 @@ public class ProductDetailImageLoadStrategy<T extends IImage> extends AbstractLo
     public List<T> load() {
         List<IImage> images = new ArrayList<IImage>();
         if(productToShowModel != null) {
-            images = loadByModel();
+            images = loadBy(productToShowModel.getObject());
         } else if (productToShow != null) {
-            images = loadByObject();
+            images = loadBy(productToShow);
         }
         return (List<T>) images;
     }
 
-    private List<IImage> loadByModel() {
-        Product loadedProduct = productDao.load(productToShowModel.getObject(),
+    private List<IImage> loadBy(Product product) {
+        Product loadedProduct = productDao.load(product,
                 new Class<?>[]{
                         Product.WithBinaryImage.class,
                         Product.WithUrlImage.class,
@@ -64,20 +61,4 @@ public class ProductDetailImageLoadStrategy<T extends IImage> extends AbstractLo
         return images;
     }
 
-    private List<IImage> loadByObject() {
-        Product loadedProduct = productDao.load(productToShow,
-                new Class<?>[]{
-                        Product.WithBinaryImage.class,
-                        Product.WithUrlImage.class,
-                        BinaryImage.WithBinaryImageData.class,
-                        UrlImage.WithUrlImageData.class});
-        List<IImage> images = new ArrayList<IImage>();
-        if(loadedProduct.getBinaryImageList() != null) {
-            images.addAll(loadedProduct.getBinaryImageList());
-        }
-        if(loadedProduct.getUrlImageList() != null) {
-            images.addAll(loadedProduct.getUrlImageList());
-        }
-        return images;
-    }
 }

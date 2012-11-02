@@ -25,6 +25,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.japancuccok.common.infrastructure.tools.ImageResourceUtil.*;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Nagy Gergely
@@ -116,7 +118,8 @@ public class ProductCheckoutPanel extends Panel {
             @Override
             public void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag)
             {
-                replaceComponentTagBody(markupStream, openTag, "\"" + getDefaultModelObjectAsString() + "\"");
+                super.onComponentTagBody(markupStream, openTag);
+//                replaceComponentTagBody(markupStream, openTag, "\"" + getDefaultModelObjectAsString() + "\"");
             }
 
         };
@@ -230,7 +233,7 @@ public class ProductCheckoutPanel extends Panel {
     }
 
     private Component getFirstImage() {
-        return getImageList().get(0).asWicketImage("productImg");
+        return getImage(getImageList().get(0), "productImg", this);
     }
 
     private List<? extends IImage> getImageList() {

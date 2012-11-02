@@ -4,6 +4,7 @@ import com.japancuccok.admin.dashboard.base.ProductUploadModel;
 import com.japancuccok.common.pattern.ProductLoadStrategy;
 import com.japancuccok.common.wicket.panel.main.shop.ShopFooterScriptPanel;
 import com.japancuccok.common.wicket.template.AdminBasePage;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -36,9 +37,12 @@ public class Dashboard extends AdminBasePage {
         final Form<?> newProductForm = new ProductUploadForm("newProductForm", model);
         add(newProductForm);
 
-        // Add product list view
-        uploadedProductListView = new UploadedProductListView("productList", new ProductLoadStrategy(true));
-        add(uploadedProductListView);
+        Form<?> uploadedProductForm = new Form<Object>("uploadedProductForm");
+        WebMarkupContainer uploadedProductContainer = new WebMarkupContainer("uploadedProductContainer");
+        uploadedProductListView = new UploadedProductListView("productList", new ProductLoadStrategy());
+        uploadedProductContainer.add(uploadedProductListView);
+        uploadedProductForm.add(uploadedProductContainer);
+        add(uploadedProductForm);
 
     }
 

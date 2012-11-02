@@ -1,8 +1,7 @@
 package com.japancuccok.common.domain.image;
 
-import com.googlecode.objectify.annotation.Cache;
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.*;
+import com.googlecode.objectify.condition.IfTrue;
 
 import java.io.Serializable;
 
@@ -13,6 +12,7 @@ import java.io.Serializable;
  * Time: 8:57
  */
 @Entity
+@Embed
 @Cache
 public class ImageOptions implements Serializable {
 
@@ -22,8 +22,10 @@ public class ImageOptions implements Serializable {
     private int width;
     private int height;
     private String name;
-    private boolean productGeneralPage;
-    private boolean productDashboard;
+    @Index(IfTrue.class)
+    boolean productGeneralPage;
+    @Index(IfTrue.class)
+    boolean productDashboard;
 
     public ImageOptions() {
     }

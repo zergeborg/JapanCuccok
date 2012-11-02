@@ -8,7 +8,6 @@ import com.japancuccok.common.domain.image.BinaryImageData;
 import com.japancuccok.common.domain.image.ImageOptions;
 import com.japancuccok.common.domain.product.Product;
 import com.japancuccok.common.infrastructure.gaeframework.ChunkFile;
-import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 
 import java.util.List;
@@ -58,10 +57,11 @@ public class BinaryImagePersister extends ImagePersister<BinaryImage, Product> {
     }
 
     private BinaryImageData storeBinaryImageData(FileUpload upload) {
-        BinaryImageData imageData = new BinaryImageData(null);
-        checkEntityExists(imageData);
         List<Key<ChunkFile>> keyList =
                 baseImageDataDao.saveBinary(new Blob(upload.getBytes()));
+        BinaryImageData imageData = new BinaryImageData(null, keyList);
+        checkEntityExists(imageData);
+        baseImageDataDao.put(imageData);
         info("Saved image data: " + imageData.getId());
         return imageData;
     }

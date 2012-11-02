@@ -4,6 +4,7 @@ import com.japancuccok.common.domain.cart.Cart;
 import com.japancuccok.common.domain.contact.Contact;
 import com.japancuccok.common.domain.image.*;
 import com.japancuccok.common.domain.product.Product;
+import com.japancuccok.common.infrastructure.gaeframework.ChunkFile;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -29,6 +30,7 @@ public class DAOService implements ServletContextListener, Serializable {
     public static GenericGaeDAO<ImageOptions> imageOptionsDao;
     public static GenericGaeDAO<Contact> contactDao;
     public static GenericGaeDAO<Cart> cartDao;
+    public static GenericGaeDAO<ChunkFile> chunkFileDAO;
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -42,6 +44,7 @@ public class DAOService implements ServletContextListener, Serializable {
         final GenericGaeDAO<ImageOptions> imageOptionsDao = (GenericGaeDAO<ImageOptions>) GenericGaeDAOFactory.getInstance(ImageOptions.class);
         final GenericGaeDAO<Contact> contactDao = (GenericGaeDAO<Contact>) GenericGaeDAOFactory.getInstance(Contact.class);
         final GenericGaeDAO<Cart> cartDao = (GenericGaeDAO<Cart>) GenericGaeDAOFactory.getInstance(Cart.class);
+        final GenericGaeDAO<ChunkFile> chunkFileDAO = (GenericGaeDAO<ChunkFile>) GenericGaeDAOFactory.getInstance(ChunkFile.class);
         DAOService.productDao = productDao;
         DAOService.baseImageDao = baseImageDao;
         DAOService.binaryImageDao = binaryImageDao;
@@ -52,6 +55,7 @@ public class DAOService implements ServletContextListener, Serializable {
         DAOService.imageOptionsDao = imageOptionsDao;
         DAOService.contactDao = contactDao;
         DAOService.cartDao = cartDao;
+        DAOService.chunkFileDAO = chunkFileDAO;
     }
 
     @Override

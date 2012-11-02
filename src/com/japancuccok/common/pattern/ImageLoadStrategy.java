@@ -10,8 +10,9 @@ import com.japancuccok.common.domain.image.UrlImage;
 import com.japancuccok.common.domain.product.Product;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.japancuccok.db.DAOService.*;
 
@@ -24,50 +25,47 @@ import static com.japancuccok.db.DAOService.*;
 public class ImageLoadStrategy<T extends IImage> extends AbstractLoadStrategy<T> {
 
     private static final long serialVersionUID = -8659440642144344850L;
+    protected final Map<String, Object> conditions = new HashMap<String, Object>();
+
+    public ImageLoadStrategy() {
+        super();
+    }
 
     public ImageLoadStrategy(CategoryType categoryType) {
         super(categoryType);
     }
 
-    public ImageLoadStrategy(boolean all) {
-        super(all);
-    }
-
     @Override
     public List<T> load() {
-        //TODO: #1 load the products from data store
-        //TODO: #2 load the images from blob store
-        List<Product> products = productDao.load(
-                new Class<?>[]{
-                        Product.WithBinaryImage.class,
-                        Product.WithUrlImage.class,
-                        BaseImage.WithImageOptions.class,
-                        BinaryImage.WithBinaryImageData.class,
-                        UrlImage.WithUrlImageData.class});
-        List<T> imageList = new ArrayList<T>();
-        Iterator productIterator = products.iterator();
-        while(productIterator.hasNext()){
-            Product product = (Product) productIterator.next();
-            if(all) {
-                for(CategoryType cType : CategoryType.values()) {
-                    if(!loadByCategoryType(imageList, product, cType)) {
-                        //TODO: A warning should be logged here
-                    }
-                }
-            } else {
-                if(!loadByCategoryType(imageList, product, categoryType)){
-                    //TODO: A warning should be logged here
-                }
-            }
+        List<Product> products = null;
+        if(categoryType == null) {
+            products = productDao.load(
+                        new Class<?>[]{
+                                    Product.WithBinaryImage.class,
+                                    Product.WithUrlImage.class,
+                                    BaseImage.WithImageOptions.class,
+                                    BinaryImage.WithBinaryImageData.class,
+                                    UrlImage.WithUrlImageData.class});
+        } else {
+            products = productDao.load(getConditions(),
+                                    new Class<?>[]{Product.WithBinaryImage.class,
+                                                  Product.WithUrlImage.class,
+                                                  BaseImage.WithImageOptions.class,
+                                                  BinaryImage.WithBinaryImageData.class,
+                                                  UrlImage.WithUrlImageData.class});
         }
+        List<T> imageList = loadByCategoryType(products, categoryType);
         return imageList;
     }
 
-    protected boolean loadByCategoryType(List<T> imageList, Product product,
-                                         CategoryType categoryType) {
-        boolean loaded = false;
-        if((product != null) && (product.getCategory().equals(categoryType)))
-        {
+    protected Map<String, Object> getConditions() {
+        conditions.put("category", categoryType);
+        return conditions;
+    }
+
+    protected List<T> loadByCategoryType(List<Product> products, CategoryType categoryType) {
+        List<T> imageList = new ArrayList<T>();
+        for(Product product : products) {
             List<BinaryImage> productImageList = product.getBinaryImageList();
             if(productImageList != null) {
                 for(BinaryImage image : productImageList) {
@@ -77,7 +75,6 @@ public class ImageLoadStrategy<T extends IImage> extends AbstractLoadStrategy<T>
                     if(image != null && productKey != null) {
                         image.setKey(Ref.create(productKey));
                         imageList.add((T) image);
-                        loaded = true;
                     }
                 }
             }
@@ -90,11 +87,10 @@ public class ImageLoadStrategy<T extends IImage> extends AbstractLoadStrategy<T>
                     if(image != null && productKey != null) {
                         image.setKey(Ref.create(productKey));
                         imageList.add((T) image);
-                        loaded = true;
                     }
                 }
             }
         }
-        return loaded;
+        return imageList;
     }
 }

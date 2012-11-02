@@ -5,10 +5,7 @@ import com.japancuccok.common.domain.image.BinaryImage;
 import com.japancuccok.common.domain.image.UrlImage;
 import com.japancuccok.common.domain.product.Product;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import static com.japancuccok.db.DAOService.*;
 
@@ -22,12 +19,12 @@ public class ProductLoadStrategy extends AbstractLoadStrategy<Product> {
 
     private static final long serialVersionUID = -5702607335911651771L;
 
-    public ProductLoadStrategy(CategoryType categoryType) {
-        super(categoryType);
+    public ProductLoadStrategy() {
+        super();
     }
 
-    public ProductLoadStrategy(boolean all) {
-        super(all);
+    public ProductLoadStrategy(CategoryType categoryType) {
+        super(categoryType);
     }
 
     @Override

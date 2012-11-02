@@ -1,11 +1,10 @@
 package com.japancuccok.main.detail;
 
 import com.japancuccok.common.domain.image.IImage;
-import org.apache.wicket.markup.html.WebComponent;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
+
+import static com.japancuccok.common.infrastructure.tools.ImageResourceUtil.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,7 +27,7 @@ public class ImagePanel<T extends IImage> extends Panel {
         super.onInitialize();
         setMarkupId(getId()+index);
         final IImage image = (IImage) getDefaultModelObject();
-        WebComponent dsImage = image.asWicketImage("smallImage");
-        add(dsImage);
+        add(getImage(image, "smallImage", this));
     }
+
 }

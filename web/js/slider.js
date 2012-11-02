@@ -307,7 +307,7 @@ Slider.prototype = {
         $('#ts-slideshow-'+this.elId).stop().animate(
             this.animateProp,
             {
-                easing: 'easeOutBack',
+                easing: 'easeOutCubic',
                 duration: this.animationDuraion,
                 complete: function() {
                     titleCallback(callbackParam);

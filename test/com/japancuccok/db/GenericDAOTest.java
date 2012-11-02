@@ -56,14 +56,11 @@ public class GenericDAOTest {
 
     @Test
     public void testBinaryAvailablePut_sizeBelowChunkSize() throws Exception {
-        //given
-        // The user provides an object which is the type of IBinaryProvider
-        BinaryImageData imageData = new BinaryImageData(
-                Ref.create(Key.<BinaryImage>create(BinaryImage.class,"Valamni")));
+        //given nothing
 
         //when
         // The user saves it using the the DAO
-        GenericGaeDAO<BaseImageData> dao = new GenericGaeDAO<BaseImageData>(BaseImageData.class, true);
+        GenericGaeDAO<ChunkFile> dao = new GenericGaeDAO<ChunkFile>(ChunkFile.class, true);
         dao.saveBinary(new Blob(new byte[]{0}));
 
         //then
@@ -80,13 +77,14 @@ public class GenericDAOTest {
         int chunkSize = DatastoreOutputStream.DATA_CHUNK_SIZE;
         byte[] b = new byte[chunkSize+1];
         new Random().nextBytes(b);
-        BinaryImageData imageData = new BinaryImageData(
-                Ref.create(Key.<BinaryImage>create(BinaryImage.class,"Valamni")));
 
         //when
         // The user saves it using the the DAO
         GenericGaeDAO<BaseImageData> dao = new GenericGaeDAO<BaseImageData>(BaseImageData.class, true);
-        dao.saveBinary(new Blob(new byte[]{0}));
+        List<Key<ChunkFile>> list = dao.saveBinary(new Blob(b));
+        BinaryImageData imageData = new BinaryImageData(
+                Ref.create(Key.<BinaryImage>create(BinaryImage.class,"Valamni")), list);
+        dao.put(imageData);
 
         //then
         // The DAO puts it directly into the datastore as a byte array stream
@@ -103,13 +101,16 @@ public class GenericDAOTest {
         int chunkSize = DatastoreOutputStream.DATA_CHUNK_SIZE;
         byte[] b = new byte[chunkSize+1];
         new Random().nextBytes(b);
-        BinaryImageData imageData = new BinaryImageData(
-                Ref.create(Key.<BinaryImage>create(BinaryImage.class,"Valamni")));
 
         //when
         // The user saves it using the the DAO
         GenericGaeDAO<BinaryImageData> dao = new GenericGaeDAO<BinaryImageData>(BinaryImageData.class, true);
-        dao.saveBinary(new Blob(new byte[]{0}));
+        dao.saveBinary(new Blob(b));
+        List<Key<ChunkFile>> list = dao.saveBinary(new Blob(b));
+        BinaryImageData imageData = new BinaryImageData(
+                Ref.create(Key.<BinaryImage>create(BinaryImage.class,"Valamni")), list);
+        dao.put(imageData);
+
         // And the user also deletes it
         dao.deleteBinary(imageData);
         dao.delete(imageData);

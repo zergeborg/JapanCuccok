@@ -1,29 +1,17 @@
 package com.japancuccok.common.domain.image;
 
-import org.apache.wicket.markup.html.image.NonCachingImage;
-
-import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
-import com.japancuccok.common.infrastructure.gaeframework.DatastoreInputStream;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.image.NonCachingImage;
-import org.apache.wicket.model.IModel;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.http.WebResponse;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.request.resource.DynamicImageResource;
 import org.apache.wicket.request.resource.IResource;
-import org.apache.wicket.util.io.ByteArrayOutputStream;
-import org.apache.wicket.util.string.StringValue;
 import org.apache.wicket.util.time.Time;
 import org.apache.wicket.util.time.TimeOfDay;
-import org.apache.wicket.util.value.LongValue;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.logging.Logger;
 

@@ -52,32 +52,36 @@
                     </form>
                 </div>
             </div>
-            <div id="uploadedProducts">
-                <div id="productHeader">
-                    <div><wicket:message key="productName" /></div>
-                    <div><wicket:message key="productPrice" /></div>
-                    <div><wicket:message key="productCategory" /></div>
-                    <div><wicket:message key="productDescription" /></div>
-                    <div><wicket:message key="productImageList" /></div>
-                    <div><wicket:message key="delete" /></div>
-                    <div><wicket:message key="edit" /></div>
-                    <div><wicket:message key="show" /></div>
-                </div>
-                <div id="productList" wicket:id="productList">
-                    <div><span wicket:id="name">(file)</span></div>
-                    <div><span wicket:id="price">(file)</span></div>
-                    <div><span wicket:id="category">(file)</span></div>
-                    <div><span wicket:id="description">(file)</span></div>
-                    <div><select wicket:id="imageList"></select></div>
-                    <div><a id="delete" href="#" wicket:id="delete"><img src="../img/delete.gif" border="0"/></a></div>
-                    <div><a id="edit" href="#" wicket:id="edit"><img src="../img/pencil.png" border="0"/></a></div>
-                    <div>
-                        <a id="showLink" href="#" wicket:id="showLink" class="showLink"><img src="../img/camera_icon.png" border="0"/></a>
+            <form wicket:id="uploadedProductForm">
+                <span wicket:id="uploadedProductContainer">
+                    <div id="uploadedProducts">
+                        <div id="productHeader">
+                            <div><wicket:message key="productName" /></div>
+                            <div><wicket:message key="productPrice" /></div>
+                            <div><wicket:message key="productCategory" /></div>
+                            <div><wicket:message key="productDescription" /></div>
+                            <div><wicket:message key="productImageList" /></div>
+                            <div><wicket:message key="delete" /></div>
+                            <div><wicket:message key="edit" /></div>
+                            <div><wicket:message key="show" /></div>
+                        </div>
+                        <div id="productList" wicket:id="productList">
+                            <div><span wicket:id="name">(file)</span></div>
+                            <div><span wicket:id="price">(file)</span></div>
+                            <div><span wicket:id="category">(file)</span></div>
+                            <div><span wicket:id="description">(file)</span></div>
+                            <div><select wicket:id="imageList"></select></div>
+                            <div><a id="delete" href="#" wicket:id="delete"><img src="../img/delete.gif" border="0"/></a></div>
+                            <div><a id="edit" href="#" wicket:id="edit"><img src="../img/pencil.png" border="0"/></a></div>
+                            <div>
+                                <a id="showLink" href="#" wicket:id="showLink" class="showLink"><img src="../img/camera_icon.png" border="0"/></a>
+                            </div>
+                            <span wicket:id="showSpan">
+                            </span>
+                        </div>
                     </div>
-                    <span wicket:id="showSpan">
-                    </span>
-                </div>
-            </div>
+                </span>
+            </form>
             <script type="text/javascript">
                 $('select option:first-child').attr("selected", "selected");
             </script>

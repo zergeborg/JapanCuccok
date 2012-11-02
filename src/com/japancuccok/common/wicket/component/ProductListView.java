@@ -5,11 +5,8 @@ import com.japancuccok.common.domain.product.Product;
 import com.japancuccok.db.DAOService;
 import com.japancuccok.db.GenericGaeDAO;
 import com.japancuccok.main.detail.ProductDetail;
-import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -20,6 +17,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import java.util.List;
 import java.util.logging.Logger;
 
+import static com.japancuccok.common.infrastructure.tools.ImageResourceUtil.getImage;
 /**
  * Created with IntelliJ IDEA.
  * User: Nagy Gergely
@@ -52,19 +50,13 @@ public class ProductListView extends PageableListView<IImage> {
         PageParameters parameters = new PageParameters();
         Product product = getProduct(image);
         parameters.add("id", product.getId());
-        BookmarkablePageLink<ProductDetail> imageLink = new BookmarkablePageLink<ProductDetail>("productItemAnchor",
-                ProductDetail.class, parameters);
+        BookmarkablePageLink<ProductDetail> imageLink =
+                new BookmarkablePageLink<ProductDetail>("productItemAnchor", ProductDetail.class, parameters);
         imageLink.setOutputMarkupId(true);
-        imageLink.add(getImage(image));
+        imageLink.add(getImage(image, "productItemImg", this));
         imageLink.add(getName(product));
         imageLink.add(getPrice(product));
         return imageLink;
-    }
-
-    private WebComponent getImage(IImage image) {
-        WebComponent wicketImage = image.asWicketImage("productItemImg");
-        wicketImage.add(new AttributeModifier("style", ""));
-        return wicketImage;
     }
 
     private Product getProduct(IImage image) {

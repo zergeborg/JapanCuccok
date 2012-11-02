@@ -1,17 +1,16 @@
 package com.japancuccok.main.detail;
 
 import com.japancuccok.common.domain.cart.Cart;
-import com.japancuccok.common.domain.product.ProductMetaData;
-import com.japancuccok.common.domain.product.ProductModel;
-import com.japancuccok.common.events.CartItemDelete;
-import com.japancuccok.common.events.CartUpdate;
 import com.japancuccok.common.domain.image.IImage;
 import com.japancuccok.common.domain.product.Product;
+import com.japancuccok.common.domain.product.ProductMetaData;
+import com.japancuccok.common.domain.product.ProductModel;
+import com.japancuccok.common.events.CartUpdate;
 import com.japancuccok.common.events.SizeChoose;
 import com.japancuccok.common.pattern.ProductDetailImageLoadStrategy;
 import com.japancuccok.common.wicket.session.JapanCuccokSession;
-import com.japancuccok.main.JapanCuccok;
 import com.japancuccok.common.wicket.template.ShopBasePage;
+import com.japancuccok.main.JapanCuccok;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
@@ -19,15 +18,17 @@ import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.*;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
+
+import static com.japancuccok.common.infrastructure.tools.ImageResourceUtil.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -94,7 +95,7 @@ public class ProductDetail extends ShopBasePage {
         LoadableDetachableModel imageListModel
                 = new ProductDetailImageLoadStrategy<IImage>(productToShow);
         List<IImage> imageList = (List<IImage>) imageListModel.getObject();
-        return imageList.get(0).asWicketImage("selectedImage");
+        return getImage(imageList.get(0), "selectedImage", this);
     }
 
     private Component getImagePanel(ProductModel productToShow) {

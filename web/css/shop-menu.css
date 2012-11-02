@@ -35,6 +35,14 @@ div#header {
     line-height:normal;
     margin-bottom: -4px;
 }
+#menu a {
+    height: 20px;
+}
+#menua:hover {
+    display: inline-block;
+    position: relative;
+    padding-top: 40px;
+}
 #menu li {
     height: 20px;
     padding: 10px 4px;
@@ -46,17 +54,25 @@ div#header {
     -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 1px 0 rgba(0,0,0,.2);
 }
 #menu li:hover {
+    position: relative;
     height: 60px;
+    bottom: 0px;
     text-shadow: 0 0 10px #fff,
     0 0 20px #fff,
     0 0 30px #fff;
 }
-#menu a {
-    text-transform: uppercase;
+#menu li:hover span {
+    transition: 0.5s;
+    -moz-transition: 0.5s;
+    -webkit-transition: 0.5s;
+    -o-transition: 0.5s;
 }
-#menu li:hover * {
+#menu li:hover span {
     position: relative;
     top: 40px;
+}
+#menu a {
+    text-transform: uppercase;
 }
 #menuLeft, #menuRight {
     display: inline;

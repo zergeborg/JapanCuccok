@@ -1,17 +1,15 @@
 package com.japancuccok.main.cart;
 
 import com.japancuccok.common.domain.cart.Cart;
-import com.japancuccok.common.domain.cart.CartModel;
 import com.japancuccok.common.domain.product.Product;
 import com.japancuccok.common.domain.product.ProductModel;
 import com.japancuccok.common.events.CartItemDelete;
 import com.japancuccok.common.events.CartUpdate;
+import com.japancuccok.common.wicket.panel.main.cart.CartListFooterScriptPanel;
 import com.japancuccok.common.wicket.session.JapanCuccokSession;
+import com.japancuccok.common.wicket.template.ShopBasePage;
 import com.japancuccok.main.JapanCuccok;
 import com.japancuccok.main.order.AddressPage;
-import com.japancuccok.common.wicket.component.CartLabel;
-import com.japancuccok.common.wicket.panel.main.cart.CartListFooterScriptPanel;
-import com.japancuccok.common.wicket.template.ShopBasePage;
 import org.apache.wicket.Component;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -20,7 +18,6 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.model.PropertyModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +32,6 @@ public class CartListPage extends ShopBasePage {
 
     private static final long serialVersionUID = 6271020764787786212L;
 
-    private int sumTotal;
     private FeedbackPanel feedbackPanel;
 
     public CartListPage() {
@@ -49,10 +45,6 @@ public class CartListPage extends ShopBasePage {
         feedbackPanel.setOutputMarkupId(true);
         add(feedbackPanel);
 
-        sumTotal = getCart().getTotal();
-        CartLabel cartSumLabel = new CartLabel("cartSum", new PropertyModel(new CartModel(), "total"));
-        cartSumLabel.setOutputMarkupId(true);
-        add(cartSumLabel);
         WebMarkupContainer orderPanel = getOrderPanel();
         add(orderPanel);
         add(getSubmitLink());

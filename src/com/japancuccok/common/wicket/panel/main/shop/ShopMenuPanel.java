@@ -7,11 +7,15 @@ import com.japancuccok.main.cart.CartListPage;
 import com.japancuccok.common.wicket.component.CartLabel;
 import com.japancuccok.common.wicket.panel.main.base.BaseMenuPanel;
 import com.japancuccok.common.wicket.template.BasePage;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
+
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +26,7 @@ import org.apache.wicket.model.StringResourceModel;
 public class ShopMenuPanel extends BaseMenuPanel {
 
     private static final long serialVersionUID = -8767205758780234071L;
+    transient private static final Logger logger = Logger.getLogger(ShopMenuPanel.class.getName());
 
     public ShopMenuPanel(String id) {
         super(id);
@@ -35,7 +40,28 @@ public class ShopMenuPanel extends BaseMenuPanel {
 
     @Override
     public Link getCartLink() {
-        return (Link) new BookmarkablePageLink("cart", CartListPage.class).setBody(new StringResourceModel("cart", findParent(BasePage.class), null));
+        Link cartLink =
+                (Link) new BookmarkablePageLink("cart",
+                        CartListPage.class){
+                    private static final long serialVersionUID = -7391132395912669831L;
+
+                    @Override
+                    public void onComponentTagBody(final MarkupStream markupStream, final ComponentTag openTag)
+                    {
+                        logger.info("Replacing cart component tag body");
+                        if ((getBody() != null) && (getBody().getObject() != null))
+                        {
+                            replaceComponentTagBody(
+                                    markupStream,
+                                    openTag,
+                                    "<li id=\"cart\"><span>"+
+                                            getDefaultModelObjectAsString(getBody().getObject())+
+                                            "</span></li>");
+                        }
+                    }
+                };
+        cartLink.setBody(new StringResourceModel("cart.title", findParent(BasePage.class), null));
+        return cartLink;
     }
 
     public Label getCartLabel() {
