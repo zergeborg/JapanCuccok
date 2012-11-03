@@ -5,22 +5,23 @@ function Slider(_htmlElement, _options) {
         return new Slider(_htmlElement, _options);
     }
 
-    this.eventListener = _htmlElement;
-    this.options = _options;
-    this.initialState = 'Inactive';
-    this.currentState = this.initialState;
-
     var mySelf = this;
+    mySelf.eventListener = _htmlElement;
+    mySelf.options = _options;
+    mySelf.initialState = 'Inactive';
+    mySelf.currentState = mySelf.initialState;
 
     (function () {
         $('#next').click(function (event) {
-            mySelf.handleEvent(event);
+            var myOwn = mySelf;
+            myOwn.handleEvent(event);
         });
     })();
 
     (function () {
         $('#prev').click(function (event) {
-            mySelf.handleEvent(event);
+            var myOwn = mySelf;
+            myOwn.handleEvent(event);
         });
     })();
 
@@ -28,16 +29,10 @@ function Slider(_htmlElement, _options) {
 
 Slider.prototype = {
 
-    mySelf               : undefined,
     elId                 : undefined,
+    ulObject             : undefined,
     params               : [],
-    images               : [],
-    links                : [],
-    linksTarget          : [],
-    titles               : [],
     nextTitle            : undefined,
-    lastTitle            : undefined,
-    lastImageTriplet     : [], // image list at most recent slide event
     direction            : 'right', // Which direction?
     lastDirection        : 'right', // The direction in the previous round
     lastCursorX          : 0, // cursor x-position at most recent mouse event
@@ -45,7 +40,6 @@ Slider.prototype = {
     width                : 800,
     height               : 600,
     marginLeft           : 0,
-    conf                 : undefined,
     titleOpacity         : 1, // opacity of title and navigation
     titleSpeed           : 1000, // speed of title display
     titleHeight          : 50, // height of the titles
@@ -60,88 +54,80 @@ Slider.prototype = {
     currentTicker        : undefined, // returned by setInterval, if a ticker is currently running
 
     initState : function initState() {
-        this.mySelf = this;
-        this.elId = this.eventListener.attr('id');
-        this.params[this.elId] = $.extend({}, this.options);
-        this.width = this.params[this.elId].width;
-        this.height = this.params[this.elId].height;
-        this.images[this.elId] = [];
-        this.links[this.elId] = [];
-        this.linksTarget[this.elId] = [];
-        this.titles[this.elId] = [];
-        this.animationFrequency = 6000;
-        this.animationDuraion = 1500;
-        return this;
+        var mySelf = this;
+        mySelf.elId = mySelf.eventListener.attr('id');
+        mySelf.params[mySelf.elId] = $.extend({}, mySelf.options);
+        mySelf.width = mySelf.params[mySelf.elId].width;
+        mySelf.height = mySelf.params[mySelf.elId].height;
+        mySelf.animationFrequency = 6000;
+        mySelf.animationDuraion = 1500;
+        return mySelf;
     },
 
     initParams : function initParams() {
-        this.params[this.elId] = $.extend({}, $.fn.transparentslider.defaults, this.options);
+        var mySelf = this;
+        mySelf.params[mySelf.elId] = $.extend({}, $.fn.transparentslider.defaults, mySelf.options);
     },
 
     setDirectionRight : function setDirectionRight() {
-        this.lastDirection = this.direction;
-        this.direction = 'right';
+        var mySelf = this;
+        mySelf.lastDirection = mySelf.direction;
+        mySelf.direction = 'right';
     },
 
     setDirectionLeft : function setDirectionLeft() {
-        this.lastDirection = this.direction;
-        this.direction = 'left';
+        var mySelf = this;
+        mySelf.lastDirection = mySelf.direction;
+        mySelf.direction = 'left';
     },
 
     initPlaceHolder : function initPlaceHolder() {
-        this.placeHolder = $("<li class='ts-li' id='placeholder'><a><span class='imageWrapper'><img/></span></a></li>");
-        this.placeHolder.css({'width':this.params[this.elId].width});
+        var mySelf = this;
+        mySelf.placeHolder = $("<li class='ts-li' id='placeholder'><a><span class='imageWrapper'><img/></span></a></li>");
+        mySelf.placeHolder.css({'width':this.params[mySelf.elId].width});
 //        this.placeHolder.css({'float':'left'});
     },
 
-    initTitleBar: function initTitleBar(i) {
+    createTitleBar: function createTitleBar(i) {
+        var mySelf = this;
         // create title bar
-        $('#labelWrapper').append("<div class='ts-title' id='ts-title-" + this.elId + i +"'></div>");
-        var $title = $('#ts-title-' + this.elId + i);
-        $title.css({'display': 'none'});
-        $title.css({'position': 'relative'});
-        $title.css({'bottom':'0'});
-        $title.css({'left': '0'});
-        $title.css({'z-index': '1000'});
-        $title.css({'height' : this.params[this.elId].titleHeight});
+        $('#labelWrapper').append("<div class='ts-title' id='ts-title-" + mySelf.elId + i +"'></div>");
+        var $title = $('#ts-title-' + mySelf.elId + i);
+        return $title;
+    },
+
+    initTitleBar: function initTitleBar($title, $titleContent) {
+        var mySelf = this;
+        $title.css({'height' : mySelf.params[mySelf.elId].titleHeight});
         //$title.css({color: jQuery.Color("rgba(255,255,255,0)")});
-        $title.html(this.titles[this.elId][i]);
-        return this;
+        $title.html($titleContent);
+        return mySelf;
     },
 
     initImages : function initImages() {
-        // create images, links and titles arrays
-        var imgList = $('#slider img');
-        for(var i = 0; i < imgList.length; i += 1) {
+        var mySelf = this;
+        var imgList = $('img', '#slider');
+        for(var i = 0, max = imgList.length; i < max; i += 1) {
             var $imageWrapper = $(imgList[i]).parent();
             var $imageWrapperNext = $imageWrapper.next();
-            this.images[this.elId][i] = $(imgList[i]).attr('src');
-            this.links[this.elId][i] = $imageWrapper.is('a') ? $imageWrapper.attr('href') : '';
-            this.linksTarget[this.elId][i] = $imageWrapper.is('a') ? $imageWrapper.attr('target') : '';
-            this.titles[this.elId][i] = $imageWrapperNext.is('span') ? $imageWrapperNext.html() : '';
+            var $title = mySelf.createTitleBar(i);
+            var $titleContent = $imageWrapperNext.is('span') ? $imageWrapperNext.html() : '';
+            mySelf.initTitleBar($title, $titleContent);
             var $anchor = $imageWrapper.parent();
-            $anchor.wrap("<li class='ts-li'/>");
             var $ts_li = $anchor.parent();
-            $ts_li.attr('id', this.elId + i);
-            $ts_li.css({'width':this.width});
-            $ts_li.css({
-                'display'      : 'inline',
-                'float'        : 'left',
-                'margin-right' : 10, //TODO This value should be a parameter
-                'margin-left' : 10 //TODO This value should be a parameter
-            });
-            this.initTitleBar(i);
+            $ts_li.css({'width':mySelf.width});
             $imageWrapperNext.hide();
         }
-        return this;
+        return mySelf;
     },
 
+    //Event listener means the element which is used as the target to attach the content to
     initEventListener : function initEventListener() {
-        var imageWidth = this.width+40; //40px is the background
-        var imageHeight = this.height+80; //80px is the background
-        var numberOfImages = this.images[this.elId].length + 1; // +1 because of the placeholder
+        var mySelf = this;
+        var imageWidth = mySelf.width+40; //40px is the background
+        var imageHeight = mySelf.height+80; //80px is the background
         // set panel
-        $('#' + this.elId).css({
+        $('#' + mySelf.elId).css({
             'clear'   :'both',
             'overflow':'hidden',
             'width'   :imageWidth,
@@ -149,43 +135,43 @@ Slider.prototype = {
             //'background-color': 'rgba(255,255,255,1)',
             'background-size': imageWidth+'px '+imageHeight+'px',
             'position':'relative'
-        }).wrap("<div class='transparent-slider' id='transparent-slider-" + this.elId + "' />");
+        }).wrap("<div class='transparent-slider' id='transparent-slider-" + mySelf.elId + "' />");
 
         // add slideshow to the DOM tree
-        $('#' + this.elId + ' .ts-li').wrapAll("<ul class='ts-slideshow' id='ts-slideshow-" + this.elId + "' />");
-        return this;
+        $('.ts-slideshow', '#' + mySelf.elId).attr('id', 'ts-slideshow-' + mySelf.elId);
+        mySelf.ulObject = $('#ts-slideshow-' + mySelf.elId);
+        return mySelf;
     },
 
     initSlideshowPanel : function initSlideshowPanel() {
-        var imageWidth = this.width;
-        var imageHeight = this.height;
-        var numberOfImages = this.images[this.elId].length + 1; // +1 because of the placeholder
+        var mySelf = this;
+        var imageWidth = mySelf.width;
+        var imageHeight = mySelf.height;
         // slideshow width should be the width of [image_width]*[nr of images]
-        $('#ts-slideshow-' + this.elId).css(
+        mySelf.ulObject.css(
             {
-                'width'  :(imageWidth * 3) + (20 * 3), // 10 equals to the left and right margins between images
-                'height' :imageHeight-30, //30 pixels are needed to make sure the image fits in its container
-                'padding-left': 20,
-                'display':''
+                'width'  :(imageWidth * 3) + (20 * 3), // 20 equals to the left and right margins between images
+                'height' :imageHeight-30 //30 pixels are needed to make sure the image fits in its container
             }
         );
-        return this;
+        return mySelf;
     },
 
     setMarginLeft : function setMarginLeft(marginLeft) {
-        $('#ts-slideshow-' + this.elId).css(
+        var mySelf = this;
+        mySelf.ulObject.css(
             {
                 'margin-left': marginLeft
             }
         );
-        return this;
+        return mySelf;
     },
 
     initMarginLeft : function initMarginLeft() {
-        var numberOfImages = this.images[this.elId].length + 1; // +1 because of the placeholder
-        this.marginLeft = (this.direction === 'left')
-            ? ((this.width * 0) - 20)
-            : ((this.width * -2) - 30);
+        var mySelf = this;
+        mySelf.marginLeft = (mySelf.direction === 'left')
+            ? ((mySelf.width * 0) - 20)
+            : ((mySelf.width * -2) - 30);
     },
 
     initPrev : function initPrev() {
@@ -199,52 +185,54 @@ Slider.prototype = {
     },
 
     displaySlideshow : function displaySlideshow() {
+        var mySelf = this;
         // Display slideshow
-        $('#ts-slideshow-' + this.elId).show();
+        mySelf.ulObject.show();
         // Display images
-        $('#' + this.elId + ' .ts-li').show();
+        $('#' + mySelf.elId + ' .ts-li').show();
         // Display title
-        $(this.nextTitle).show();
+        $(mySelf.nextTitle).show();
     },
 
     selectNextImage : function selectNextImage() {
-        if(this.direction === 'left') {
-            this.nextImage = $('#ts-slideshow-' + this.elId).children().first();
-            this.firstImage = this.nextImage.next();
-            this.firstImage.css({
+        var mySelf = this;
+        if(mySelf.direction === 'left') {
+            mySelf.nextImage = $('li:first', mySelf.ulObject);
+            mySelf.firstImage = mySelf.nextImage.next();
+            mySelf.firstImage.css({
                 'display' : 'inline',
                 'float'   : 'left'
             });
-            this.secondImage = this.nextImage.next().next();
-            this.secondImage.css({
+            mySelf.secondImage = mySelf.nextImage.next().next();
+            mySelf.secondImage.css({
                 'display' : 'inline',
                 'float'   : 'left'
             });
-            this.thirdImage = this.nextImage.next().next().next();
-            this.thirdImage.css({
+            mySelf.thirdImage = mySelf.nextImage.next().next().next();
+            mySelf.thirdImage.css({
                 'display' : 'inline',
                 'float'   : 'left'
             });
-            var currentId = this.nextImage.attr("id");
-            this.nextTitle = '#ts-title-' + currentId;
+            var currentId = mySelf.nextImage.attr("id");
+            mySelf.nextTitle = '#ts-title-' + currentId;
         } else {
-            this.firstImage = $('#ts-slideshow-' + this.elId).children().first();
-            this.firstImage.css({
+            mySelf.firstImage = $('li:first', mySelf.ulObject);
+            mySelf.firstImage.css({
                 'display' : 'inline',
                 'float'   : 'left'
             });
-            this.secondImage = $('#ts-slideshow-' + this.elId).children().first().next();
-            this.secondImage.css({
+            mySelf.secondImage = $('li:first', mySelf.ulObject).next();
+            mySelf.secondImage.css({
                 'display' : 'inline',
                 'float'   : 'left'
             });
-            this.nextImage = $('#ts-slideshow-' + this.elId).children().last();
-            this.nextImage.css({
+            mySelf.nextImage = $('li:last', mySelf.ulObject);
+            mySelf.nextImage.css({
                 'display' : 'inline',
                 'float'   : 'left'
             });
-            var currentId = this.nextImage.attr("id");
-            this.nextTitle = '#ts-title-' + currentId;
+            var currentId = mySelf.nextImage.attr("id");
+            mySelf.nextTitle = '#ts-title-' + currentId;
         }
     },
 
@@ -253,10 +241,11 @@ Slider.prototype = {
     },
 
     attachPlaceHolder : function attachPlaceHolder() {
-        if(this.direction === 'left') {
-            $('#ts-slideshow-' + this.elId).children().last().after(this.placeHolder);
+        var mySelf = this;
+        if(mySelf.direction === 'left') {
+            $('li:last', mySelf.ulObject).after(mySelf.placeHolder);
         } else {
-            $('#ts-slideshow-' + this.elId).children().first().before(this.placeHolder);
+            $('li:first', mySelf.ulObject).before(mySelf.placeHolder);
         }
     },
 
@@ -268,48 +257,54 @@ Slider.prototype = {
 
 
     clearCursorPosition : function clearCursorPosition() {
-        this.lastCursorX = -1;
-        this.lastCursorY = -1;
+        var mySelf = this;
+        mySelf.lastCursorX = -1;
+        mySelf.lastCursorY = -1;
     },
 
     initIndent : function initIndent() {
-        var width = this.width;
+        var mySelf = this;
+        var width = mySelf.width;
         // get the target position for the slideshow div
-        if(this.lastDirection === this.direction) {
-            this.setMarginLeft(this.marginLeft);
-            if(this.direction === 'left') {
-                this.indent = this.marginLeft - width;
+        if(mySelf.lastDirection === mySelf.direction) {
+            mySelf.setMarginLeft(mySelf.marginLeft);
+            if(mySelf.direction === 'left') {
+                mySelf.indent = mySelf.marginLeft - width;
             } else {
-                this.indent = this.marginLeft+width;
+                mySelf.indent = mySelf.marginLeft+width;
             }
         } else {
-            this.indent = this.marginLeft;
-            this.lastDirection = this.direction;
+            mySelf.indent = mySelf.marginLeft;
+            mySelf.lastDirection = mySelf.direction;
         }
-        this.lastIndent = this.indent;
-        return this;
+        mySelf.lastIndent = mySelf.indent;
+        return mySelf;
     },
 
     initAnimateProps : function initAnimateProps() {
+        var mySelf = this;
         // jQuery.animate() will use this one!
-        this.animateProp = {
-            marginLeft :this.indent,
+        mySelf.animateProp = {
+            marginLeft :mySelf.indent,
             top        :"0px"
             //paddingLeft:"0px"
         };
-        return this;
+        return mySelf;
     },
 
     animate : function animate() {
-        var callbackParam = this;
-        var titleCallback = this.animateTitle;
-        var buttonCallback = this.animateButtons;
-        $('#ts-slideshow-'+this.elId).stop().animate(
-            this.animateProp,
+        var mySelf = this;
+        var titleCB = mySelf.animateTitle;
+        var buttonCB = mySelf.animateButtons;
+        mySelf.ulObject.stop().animate(
+            mySelf.animateProp,
             {
                 easing: 'easeOutCubic',
-                duration: this.animationDuraion,
+                duration: mySelf.animationDuraion,
                 complete: function() {
+                    var callbackParam = mySelf;
+                    var titleCallback = titleCB;
+                    var buttonCallback = buttonCB;
                     titleCallback(callbackParam);
                     buttonCallback(callbackParam);
                 }
@@ -347,21 +342,24 @@ Slider.prototype = {
     },
 
     doActionTransition : function doActionTransition(anotherState, anotherEventType, event) {
-        return Slider.prototype.actionTransitionFunctions[anotherState][anotherEventType].call(this, event);
+        var mySelf = this;
+        return mySelf.actionTransitionFunctions[anotherState][anotherEventType].call(mySelf, event);
     },
 
     startTicker : function startTicker() {
         var mySelf = this;
-        this.currentTicker = setInterval(function() {
+        mySelf.currentTicker = setInterval(function() {
+            var myOwn = mySelf;
             // Slide!
-            mySelf.doActionTransition('Inactive','timetick',undefined);
-        }, this.animationFrequency);
+            myOwn.doActionTransition('Inactive','timetick',undefined);
+        }, mySelf.animationFrequency);
 
-        return this;
+        return mySelf;
     },
 
     clearTicker : function clearTicker() {
-        if (this.currentTicker) clearInterval(this.currentTicker);
+        var ticker = this.currentTicker;
+        if (ticker) clearInterval(ticker);
         this.currentTicker = null;
         return this;
     },
@@ -376,62 +374,70 @@ Slider.prototype = {
     },
 
     unexpectedEvent: function unexpectedEvent(event) {
-        this.cancelTicker();
-        alert("TransparentSlider handled unexpected event '" + event.type + "' in state '" + this.currentState + "' for id='" + this.htmlElement.id + "' running browser " + window.navigator.userAgent);
-        return this.initialState;
+        var mySelf = this;
+        mySelf.cancelTicker();
+        alert("TransparentSlider handled unexpected event '" + event.type + "' in state '" + mySelf.currentState + "' for id='" + mySelf.htmlElement.id + "' running browser " + window.navigator.userAgent);
+        return mySelf.initialState;
     },
 
     undefinedState: function undefinedState(event, state) {
-        this.cancelTicker();
-        alert("TransparentSlider transitioned to undefined state '" + state + "' from state '" + this.currentState + "' due to event '" + event.type + "' from HTML element id='" + this.htmlElement.id + "' running browser " + window.navigator.userAgent);
-        return this.initialState;
+        var mySelf = this;
+        mySelf.cancelTicker();
+        alert("TransparentSlider transitioned to undefined state '" + state + "' from state '" + mySelf.currentState + "' due to event '" + event.type + "' from HTML element id='" + mySelf.htmlElement.id + "' running browser " + window.navigator.userAgent);
+        return mySelf.initialState;
     },
 
     actionTransitionFunctions : {
 
         Inactive: {
             init: function init(event) {
-                this.initState();
-                this.initImages();
-                this.initEventListener();
-                this.initSlideshowPanel();
-                this.initMarginLeft();
-                return this.doActionTransition('Inactive', 'run', event);
+                var mySelf = this;
+                mySelf.initState();
+                mySelf.initImages();
+                mySelf.initEventListener();
+                mySelf.initSlideshowPanel();
+                mySelf.initMarginLeft();
+                return mySelf.doActionTransition('Inactive', 'run', event);
             },
 
             run: function run(event) {
-                if(this.lastDirection === this.direction) {
-                    this.initMarginLeft();
-                    this.selectNextImage();
+                var mySelf = this;
+                if(mySelf.lastDirection === mySelf.direction) {
+                    mySelf.initMarginLeft();
+                    mySelf.selectNextImage();
                 }
-                this.initPrev();
-                this.initNext();
-                this.displaySlideshow();
-                return this.doActionTransition('Inited', 'move', event);
+                mySelf.initPrev();
+                mySelf.initNext();
+                mySelf.displaySlideshow();
+                return mySelf.doActionTransition('Inited', 'move', event);
             },
 
             timetick: function timetick(event) {
-                return this.doActionTransition('Inactive', 'run', event);
+                var mySelf = this;
+                return mySelf.doActionTransition('Inactive', 'run', event);
             },
 
             onnext: function onnext(event) {
-                this.setDirectionRight();
-                this.clearTicker();
-                return this.doActionTransition('Inactive', 'run', event);
+                var mySelf = this;
+                mySelf.setDirectionRight();
+                mySelf.clearTicker();
+                return mySelf.doActionTransition('Inactive', 'run', event);
             },
 
             onprev: function onprev(event) {
-                this.setDirectionLeft();
-                this.clearTicker();
-                return this.doActionTransition('Inactive', 'run', event);
+                var mySelf = this;
+                mySelf.setDirectionLeft();
+                mySelf.clearTicker();
+                return mySelf.doActionTransition('Inactive', 'run', event);
             },
 
             click: function click(event) {
+                var mySelf = this;
                 var $eventTarget = $(event.target);
                 if($eventTarget.parent().attr('id') === 'next' || $eventTarget.attr('id') === 'next') {
-                    return this.doActionTransition('Inactive', 'onnext', event);
+                    return mySelf.doActionTransition('Inactive', 'onnext', event);
                 } else {
-                    return this.doActionTransition('Inactive', 'onprev', event);
+                    return mySelf.doActionTransition('Inactive', 'onprev', event);
                 }
             }
 
@@ -439,28 +445,32 @@ Slider.prototype = {
 
         Inited: {
             move: function move(event) {
-                if(this.lastDirection === this.direction) {
-                    this.initPlaceHolder();
-                    this.attachPlaceHolder();
-                    this.replacePlaceHolder();
+                var mySelf = this;
+                if(mySelf.lastDirection === mySelf.direction) {
+                    mySelf.initPlaceHolder();
+                    mySelf.attachPlaceHolder();
+                    mySelf.replacePlaceHolder();
                 }
-                return this.doActionTransition('Move', 'slide', event);
+                return mySelf.doActionTransition('Move', 'slide', event);
             },
 
             onnext: function onnext(event) {
-                return this.doActionTransition('Inactive', 'onnext', event);
+                var mySelf = this;
+                return mySelf.doActionTransition('Inactive', 'onnext', event);
             },
 
             onprev: function onprev(event) {
-                return this.doActionTransition('Inactive', 'onprev', event);
+                var mySelf = this;
+                return mySelf.doActionTransition('Inactive', 'onprev', event);
             },
 
             click: function click(event) {
+                var mySelf = this;
                 var $eventTarget = $(event.target);
                 if($eventTarget.attr('id') === 'next') {
-                    return this.doActionTransition('Inited', 'onnext', event);
+                    return mySelf.doActionTransition('Inited', 'onnext', event);
                 } else {
-                    return this.doActionTransition('Inited', 'onPrev', event);
+                    return mySelf.doActionTransition('Inited', 'onPrev', event);
                 }
             }
 
@@ -468,28 +478,32 @@ Slider.prototype = {
 
         Move: {
             slide: function slide(event) {
-                this.initIndent();
-                this.initAnimateProps();
-                this.animate();
-                return this.doActionTransition('Finish', 'reset', event);
+                var mySelf = this;
+                mySelf.initIndent();
+                mySelf.initAnimateProps();
+                mySelf.animate();
+                return mySelf.doActionTransition('Finish', 'reset', event);
             },
 
             onnext: function onnext(event) {
-                this.setDirectionRight();
-                return this.doActionTransition('Interrupt', 'slide', event);
+                var mySelf = this;
+                mySelf.setDirectionRight();
+                return mySelf.doActionTransition('Interrupt', 'slide', event);
             },
 
             onprev: function onprev(event) {
-                this.setDirectionLeft();
-                return this.doActionTransition('Interrupt', 'slide', event);
+                var mySelf = this;
+                mySelf.setDirectionLeft();
+                return mySelf.doActionTransition('Interrupt', 'slide', event);
             },
 
             click: function click(event) {
+                var mySelf = this;
                 var $eventTarget = $(event.target);
                 if($eventTarget.attr('id') === 'next') {
-                    return this.doActionTransition('Move', 'onnext', event);
+                    return mySelf.doActionTransition('Move', 'onnext', event);
                 } else {
-                    return this.doActionTransition('Move', 'onPrev', event);
+                    return mySelf.doActionTransition('Move', 'onPrev', event);
                 }
             }
 
@@ -497,17 +511,19 @@ Slider.prototype = {
 
         Interrupt: {
             slide: function slide() {
-                return this.doActionTransition('Move', 'slide', event);
+                var mySelf = this;
+                return mySelf.doActionTransition('Move', 'slide', event);
             }
         },
 
         Finish: {
             reset: function reset(event) {
-                this.hideTitle();
-                this.detachNextImage();
-                this.clearCursorPosition();
-                this.clearTicker();
-                this.startTicker();
+                var mySelf = this;
+                mySelf.hideTitle();
+                mySelf.detachNextImage();
+                mySelf.clearCursorPosition();
+                mySelf.clearTicker();
+                mySelf.startTicker();
                 return "Inactive";
             }
         }

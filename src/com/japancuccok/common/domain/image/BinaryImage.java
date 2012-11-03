@@ -96,7 +96,7 @@ public class BinaryImage extends BaseImage implements Serializable {
         BinaryImage image = (BinaryImage) o;
 
         if (category != image.category) return false;
-        if (!fileType.equals(image.fileType)) return false;
+        if (fileType != null ? !fileType.equals(image.fileType) : image.fileType != null) return false;
         if (!id.equals(image.id)) return false;
         if (mimeType != null ? !mimeType.equals(image.mimeType) : image.mimeType != null) return false;
         if (!name.equals(image.name)) return false;

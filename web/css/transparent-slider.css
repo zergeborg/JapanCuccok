@@ -8,6 +8,11 @@
     text-align: left;
     word-spacing: -0.1em;
     vertical-align: baseline;
+    display: none;
+    position: relative;
+    bottom: 0px;
+    left: 0px;
+    z-index: 1000;
 }
 
 .ts-title:first-line {
@@ -16,15 +21,18 @@
 }
 
 .ts-slideshow {
-    display:none;
-    padding-left: 0px;
+    display: none;
+    padding-left: 20px;
     position: relative;
     overflow: hidden;
 }
 
 .ts-li {
-    display: none;
     border: 1px;
+    display: inline;
+    float: left;
+    margin-right: 10px;
+    margin-left: 10px;
     width: 100%;
     height: 100%;
 }

@@ -48,6 +48,8 @@ public class SliderListView<T extends BaseImage> extends ListView<T> {
         setOutputMarkupId(true);
 
         IImage image = listItem.getModelObject();
+        listItem.add(new AttributeModifier("class","ts-li"));
+        listItem.setMarkupId("slider"+listItem.getIndex());
         listItem.add(getImageLink(image));
     }
 

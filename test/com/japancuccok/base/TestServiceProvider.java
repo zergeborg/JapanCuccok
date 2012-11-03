@@ -25,6 +25,7 @@ public class TestServiceProvider {
     public static void begin() throws IOException, SAXException {
         testHelper.setEnvAppId("fogettijapancuccok");
         testHelper.setEnvAuthDomain("gmail.com");
+        testHelper.setEnforceApiDeadlines(true);
         testHelper.setUp();
     }
 
