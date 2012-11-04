@@ -3,22 +3,6 @@
         transparentSlider: function(options) {
 
             var mySelf = this;
-            mySelf.initialState = 'Inactive';
-            mySelf.currentState = mySelf.initialState;
-
-            (function () {
-                $('#next').click(function (event) {
-                    var myOwn = mySelf;
-                    myOwn.handleEvent(event);
-                });
-            })();
-
-            (function () {
-                $('#prev').click(function (event) {
-                    var myOwn = mySelf;
-                    myOwn.handleEvent(event);
-                });
-            })();
 
             var defaults =
             {
@@ -34,11 +18,13 @@
                 height               : 600,
                 titleOpacity         : 1, // opacity of title and navigation
                 titleSpeed           : 1000, // speed of title display
-                titleHeight          : 50, // height of the titles
+                titleHeight          : 90, // height of the titles
                 animationFrequency   : 6000,
                 animationDuraion     : 1500,
                 left                 : 0,
-                lastLeft             : this.left,
+                lastLeft             : 0,
+                initialState         : 'Inactive',
+                currentState         : 'Inactive',
                 animateProp          : undefined,
                 nextImage            : undefined,
                 prevImage            : undefined,
@@ -103,9 +89,10 @@
                 //Event listener means the element which is used as the target to attach the content to
                 initEventListener : function initEventListener() {
                     var imageWidth = o.width+40; //40px is the background
-                    var imageHeight = o.height+80; //80px is the background
+                    var imageHeight = o.height; //80px is the background
                     // set panel
                     $('#' + o.elId).css({
+                        'margin'  :'auto',
                         'clear'   :'both',
                         'overflow':'hidden',
                         'width'   :imageWidth,
@@ -143,13 +130,13 @@
                 }
 
                 initPrev : function initPrev() {
-                    $('#prev').appendTo($('#transparent-slider-' + o.elId).children('#slider'));
-                    $('#prev').css({'position':'absolute', 'float':'left', 'top':'10%', 'left':'0', 'opacity':'0'});
+                    //$('#prev').appendTo($('#transparent-slider-' + o.elId).children('#slider'));
+                    $('#prev').css({'opacity':'0', 'z-index':'9999'});
                 }
 
                 initNext : function initNext() {
-                    $('#next').appendTo($('#transparent-slider-' + o.elId).children('#slider'));
-                    $('#next').css({'position':'absolute', 'float':'right', 'top':'10%', 'right':'0', 'opacity':'0'});
+                    //$('#next').appendTo($('#transparent-slider-' + o.elId).children('#slider'));
+                    $('#next').css({'opacity':'0', 'z-index':'9999'});
                 }
 
                 displaySlideshow : function displaySlideshow() {
@@ -292,7 +279,7 @@
                         {
                             duration: o.titleSpeed,
                             complete: function() {
-                                $('#next').css({ 'position':'relative' });
+                                $('#next').css({ 'opacity':1 });
                             }
                         }
                     );
@@ -303,7 +290,7 @@
                         {
                             duration: o.titleSpeed,
                             complete: function() {
-                                $('#prev').css({ 'position':'relative' });
+                                $('#prev').css({ 'opacity':1 });
                             }
                         }
                     );
@@ -477,6 +464,19 @@
                     }
 
                 };
+
+                (function () {
+                    $('#next').click(function (event) {
+                        handleEvent(event);
+                    });
+                })();
+
+                (function () {
+                    $('#prev').click(function (event) {
+                        handleEvent(event);
+                    });
+                })();
+
                 doActionTransition('Inactive','init',undefined);
             })
         }

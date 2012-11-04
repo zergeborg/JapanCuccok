@@ -16,61 +16,63 @@
 </head>
 <body>
 <wicket:extend>
-    <!--a href="#" id="prev" onclick="return false;">
-        <span>&#8249;</span>
-    </a>
-    <a href="#" id="next" onclick="return false;">
-        <span>&#8250;</span>
-    </a-->
-    <span id="slider-wrapper">
-        <div id="slider">
-            <ul class='ts-slideshow'>
-                <li wicket:id="imageSlider">
-                    <a href="#" wicket:id="imageAnchor">
-                        <span wicket:id="imageWrapper" class="imageWrapper">
-                            <div wicket:id="placeHolder" />
-                        </span>
-                        <span wicket:id="imageLabel">
-                            Szép hely!
-                        </span>
-                    </a>
-                    <wicket:remove>
-                        <a href="#">
-                            <span>
-                                <img src="./img/pillowOrig.png" width="715px" height="303px">
+    <div id="sliderAndLabel">
+        <span id="slider-wrapper">
+            <div id="slider">
+                <ul class='ts-slideshow'>
+                    <li wicket:id="imageSlider">
+                        <a href="#" wicket:id="imageAnchor">
+                            <span wicket:id="imageWrapper" class="imageWrapper">
+                                <div wicket:id="placeHolder" />
                             </span>
-                            <span>
+                            <span wicket:id="imageLabel">
                                 Szép hely!
                             </span>
                         </a>
-                        <a href="#">
-                            <span>
-                                <img src="./img/pillowRed.png" width="715px" height="303px">
-                            </span>
-                            <span>
-                                Ejjha!
-                            </span>
-                        </a>
-                        <a href="#">
-                            <span>
-                                <img src="./img/pillowPurple.png" width="715px" height="303px">
-                            </span>
-                            <span>
-                                Tyű az anyja
-                            </span>
-                        </a>
-                        <!--a href="#">
-                            <img src="./img/pillowWeird.png" width="715px" height="303px">
-                            <span wicket:id="pillow04">
-                                Tyű az anyja
-                            </span>
-                        </a-->
-                    </wicket:remove>
-                </li>
-            </ul>
-        </div>
-    </span>
-    <div id="labelWrapper"></div>
+                        <wicket:remove>
+                            <a href="#">
+                                <span>
+                                    <img src="./img/pillowOrig.png" width="715px" height="303px">
+                                </span>
+                                <span>
+                                    Szép hely!
+                                </span>
+                            </a>
+                            <a href="#">
+                                <span>
+                                    <img src="./img/pillowRed.png" width="715px" height="303px">
+                                </span>
+                                <span>
+                                    Ejjha!
+                                </span>
+                            </a>
+                            <a href="#">
+                                <span>
+                                    <img src="./img/pillowPurple.png" width="715px" height="303px">
+                                </span>
+                                <span>
+                                    Tyű az anyja
+                                </span>
+                            </a>
+                            <!--a href="#">
+                                <img src="./img/pillowWeird.png" width="715px" height="303px">
+                                <span wicket:id="pillow04">
+                                    Tyű az anyja
+                                </span>
+                            </a-->
+                        </wicket:remove>
+                    </li>
+                </ul>
+                <a href="#" class="navigator" id="prev" onclick="return false;">
+                    <span>&#8249;</span>
+                </a>
+                <a href="#" class="navigator" id="next" onclick="return false;">
+                    <span>&#8250;</span>
+                </a>
+            </div>
+        </span>
+        <div id="labelWrapper"></div>
+    </div>
     <div id="mottoWrapper">
         <div id="motto">"...Lorem ipsum dolor sit amet, consectetur adepisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"</div>
     </div>

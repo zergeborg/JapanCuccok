@@ -3,21 +3,27 @@
 */
 
 .ts-title {
+    background-color: rgba(248, 248, 255, 0.7);
     font-weight: bold;
-    font-size: 16px;
+    font-size: 2.1em;
+    line-height: 1em;
+    text-shadow: 0 0 0.4em rgba(200, 200, 200, 1), 0 0 0.4em rgba(200, 200, 200, 1);
     text-align: left;
-    word-spacing: -0.1em;
     vertical-align: baseline;
-    display: none;
-    position: relative;
     bottom: 0px;
     left: 0px;
-    z-index: 1000;
-}
+    overflow: hidden;
 
-.ts-title:first-line {
-    font-size: 3.1em;
-    text-shadow: 0 0 0.4em rgba(200, 200, 200, 1), 0 0 0.4em rgba(200, 200, 200, 1);
+    border: 1px solid rgba(0, 0, 0, .1);
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+
+    -moz-box-shadow: 0px 0px 6px rgba(0,0,0,0.15);
+    -webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
+
+    background-size: auto 100%;
 }
 
 .ts-slideshow {
@@ -37,34 +43,66 @@
     height: 100%;
 }
 
-/* Shadow Triangle */
+/* Navigator */
 
-a#prev,
+.navigator {
+    background: url("../img/slider-arrow.png") no-repeat scroll 11px 9px rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    height: 45px;
+    left: 120px;
+    margin-top: -38px;
+    overflow: hidden;
+
+    position: absolute;
+    text-decoration: none;
+    text-indent: -9999px;
+    width: 45px;
+    -moz-transform: scale(0);
+    -webkit-transform: scale(0);
+    -o-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+}
+
+.navigator:active, .navigator:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.navigator {
+    -webkit-transition: all 250ms ease-in-out;
+    -moz-transition: all 250ms ease-in-out;
+    -ms-transition: all 250ms ease-in-out;
+    -o-transition: all 250ms ease-in-out;
+    transition: all 250ms ease-in-out;
+}
+
+a#next, a#prev {
+    bottom: 50%;
+}
+
 a#next {
-    display: inline-block;
-    width: auto;
+    background-position: -20px 10px;
+    left: auto;
+    right: 120px;
 }
 
-a#prev > span ,
-a#next > span {
-    display: inline-block;
+#sliderAndLabel:hover a#next  {
+    right: 45px;
+    -moz-transform: scale(1) ;
+    -webkit-transform: scale(1) ;
+    -o-transform: scale(1) );
+    -ms-transform: scale(1) ;
+    transform: scale(1) ;
 }
 
-/*span {
-    display: inline-block;
-    transform: scaleX(2.5);
-    color: grey;
-    text-shadow:
-        0 2px 2px rgba(255,255,255,0.7),
-        0 10px 4px rgba(0,0,0,0.5);
-    font-size: 128px;
+#sliderAndLabel:hover a#prev  {
+    left: 45px;
+    -moz-transform: scale(1) ;
+    -webkit-transform: scale(1);
+    -o-transform: scale(1);
+    -ms-transform: scale(1) ;
+    transform: scale(1) ;
 }
-span:hover {
-    transition: all 0.2s ease;
-    transform: scaleX(2.5) translateY(4px);
-    text-shadow:
-        0 1px 1px rgba(0,0,0,0.5);
-}*/
 
 .transparent-slider {
     display: inline;
@@ -77,10 +115,6 @@ span:hover {
     max-height:100%;
     background-size: auto 100%;
     margin: auto;
-
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
 
     -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.5);
     -moz-box-shadow: inset 0 -1px 0 rgba(0,0,0,.5);
@@ -95,10 +129,6 @@ span:hover {
     top: 0;
     left: 0;
 
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
-
     background: -moz-linear-gradient(top, rgba(255,255,255,0.7) 0%, rgba(255,255,255,.1) 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0.7)), color-stop(100%,rgba(255,255,255,.1)));
     background: linear-gradient(top, rgba(255,255,255,0.7) 0%,rgba(255,255,255,.1) 100%);
@@ -111,13 +141,6 @@ span:hover {
     height: 50px;
     bottom: -51px;
     left: 0;
-
-    -webkit-border-top-left-radius: 10px;
-    -webkit-border-top-right-radius: 10px;
-    -moz-border-radius-topleft: 10px;
-    -moz-border-radius-topright: 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
 
     background: -moz-linear-gradient(top, rgba(55,100,155,.3) 0%, rgba(100,100,100,0) 50%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(55,100,155,.3)), color-stop(50%,rgba(55,100,155,0)));
