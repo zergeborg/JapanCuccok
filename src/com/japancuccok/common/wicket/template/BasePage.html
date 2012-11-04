@@ -17,8 +17,11 @@
 </head>
 <body>
 <script type="text/javascript">
-    $(document).ready(function() {
-        new Slider($('#slider'), { 'width': 400, 'height': 320}).doActionTransition('Inactive','init',undefined);
+    $(function(){
+        $('#slider').transparentSlider({
+            'width': 400,
+            'height': 320
+        });
     });
 </script>
 

@@ -48,8 +48,8 @@ public class SliderListView<T extends BaseImage> extends ListView<T> {
         setOutputMarkupId(true);
 
         IImage image = listItem.getModelObject();
-        listItem.add(new AttributeModifier("class","ts-li"));
-        listItem.setMarkupId("slider"+listItem.getIndex());
+        listItem.add(new AttributeModifier("class", "ts-li"));
+        listItem.setMarkupId("slider" + listItem.getIndex());
         listItem.add(getImageLink(image));
     }
 
@@ -73,7 +73,7 @@ public class SliderListView<T extends BaseImage> extends ListView<T> {
     private WebMarkupContainer getImageWrapper(IImage image) {
         WebMarkupContainer imageWrapper = new WebMarkupContainer("imageWrapper");
         String imageUrl = getUrl(image, this);
-        imageWrapper.add(applyImageStyle(getImage(image, "imageTag", this), imageUrl));
+        imageWrapper.add(getPlaceHolder());
         String bg = "background:url('"+imageUrl+"') no-repeat;";
         String bgSize = "background-size: cover;";
         String mozBgSize = "-moz-background-size: cover;";
@@ -86,13 +86,13 @@ public class SliderListView<T extends BaseImage> extends ListView<T> {
         return imageWrapper;
     }
 
-    private Component applyImageStyle(Component image, String imageUrl) {
-        String hidden = "visibility:hidden;";
-        String maxW = "max-width:100%;";
-        String maxH = "max-height:90%;";
-        image.add(new AttributeModifier("style", hidden+maxW+maxH));
-        image.add(new AttributeModifier("src", new Model<String>(imageUrl)));
-        return image;
+    private Component getPlaceHolder() {
+        String componentId = "placeHolder";
+        WebMarkupContainer placeHolder = new WebMarkupContainer(componentId);
+        String sliderW = "width:"+getString("sliderWidth")+"px;";
+        String sliderH = "height:"+getString("sliderHeight")+"px;";
+        placeHolder.add(new AttributeModifier("style", sliderW+sliderH));
+        return placeHolder;
     }
 
     private Label getLabel(IImage image) {
