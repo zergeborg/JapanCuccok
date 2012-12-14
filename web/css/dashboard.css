@@ -17,18 +17,21 @@ img#contentBackground {
     left: 2px;
     z-index: 1;
 }
+div#content {
+    height: auto;
+}
 div#content>a {
     display: none;
 }
 #sliderAndLabel {
     overflow: auto;
-    background-color: white;
+    background-color: rgba(240, 10, 10, 0.2);
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
-    -moz-box-shadow: 0px 0px 6px rgba(0,0,0,0.15);
-    -webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
-    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
+    -moz-box-shadow: 0px 0px 30px rgba(0,0,0,0.15);
+    -webkit-box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
     border: 1px solid rgba(0, 0, 0, .1);
 }
 span#slider-wrapper {
@@ -43,6 +46,8 @@ div#slider {
 }
 div#slider > ul {
     list-style-type: none;
+    margin: auto;
+    padding: 0;
 }
 div#slider > ul > li > a > img {
     display: block;
@@ -51,28 +56,27 @@ div#slider > ul > li > a > img {
     max-width: 100%;
 }
 #labelWrapper {
-    position: relative;
+    position: absolute;
     margin: auto;
     width: 450px;
     padding: 10px;
-    top: -11em;
-    left: -11em;
+    bottom: 20%;
 }
 #mottoWrapper {
     bottom: 20px;
-    position: absolute;
     width: 100%;
     padding: 1em;
 }
 #motto {
+    color: seaShell;
     display: block;
     float: right;
     width: 100%;
     margin: auto;
     height: 4em;
     padding: 1em;
-    box-shadow: 0px 0px 30px white;
-    background-color: rgba(200, 200, 255, 0.4);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
+    background-color: rgba(240, 10, 10, 0.4);
 }
 div#bannerPanel {
     width: 85%;

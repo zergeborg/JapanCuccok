@@ -1,4 +1,14 @@
+jQuery.fx.interval = 30;
 (function($){
+
+    Function.prototype.bind = function(scope) {
+        var _function = this;
+
+        return function() {
+            return _function.apply(scope, arguments);
+        }
+    }
+
     $.fn.extend({
         transparentSlider: function(options) {
 
@@ -14,8 +24,10 @@
                 lastDirection        : 'right', // The direction in the previous round
                 lastCursorX          : 0, // cursor x-position at most recent mouse event
                 lastCursorY          : 0, // cursor y-position at most recent mouse event
-                width                : 800,
-                height               : 600,
+                width                : 900,
+                height               : 675,
+                thumbnailWidth       : '200px',
+                thumbnailHeight      : '150px',
                 titleOpacity         : 1, // opacity of title and navigation
                 titleSpeed           : 1000, // speed of title display
                 titleHeight          : 90, // height of the titles
@@ -28,7 +40,6 @@
                 animateProp          : undefined,
                 nextImage            : undefined,
                 prevImage            : undefined,
-                placeHolder          : undefined,
                 currentTicker        : undefined // returned by setInterval, if a ticker is currently running
             };
             var options = $.extend(defaults, options);
@@ -36,6 +47,9 @@
             return this.each(function() {
 
                 var mySelf = this;
+                var randID = Math.round(Math.random()*100000000);
+                var curr = (options.direction === 'right')?1:-1;
+                var dist = 0;
                 var o=options;
                 o.elId = $(mySelf).attr('id');
                 o.params[o.elId] = $.extend({}, o);
@@ -52,11 +66,6 @@
                     o.direction = 'left';
                 }
 
-                initPlaceHolder : function initPlaceHolder() {
-                    o.placeHolder = $("<li class='ts-li' id='placeholder'><a><span class='imageWrapper'><div/></span></a></li>");
-                    o.placeHolder.css({'width':o.params[o.elId].width});
-                }
-
                 createTitleBar: function createTitleBar(i) {
                     // create title bar
                     $('#labelWrapper').append("<div class='ts-title' id='ts-title-" + o.elId + i +"'></div>");
@@ -65,7 +74,7 @@
                 }
 
                 initTitleBar: function initTitleBar($title, $titleContent) {
-                    $title.css({'height' : o.params[o.elId].titleHeight});
+                    //$title.css({'height' : o.params[o.elId].titleHeight});
                     $title.html($titleContent);
                     return o;
                 }
@@ -98,7 +107,9 @@
                         'width'   :imageWidth,
                         'height'  :imageHeight,
                         'background-size': imageWidth+'px '+imageHeight+'px',
-                        'position':'relative'
+                        'position':'relative',
+                        'padding-top':'30px',
+                        'left'    :'-10px'
                     }).wrap("<div class='transparent-slider' id='transparent-slider-" + o.elId + "' />");
 
                     // add slideshow to the DOM tree
@@ -120,23 +131,57 @@
                     return o;
                 }
 
-                setLeft : function setLeft(marginLeft) {
+                initThumbnails : function initThumbnails()
+                {
+                    var object = $("#sliderAndLabel");
+                    var numImages = $('li', object).length;
+                    var imageWidth = o.width;
+                    var thumb,i;
+                    // Build thumbnail viewer and thumbnail divs
+                    object.after('<div class="thumbs" id="thumbs'+randID+'"></div>');
+                    $('#thumbs'+randID).width(imageWidth);
+                    for(i=0;i<numImages;i++)
+                    {
+                        thumb = $('.ts-li>a>.imageWrapper:eq('+(i)+')', object).css('background-image');
+                        $('#thumbs'+randID).append('<div class="thumb" id="thumb'+randID+'_'+(i)+'" style="background-image:'+thumb+';background-size:'+o.thumbnailWidth+';width:'+o.thumbnailWidth+';height:'+o.thumbnailHeight+';line-height:'+o.thumbnailHeight+';">'+(i)+'</div>');
+                        if(i===0) $('#thumb'+randID+'_1').css({'border-color':'#ff0000'});
+                    }
+                    // Next two lines are a special case to handle the first list element which was originally the last
+                    thumb = $('.ts-li>a>.imageWrapper:first', object).css('background-image');
+                    $('#thumb'+randID+'_'+numImages).css({'background-image':thumb});
+
+                    // Assign click handler for the thumbnails. Normally the format $('.thumb') would work but since it's outside of our object (obj) it would get called multiple times
+                    $('#thumbs'+randID+' div').bind('click', handleEvent); // We use bind instead of just plain click so that we can repeatedly remove and reattach the handler
+                }
+
+                thumbClick : function thumbClick(event)
+                {
+                    var $eventTarget = $(event.target);
+                    var id = $eventTarget.attr('id');
+                    var target_num = id.split('_')[1];
+                    if(curr != target_num)
+                    {
+                        $('#thumb'+randID+'_'+curr).css({'border-color':'#ccc'});
+                    }
+                    if(target_num > curr)
+                    {
+                        dist = target_num - curr;
+                        setDirectionLeft();
+                    }
+                    if(target_num < curr)
+                    {
+                        dist = curr - target_num;
+                        setDirectionRight();
+                    }
+                }
+
+                setLeft : function setLeft(leftPosition) {
                     o.ulObject.css(
                         {
-                            left: marginLeft
+                            left: leftPosition
                         }
                     );
                     return o;
-                }
-
-                initPrev : function initPrev() {
-                    //$('#prev').appendTo($('#transparent-slider-' + o.elId).children('#slider'));
-                    $('#prev').css({'opacity':'0', 'z-index':'9999'});
-                }
-
-                initNext : function initNext() {
-                    //$('#next').appendTo($('#transparent-slider-' + o.elId).children('#slider'));
-                    $('#next').css({'opacity':'0', 'z-index':'9999'});
                 }
 
                 displaySlideshow : function displaySlideshow() {
@@ -148,115 +193,13 @@
                     $(o.nextTitle).show();
                 }
 
-                selectNextImage : function selectNextImage() {
-                    if(o.direction === 'left') {
-                        o.nextImage = $('li:first', o.ulObject);
-                        o.firstImage = o.nextImage.next();
-                        o.firstImage.css({
-                            'display' : 'inline',
-                            'float'   : 'left'
-                        });
-                        o.secondImage = o.nextImage.next().next();
-                        o.secondImage.css({
-                            'display' : 'inline',
-                            'float'   : 'left'
-                        });
-                        o.thirdImage = o.nextImage.next().next().next();
-                        o.thirdImage.css({
-                            'display' : 'inline',
-                            'float'   : 'left'
-                        });
-                        var currentId = o.nextImage.attr("id");
-                        o.nextTitle = '#ts-title-' + currentId;
-                    } else {
-                        o.firstImage = $('li:first', o.ulObject);
-                        o.firstImage.css({
-                            'display' : 'inline',
-                            'float'   : 'left'
-                        });
-                        o.secondImage = $('li:first', o.ulObject).next();
-                        o.secondImage.css({
-                            'display' : 'inline',
-                            'float'   : 'left'
-                        });
-                        o.nextImage = $('li:last', o.ulObject);
-                        o.nextImage.css({
-                            'display' : 'inline',
-                            'float'   : 'left'
-                        });
-                        var currentId = o.nextImage.attr("id");
-                        o.nextTitle = '#ts-title-' + currentId;
-                    }
-                }
-
                 detachNextImage : function detachNextImage() {
                     o.nextImage.remove();
-                }
-
-                attachPlaceHolder : function attachPlaceHolder() {
-                    if(o.direction === 'left') {
-                        $('li:last', o.ulObject).after(o.placeHolder);
-                    } else {
-                        $('li:first', o.ulObject).before(o.placeHolder);
-                    }
-                }
-
-                replacePlaceHolder : function replacePlaceHolder() {
-                    // This is needed because jQuery removes the elements after replaceWith called
-                    var tempImageObject = o.nextImage.clone();
-                    $('#placeholder').replaceWith(tempImageObject);
                 }
 
                 clearCursorPosition : function clearCursorPosition() {
                     o.lastCursorX = -1;
                     o.lastCursorY = -1;
-                }
-
-                initLeft : function initLeft() {
-                    var width = o.width;
-                    // get the target position for the slideshow div
-                    if(o.lastDirection === o.direction) {
-                        if(o.direction === 'left') {
-                            setLeft(-o.width-20);
-                            o.left = (-o.width*2)-20;
-                        } else {
-                            setLeft((-o.width*2)-30);
-                            o.left = -o.width-30;
-                        }
-                    } else {
-                        o.left = o.lastLeft;
-                        o.lastDirection = o.direction;
-                    }
-                    o.lastLeft = o.left;
-                    return o;
-                }
-
-                initAnimateProps : function initAnimateProps() {
-                    // jQuery.animate() will use this one!
-                    o.animateProp = {
-                        left : o.left
-                    };
-                    return o;
-                }
-
-                animate : function animate() {
-                    var titleCB = animateTitle;
-                    var buttonCB = animateButtons;
-                    o.ulObject.css({ 'position':'absolute' }).stop().animate(
-                        o.animateProp,
-                        {
-                            easing: 'easeOutBack',
-                            duration: o.animationDuraion,
-                            complete: function() {
-                                var callbackParam = o;
-                                var titleCallback = titleCB;
-                                var buttonCallback = buttonCB;
-                                callbackParam.ulObject.css({ 'position':'relative' });
-                                titleCallback(callbackParam);
-                                buttonCallback(callbackParam);
-                            }
-                        }
-                    );
                 }
 
                 animateTitle : function animateTitle(o) {
@@ -320,6 +263,25 @@
                     return o;
                 }
 
+                multiStep : function multiStep(steps, args, callback) {
+
+                    var tasks = steps.concat(); //clone the array
+
+                    setTimeout(function(){
+
+                        //execute the next task
+                        var task = tasks.shift();
+                        task.apply(null, args || []);
+
+                        //determine if there is more
+                        if(tasks.length > 0) {
+                            setTimeout(arguments.callee, 25);
+                        } else {
+                            callback();
+                        }
+                    }, 25);
+                }
+
                 handleEvent: function handleEvent(event) {
                     var actionTransitionFunction = actionTransitionFunctions[o.currentState][event.type];
                     if (!actionTransitionFunction) actionTransitionFunction = unexpectedEvent;
@@ -348,18 +310,132 @@
                             initImages();
                             initEventListener();
                             initSlideshowPanel();
-                            initPlaceHolder();
+                            initThumbnails();
                             displaySlideshow();
                             return doActionTransition('Inactive', 'run', event);
                         },
 
                         run: function run(event) {
+                            // selectNextImage()
                             if(o.lastDirection === o.direction) {
-                                selectNextImage();
+                                if(o.direction === 'left') {
+                                    o.nextImage = $('li:first', o.ulObject);
+                                    var currentId = o.nextImage.attr("id");
+                                    o.nextTitle = '#ts-title-' + currentId;
+                                    o.firstImage = o.nextImage.next();
+                                    o.firstImage.css({
+                                        'display' : 'inline',
+                                        'float'   : 'left'
+                                    });
+                                    o.secondImage = o.firstImage.next();
+                                    o.secondImage.css({
+                                        'display' : 'inline',
+                                        'float'   : 'left'
+                                    });
+                                    o.thirdImage = o.secondImage.next();
+                                    o.thirdImage.css({
+                                        'display' : 'inline',
+                                        'float'   : 'left'
+                                    });
+                                } else {
+                                    o.firstImage = $('li:first', o.ulObject);
+                                    o.firstImage.css({
+                                        'display' : 'inline',
+                                        'float'   : 'left'
+                                    });
+                                    o.secondImage = $('li:first', o.ulObject).next();
+                                    o.secondImage.css({
+                                        'display' : 'inline',
+                                        'float'   : 'left'
+                                    });
+                                    o.nextImage = $('li:last', o.ulObject);
+                                    o.nextImage.css({
+                                        'display' : 'inline',
+                                        'float'   : 'left'
+                                    });
+                                    var currentId = o.nextImage.attr("id");
+                                    o.nextTitle = '#ts-title-' + currentId;
+                                }
                             }
-                            initPrev();
-                            initNext();
-                            return doActionTransition('Inited', 'move', event);
+                            // initCurrent()
+                            var object = o.ulObject;
+                            var numImages = $('li', object).length;
+                            if(o.direction === 'left') {
+                                if(curr === numImages-1) {
+                                    curr = 0;
+                                } else {
+                                    curr = curr+1;
+                                }
+                            } else {
+                                if(curr === 0) {
+                                    curr = numImages-1;
+                                } else {
+                                    curr = curr-1;
+                                }
+                            }
+                            // initPrev()
+                            $('#prev').css({'opacity':'0', 'z-index':'9999'});
+                            // initNext()
+                            $('#next').css({'opacity':'0', 'z-index':'9999'});
+                            // attachNextImage()
+                            if(o.lastDirection === o.direction) {
+                                if(o.direction === 'left') {
+                                    $('li:last', o.ulObject).after(o.nextImage.clone());
+                                } else {
+                                    $('li:first', o.ulObject).before(o.nextImage.clone());
+                                }
+                            }
+                            // initLeft()
+                            var width = o.width;
+                            var direction = o.direction;
+                            // get the target position for the slideshow div
+                            if(o.lastDirection === direction) {
+                                if(direction === 'left') {
+                                    setLeft(-width-30);
+                                    o.left = (-width*(2))-30;
+                                } else {
+                                    setLeft((-width*(2))-(numImages*10)-40);
+                                    o.left = -width-10;
+                                }
+                            } else {
+                                if(direction === 'left') {
+                                    o.left = o.lastLeft - width-20;
+                                } else {
+                                    o.left = o.lastLeft + width+20;
+                                }
+                                o.lastDirection = direction;
+                            }
+                            o.lastLeft = o.left;
+                            // initAnimateProps()
+                            // jQuery.animate() will use this one!
+                            o.animateProp = {
+                                'position':'absolute',
+                                left : o.left
+                            };
+                            // animate()
+                            var titleCB = animateTitle;
+                            var buttonCB = animateButtons;
+                            o.ulObject.css({ 'position':'absolute' }).stop().animate(
+                                o.animateProp,
+                                {
+                                    easing: 'easeOutBack',
+                                    duration: o.animationDuraion,
+                                    complete: function() {
+                                        var callbackParam = o;
+                                        var titleCallback = titleCB;
+                                        var buttonCallback = buttonCB;
+                                        callbackParam.ulObject.css({ 'position':'relative' });
+                                        titleCallback(callbackParam);
+                                        buttonCallback(callbackParam);
+                                    }
+                                }
+                            );
+                            hideTitle();
+                            detachNextImage();
+                            clearCursorPosition();
+                            clearTicker();
+                            startTicker();
+                            return "Inactive";
                         },
 
                         timetick: function timetick(event) {
@@ -378,89 +454,28 @@
                             return doActionTransition('Inactive', 'run', event);
                         },
 
+                        onthumb: function onthumb(event) {
+                            var j;
+                            thumbClick(event);
+                            for(j = 0; j < dist; j++)
+                            {
+                                doActionTransition('Inactive', 'run', event);
+                            }
+                            dist = 0;
+                            return "Inactive";
+                        },
+
                         click: function click(event) {
                             var $eventTarget = $(event.target);
                             if($eventTarget.parent().attr('id') === 'next' || $eventTarget.attr('id') === 'next') {
                                 return doActionTransition('Inactive', 'onnext', event);
+                            } else if($eventTarget.parent().attr('class') === 'thumb' || $eventTarget.attr('class') === 'thumb') {
+                                return doActionTransition('Inactive', 'onthumb', event);
                             } else {
                                 return doActionTransition('Inactive', 'onprev', event);
                             }
                         }
 
-                    },
-
-                    Inited: {
-                        move: function move(event) {
-                            if(o.lastDirection === o.direction) {
-                                attachPlaceHolder();
-                                replacePlaceHolder();
-                            }
-                            return doActionTransition('Move', 'slide', event);
-                        },
-
-                        onnext: function onnext(event) {
-                            return doActionTransition('Inactive', 'onnext', event);
-                        },
-
-                        onprev: function onprev(event) {
-                            return doActionTransition('Inactive', 'onprev', event);
-                        },
-
-                        click: function click(event) {
-                            var $eventTarget = $(event.target);
-                            if($eventTarget.attr('id') === 'next') {
-                                return doActionTransition('Inited', 'onnext', event);
-                            } else {
-                                return doActionTransition('Inited', 'onPrev', event);
-                            }
-                        }
-
-                    },
-
-                    Move: {
-                        slide: function slide(event) {
-                            initLeft();
-                            initAnimateProps();
-                            animate();
-                            return doActionTransition('Finish', 'reset', event);
-                        },
-
-                        onnext: function onnext(event) {
-                            setDirectionRight();
-                            return doActionTransition('Interrupt', 'slide', event);
-                        },
-
-                        onprev: function onprev(event) {
-                            setDirectionLeft();
-                            return doActionTransition('Interrupt', 'slide', event);
-                        },
-
-                        click: function click(event) {
-                            var $eventTarget = $(event.target);
-                            if($eventTarget.attr('id') === 'next') {
-                                return doActionTransition('Move', 'onnext', event);
-                            } else {
-                                return doActionTransition('Move', 'onPrev', event);
-                            }
-                        }
-
-                    },
-
-                    Interrupt: {
-                        slide: function slide() {
-                            return doActionTransition('Move', 'slide', event);
-                        }
-                    },
-
-                    Finish: {
-                        reset: function reset(event) {
-                            hideTitle();
-                            detachNextImage();
-                            clearCursorPosition();
-                            clearTicker();
-                            startTicker();
-                            return "Inactive";
-                        }
                     }
 
                 };

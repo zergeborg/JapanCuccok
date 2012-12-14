@@ -31,6 +31,7 @@ import org.apache.wicket.request.Response;
 import org.apache.wicket.session.HttpSessionStore;
 import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.settings.IRequestCycleSettings;
+import org.apache.wicket.util.time.Duration;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -113,10 +114,12 @@ public class JapanCuccok extends WebApplication {
     }
 
     private void initSettings() {
-        getRequestCycleSettings().setRenderStrategy(IRequestCycleSettings.RenderStrategy.REDIRECT_TO_RENDER);
+        getRequestCycleSettings().setRenderStrategy(IRequestCycleSettings.RenderStrategy
+                                                            .REDIRECT_TO_RENDER);
         getMarkupSettings().setCompressWhitespace(COMPRESS_WHITESPACE);
         getStoreSettings().setAsynchronous(STORE_ASYNCHRONOUS);
         getStoreSettings().setInmemoryCacheSize(PAGE_INSTANCE_NUMBER);
+        getResourceSettings().setDefaultCacheDuration(Duration.ONE_WEEK);
     }
 
     private void mountPages() {
