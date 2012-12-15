@@ -3,6 +3,9 @@ JapanCuccok
 
 My first Wicket Project running on Google AppEngine. Basically a simple webshop.
 
+Visit the link below if you're interested, please:
+http://fogettijapancuccok.appspot.com/
+
 
 What this project is about?
 ---------------------------
