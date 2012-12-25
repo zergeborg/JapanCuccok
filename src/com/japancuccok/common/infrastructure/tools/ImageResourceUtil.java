@@ -29,9 +29,10 @@ public class ImageResourceUtil {
     }
 
     public static String getUrl(IImage image, Component component) {
-        ResourceReference imagesResourceReference = new ImageResourceReference(image.asResource("imageTag"));
-        ((WebApplication)component.getApplication()).mountResource("/images/${name}",
-                imagesResourceReference);
+        ResourceReference imagesResourceReference =
+                WebApplication.get().
+                        getResourceReferenceRegistry().
+                        getResourceReference(ImageResourceReference.class, "images", null, null, null, true, false);
         PageParameters imageParameters = new PageParameters();
 
         String url = null;

@@ -84,11 +84,6 @@ public class BinaryImage extends BaseImage implements Serializable {
     }
 
     @Override
-    public IResource asResource(String imageComponentId) {
-        return getDatastoreImage(imageComponentId).getImageResource();
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if ((o == null) || !(o instanceof BinaryImage)) return false;

@@ -2,15 +2,9 @@ package com.japancuccok.common.domain.image;
 
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
-import org.apache.wicket.WicketRuntimeException;
-import org.apache.wicket.markup.html.image.NonCachingImage;
-import org.apache.wicket.request.Response;
-import org.apache.wicket.request.http.WebResponse;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.request.resource.DynamicImageResource;
+import com.japancuccok.common.wicket.resource.MyDynamicImageResource;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.request.resource.IResource;
-import org.apache.wicket.util.time.Time;
-import org.apache.wicket.util.time.TimeOfDay;
 
 import java.io.Serializable;
 import java.util.logging.Logger;
@@ -19,7 +13,7 @@ import java.util.logging.Logger;
  * @author uudashr
  *
  */
-public class DatastoreImage extends NonCachingImage implements Serializable, IResourceProvider {
+public class DatastoreImage extends Image implements Serializable {
 
     private static final long serialVersionUID = -6103333163734189303L;
     transient private static final Logger logger = Logger.getLogger(DatastoreImage.class.getName());
@@ -38,14 +32,12 @@ public class DatastoreImage extends NonCachingImage implements Serializable, IRe
         this.options = options;
     }
 
-    /**
-     * @see org.apache.wicket.markup.html.image.Image#getImageResource()
-     */
     @Override
-    public IResource getImageResource() {
-        return new MyDynamicImageResource(options);
+    protected IResource getImageResource()
+    {
+        return new MyDynamicImageResource();
     }
-
+    
     public int getOldWidth() {
         return this.oldWidth;
     }
@@ -70,74 +62,4 @@ public class DatastoreImage extends NonCachingImage implements Serializable, IRe
         return this.newFileSize;
     }
 
-    private class MyDynamicImageResource extends DynamicImageResource {
-
-        private static final long serialVersionUID = -2812349562312499405L;
-
-        private final ImageOptions options;
-
-        public MyDynamicImageResource(ImageOptions options) {
-            this.options = options;
-            DatastoreImage.this.oldWidth = -1;
-            DatastoreImage.this.oldHeight = -1;
-            DatastoreImage.this.newWidth = -1;
-            DatastoreImage.this.newHeight = -1;
-            DatastoreImage.this.newFileSize = -1;
-            DatastoreImage.this.oldFileSize = -1;
-        }
-
-        private byte[] getImageData(Long imageDataId) {
-            logger.fine("Trying to return image data [ " + getId() + " ] of type [ " +
-                    "" + getFormat() + " ]");
-            try {
-                ImageDataModel imageModel = new ImageDataModel<IImageData>(imageDataId);
-                BinaryImageData imageData = (BinaryImageData)imageModel.load();
-                byte[] data = imageData.getBytes();
-
-                com.google.appengine.api.images.Image oldImage = ImagesServiceFactory.makeImage(data);
-                oldWidth = oldImage.getWidth();
-                oldHeight = oldImage.getHeight();
-                oldFileSize = oldImage.getImageData().length;
-
-                // TODO: this is not really needed
-//                Transform resize = ImagesServiceFactory.makeResize(options.getWidth(), options.getHeight(), true);
-//                com.google.appengine.api.images.Image newImage = imagesService.applyTransform
-//                        (resize, oldImage, ImagesService.OutputEncoding.PNG);
-//                newWidth = newImage.getWidth();
-//                newHeight = newImage.getHeight();
-//
-//                newFileSize = newImage.getImageData().length;
-                data = oldImage.getImageData();
-                return data;
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-                throw new WicketRuntimeException(e);
-            } finally {
-                // ...
-            }
-        }
-
-        @Override
-        protected byte[] getImageData(Attributes attributes) {
-            PageParameters parameters = attributes.getParameters();
-            Long imageDataId = parameters.get("imageDataId").toLongObject();
-            return getImageData(imageDataId);
-        }
-
-        @Override
-        protected void setResponseHeaders(final ResourceResponse data,
-                                          final Attributes attributes) {
-            Response response = attributes.getResponse();
-            if (response instanceof WebResponse)
-            {
-                WebResponse webResponse = (WebResponse)response;
-
-                webResponse.setHeader("Pragma", "max-age=3600, must-revalidate");
-                webResponse.setHeader("Cache-Control", "max-age=3600, must-revalidate");
-                webResponse.setDateHeader("Expires",
-                        Time.valueOf(TimeOfDay.now()));
-            }
-        }
-
-    }
 }

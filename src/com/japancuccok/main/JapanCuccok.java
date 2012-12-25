@@ -1,5 +1,6 @@
 package com.japancuccok.main;
 
+import com.japancuccok.common.domain.image.ImageResourceReference;
 import com.japancuccok.common.domain.product.Product;
 import com.japancuccok.common.infrastructure.gae.GaeCompressRequestCycleListener;
 import com.japancuccok.common.infrastructure.gae.GaeMaintenanceAwareSessionStore;
@@ -28,6 +29,7 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.session.HttpSessionStore;
 import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.settings.IRequestCycleSettings;
@@ -35,6 +37,8 @@ import org.apache.wicket.util.time.Duration;
 
 import java.util.List;
 import java.util.logging.Logger;
+
+import static org.apache.wicket.request.resource.ResourceReference.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -87,7 +91,7 @@ public class JapanCuccok extends WebApplication {
     }
 
     private void mountResources() {
-//        mountResource("/images/${name}", new ImageResourceReference());
+        mountResource("/images/${imageDataId}", new ImageResourceReference());
     }
 
     public static JapanCuccok get() {
@@ -123,7 +127,7 @@ public class JapanCuccok extends WebApplication {
     }
 
     private void mountPages() {
-        mountPage("/", Dashboard.class);
+        mountPage("/dashboard", Dashboard.class);
         mountPage("/cartlist", CartListPage.class);
         mountPage("/shop", Shop.class);
         mountPage("/tshirt", Tshirt.class);

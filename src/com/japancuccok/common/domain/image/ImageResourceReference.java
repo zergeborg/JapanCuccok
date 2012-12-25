@@ -1,7 +1,10 @@
 package com.japancuccok.common.domain.image;
 
+import com.japancuccok.common.wicket.resource.MyDynamicImageResource;
 import org.apache.wicket.request.resource.IResource;
 import org.apache.wicket.request.resource.ResourceReference;
+
+import java.util.logging.Logger;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,15 +15,14 @@ import org.apache.wicket.request.resource.ResourceReference;
 public class ImageResourceReference extends ResourceReference {
 
     private static final long serialVersionUID = -8007029817130894200L;
-    private final IResource iResource;
 
-    public ImageResourceReference(IResource iResource) {
+    public ImageResourceReference() {
         super(ImageResourceReference.class, "images");
-        this.iResource = iResource;
     }
 
     @Override
     public IResource getResource() {
-        return iResource;
+        return new MyDynamicImageResource();
     }
+
 }

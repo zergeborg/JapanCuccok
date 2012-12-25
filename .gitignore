@@ -37,6 +37,10 @@ Icon?
 ehthumbs.db
 Thumbs.db
 
+# IDE related files #
+#####################
+*.iml
+
 # Local directories #
 #####################
 error/

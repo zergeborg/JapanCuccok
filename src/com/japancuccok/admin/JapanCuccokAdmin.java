@@ -1,6 +1,7 @@
 package com.japancuccok.admin;
 
 import com.japancuccok.admin.dashboard.Dashboard;
+import com.japancuccok.common.domain.image.ImageResourceReference;
 import com.japancuccok.common.infrastructure.gae.GaeSafeServletWebRequest;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -37,10 +38,11 @@ public class JapanCuccokAdmin extends WebApplication {
     {
         super.init();
 
+        mountResource("/images/${imageDataId}", new ImageResourceReference());
         getResourceSettings().setThrowExceptionOnMissingResource(false);
         getApplicationSettings().setUploadProgressUpdatesEnabled(true);
         getApplicationSettings().setDefaultMaximumUploadSize(Bytes.bytes(1024*1024*10-1024));
-        mountPage("/", Dashboard.class);
+        mountPage("/dashboard", Dashboard.class);
     }
 
     @Override
