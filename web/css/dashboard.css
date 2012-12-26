@@ -10,6 +10,9 @@ div#main {
     display: block;
     margin: auto;
     text-align: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
 }
 img#contentBackground {
     position: relative;
