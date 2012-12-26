@@ -91,7 +91,7 @@ public class JapanCuccok extends WebApplication {
     }
 
     private void mountResources() {
-        mountResource("/images/${imageDataId}", new ImageResourceReference());
+        mountResource("/images/${imageFileNameWithExtension}", new ImageResourceReference());
     }
 
     public static JapanCuccok get() {

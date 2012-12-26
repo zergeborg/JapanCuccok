@@ -57,7 +57,7 @@ public class MyDynamicImageResource extends DynamicImageResource {
     @Override
     protected byte[] getImageData(Attributes attributes) {
         PageParameters parameters = attributes.getParameters();
-        Long imageDataId = parameters.get("imageDataId").toLongObject();
+        Long imageDataId = Long.parseLong(parameters.get("imageFileNameWithExtension").toString().replaceAll("\\.png", ""));
         return getImageData(imageDataId);
     }
 
@@ -69,6 +69,7 @@ public class MyDynamicImageResource extends DynamicImageResource {
         {
             WebResponse webResponse = (WebResponse)response;
 
+            webResponse.setContentType("image/"+getFormat());
             webResponse.setHeader("Pragma", "max-age=3600, must-revalidate");
             webResponse.setHeader("Cache-Control", "max-age=3600, must-revalidate");
             webResponse.setDateHeader("Expires",

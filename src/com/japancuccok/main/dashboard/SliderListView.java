@@ -53,12 +53,13 @@ public class SliderListView<T extends BaseImage> extends ListView<T> {
         listItem.add(getImageLink(image));
     }
 
-    private Link<Void> getImageLink(IImage image) {
+    private Component getImageLink(IImage image) {
         PageParameters parameters = new PageParameters();
 //        Product product = getProduct(image);
 //        parameters.add("id", product.getId());
 //        BookmarkablePageLink imageLink = new BookmarkablePageLink<BaseImage>("imageAnchor", ProductDetail.class, parameters);
-        BookmarkablePageLink imageLink = new BookmarkablePageLink<BaseImage>("imageAnchor", getPage().getClass());
+//        BookmarkablePageLink imageLink = new BookmarkablePageLink<BaseImage>("imageAnchor", getPage().getClass());
+        WebMarkupContainer imageLink = new WebMarkupContainer("imageAnchor");
         imageLink.setOutputMarkupId(true);
         imageLink.add(getImageWrapper(image));
         imageLink.add(getLabel(image));

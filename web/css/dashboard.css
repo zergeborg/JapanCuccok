@@ -83,6 +83,10 @@ div#bannerPanel {
     bottom: 20px;
     margin: auto;
 }
+div#bannerPanel a {
+    position: relative;
+    z-index: 999;
+}
 div#copyrightContainer {
     position: absolute;
 }

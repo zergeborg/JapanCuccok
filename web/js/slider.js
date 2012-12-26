@@ -142,12 +142,12 @@ jQuery.fx.interval = 30;
                     $('#thumbs'+randID).width(imageWidth);
                     for(i=0;i<numImages;i++)
                     {
-                        thumb = $('.ts-li>a>.imageWrapper:eq('+(i)+')', object).css('background-image');
+                        thumb = $('.ts-li .imageWrapper:eq('+(i)+')', object).css('background-image');
                         $('#thumbs'+randID).append('<div class="thumb" id="thumb'+randID+'_'+(i)+'" style="background-image:'+thumb+';background-size:'+o.thumbnailWidth+';width:'+o.thumbnailWidth+';height:'+o.thumbnailHeight+';line-height:'+o.thumbnailHeight+';">'+(i)+'</div>');
                         if(i===0) $('#thumb'+randID+'_1').css({'border-color':'#ff0000'});
                     }
                     // Next two lines are a special case to handle the first list element which was originally the last
-                    thumb = $('.ts-li>a>.imageWrapper:first', object).css('background-image');
+                    thumb = $('.ts-li .imageWrapper:first', object).css('background-image');
                     $('#thumb'+randID+'_'+numImages).css({'background-image':thumb});
 
                     // Assign click handler for the thumbnails. Normally the format $('.thumb') would work but since it's outside of our object (obj) it would get called multiple times
@@ -161,7 +161,8 @@ jQuery.fx.interval = 30;
                     var target_num = id.split('_')[1];
                     if(curr != target_num)
                     {
-                        $('#thumb'+randID+'_'+curr).css({'border-color':'#ccc'});
+                        $("[id*='thumb"+randID+"']").css({'border-color':'rgba(0, 0, 0, 0.3)'});
+                        $('#thumb'+randID+'_'+target_num).css({'border-color':'#ccc'});
                     }
                     if(target_num > curr)
                     {
@@ -320,8 +321,6 @@ jQuery.fx.interval = 30;
                             if(o.lastDirection === o.direction) {
                                 if(o.direction === 'left') {
                                     o.nextImage = $('li:first', o.ulObject);
-                                    var currentId = o.nextImage.attr("id");
-                                    o.nextTitle = '#ts-title-' + currentId;
                                     o.firstImage = o.nextImage.next();
                                     o.firstImage.css({
                                         'display' : 'inline',
@@ -337,6 +336,8 @@ jQuery.fx.interval = 30;
                                         'display' : 'inline',
                                         'float'   : 'left'
                                     });
+                                    var currentId = o.thirdImage.attr("id");
+                                    o.nextTitle = '#ts-title-' + currentId;
                                 } else {
                                     o.firstImage = $('li:first', o.ulObject);
                                     o.firstImage.css({
@@ -353,7 +354,7 @@ jQuery.fx.interval = 30;
                                         'display' : 'inline',
                                         'float'   : 'left'
                                     });
-                                    var currentId = o.nextImage.attr("id");
+                                    var currentId = o.firstImage.attr("id");
                                     o.nextTitle = '#ts-title-' + currentId;
                                 }
                             }
@@ -373,6 +374,9 @@ jQuery.fx.interval = 30;
                                     curr = curr-1;
                                 }
                             }
+                            // moveThumbnailBorder()
+                            $("[id*='thumb"+randID+"']").css({'border-color':'rgba(0, 0, 0, 0.3)'});
+                            $('#thumb'+randID+'_'+curr).css({'border-color':'#ccc'});
                             // initPrev()
                             $('#prev').css({'opacity':'0', 'z-index':'9999'});
                             // initNext()
