@@ -7,7 +7,7 @@ Visit the link below if you're interested, please:
 http://fogettijapancuccok.appspot.com/
 
 
-What this project is about?
+What is this project about?
 ---------------------------
 
 It's really good question! Since I promised myself to develop my skills further, I thought it would be a nice idea to dive in the clouds! :D Yup, I'm a daydreamer. So anything you find here, is just for my own pleasure. Like an online playground.
@@ -37,7 +37,7 @@ Objectify: because we like strongly-typed systems, don't we? ;)
 http://code.google.com/p/objectify-appengine/
 
 
-What this project is NOT about?
+What is this project NOT about?
 --------------------------------
 
 OK, so you read it and you arrived here finally. Then you must be simply crazy or really motivated. So I'll try to loosen your interest since I have bad news. This system is:
