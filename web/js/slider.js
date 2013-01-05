@@ -48,9 +48,12 @@ jQuery.fx.interval = 30;
 
                 var mySelf = this;
                 var randID = Math.round(Math.random()*100000000);
-                var curr = (options.direction === 'right')?1:-1;
+                var curr = 1;
                 var dist = 0;
                 var o=options;
+                // createMovingUl()
+                var images;
+                var movingUl;
                 o.elId = $(mySelf).attr('id');
                 o.params[o.elId] = $.extend({}, o);
                 o.width = o.params[o.elId].width;
@@ -82,15 +85,15 @@ jQuery.fx.interval = 30;
                 initImages : function initImages() {
                     var imgList = $('.ts-slideshow span div', '#slider');
                     for(var i = 0, max = imgList.length; i < max; i += 1) {
-                        var $imageWrapper = $(imgList[i]).parent();
-                        var $imageWrapperNext = $imageWrapper.next();
+                        var $spanWithBgImage = $(imgList[i]).parent();
+                        var $spanContainingTitle = $spanWithBgImage.next();
                         var $title = createTitleBar(i);
-                        var $titleContent = $imageWrapperNext.is('span') ? $imageWrapperNext.html() : '';
+                        var $titleContent = $spanContainingTitle.is('span') ? $spanContainingTitle.html() : '';
+                        $spanContainingTitle.hide();
                         initTitleBar($title, $titleContent);
-                        var $anchor = $imageWrapper.parent();
-                        var $ts_li = $anchor.parent();
-                        $ts_li.css({'width':o.width});
-                        $imageWrapperNext.hide();
+                        var $ts_li_child = $spanWithBgImage.parent();
+                        var $ts_li = $ts_li_child.parent();
+                        $ts_li.css({'width':o.width}).hide();
                     }
                     return o;
                 }
@@ -189,7 +192,7 @@ jQuery.fx.interval = 30;
                     // Display slideshow
                     o.ulObject.show();
                     // Display images
-                    $('#' + o.elId + ' .ts-li').show();
+                    // $('#' + o.elId + ' .ts-li').show();
                     // Display title
                     $(o.nextTitle).show();
                 }
@@ -317,47 +320,25 @@ jQuery.fx.interval = 30;
                         },
 
                         run: function run(event) {
-                            // selectNextImage()
-                            if(o.lastDirection === o.direction) {
-                                if(o.direction === 'left') {
-                                    o.nextImage = $('li:first', o.ulObject);
-                                    o.firstImage = o.nextImage.next();
-                                    o.firstImage.css({
-                                        'display' : 'inline',
-                                        'float'   : 'left'
-                                    });
-                                    o.secondImage = o.firstImage.next();
-                                    o.secondImage.css({
-                                        'display' : 'inline',
-                                        'float'   : 'left'
-                                    });
-                                    o.thirdImage = o.secondImage.next();
-                                    o.thirdImage.css({
-                                        'display' : 'inline',
-                                        'float'   : 'left'
-                                    });
-                                    var currentId = o.thirdImage.attr("id");
-                                    o.nextTitle = '#ts-title-' + currentId;
-                                } else {
-                                    o.firstImage = $('li:first', o.ulObject);
-                                    o.firstImage.css({
-                                        'display' : 'inline',
-                                        'float'   : 'left'
-                                    });
-                                    o.secondImage = $('li:first', o.ulObject).next();
-                                    o.secondImage.css({
-                                        'display' : 'inline',
-                                        'float'   : 'left'
-                                    });
-                                    o.nextImage = $('li:last', o.ulObject);
-                                    o.nextImage.css({
-                                        'display' : 'inline',
-                                        'float'   : 'left'
-                                    });
-                                    var currentId = o.firstImage.attr("id");
-                                    o.nextTitle = '#ts-title-' + currentId;
-                                }
+                            if(images !== undefined && images.parent().attr('id') !== o.ulObject.attr('id')) {
+                                images.hide();
+                                images.unwrap();
+                                images.css({ 'position': 'absolute'});
                             }
+                            // selectNextTitle()
+                            o.nextTitle = '#ts-title-' + $('li:first', o.ulObject).attr("id");
+                            // selectNextImage()
+                            if(o.direction === 'left') {
+                                images = $('li:first, li:first + li, li:first + li + li', o.ulObject);
+                                o.nextImage =  $('li:first', o.ulObject);
+                            } else {
+                                images = $('li:first, li:first + li, li:last', o.ulObject);
+                                o.nextImage = $('li:last', o.ulObject);
+                            }
+                            images.css({ 'position': 'static'});
+                            images = images.show().wrapAll("<ul />");
+                            movingUl = images.parent();
+                            movingUl.css({ 'position':'absolute' });
                             // initCurrent()
                             var object = o.ulObject;
                             var numImages = $('li', object).length;
@@ -382,12 +363,10 @@ jQuery.fx.interval = 30;
                             // initNext()
                             $('#next').css({'opacity':'0', 'z-index':'9999'});
                             // attachNextImage()
-                            if(o.lastDirection === o.direction) {
-                                if(o.direction === 'left') {
-                                    $('li:last', o.ulObject).after(o.nextImage.clone());
-                                } else {
-                                    $('li:first', o.ulObject).before(o.nextImage.clone());
-                                }
+                            if(o.direction === 'left') {
+                                $('li:last', o.ulObject).after(o.nextImage.clone().css({'position': 'absolute'}).hide());
+                            } else {
+                                $('li:first', o.ulObject).before(o.nextImage.clone().hide());
                             }
                             // initLeft()
                             var width = o.width;
@@ -395,17 +374,25 @@ jQuery.fx.interval = 30;
                             // get the target position for the slideshow div
                             if(o.lastDirection === direction) {
                                 if(direction === 'left') {
-                                    setLeft(-width-30);
-                                    o.left = (-width*(2))-30;
+                                    movingUl.css(
+                                        {
+                                            'left': - 30
+                                        }
+                                    );
+                                    o.left = - width - 50;
                                 } else {
-                                    setLeft((-width*(2))-(numImages*10)-40);
-                                    o.left = -width-10;
+                                    movingUl.css(
+                                        {
+                                            'left': (width)-(numImages*10)-40
+                                        }
+                                    );
+                                    o.left = - 30;
                                 }
                             } else {
                                 if(direction === 'left') {
-                                    o.left = o.lastLeft - width-20;
+                                    o.left = o.lastLeft - width - 20;
                                 } else {
-                                    o.left = o.lastLeft + width+20;
+                                    o.left = o.lastLeft + width + 20;
                                 }
                                 o.lastDirection = direction;
                             }
@@ -413,13 +400,12 @@ jQuery.fx.interval = 30;
                             // initAnimateProps()
                             // jQuery.animate() will use this one!
                             o.animateProp = {
-                                'position':'absolute',
-                                left : o.left
+                                'left' : o.left
                             };
                             // animate()
                             var titleCB = animateTitle;
                             var buttonCB = animateButtons;
-                            o.ulObject.css({ 'position':'absolute' }).stop().animate(
+                            movingUl.stop().animate(
                                 o.animateProp,
                                 {
                                     easing: 'easeOutBack',
@@ -428,7 +414,6 @@ jQuery.fx.interval = 30;
                                         var callbackParam = o;
                                         var titleCallback = titleCB;
                                         var buttonCallback = buttonCB;
-                                        callbackParam.ulObject.css({ 'position':'relative' });
                                         titleCallback(callbackParam);
                                         buttonCallback(callbackParam);
                                     }
@@ -447,12 +432,22 @@ jQuery.fx.interval = 30;
                         },
 
                         onnext: function onnext(event) {
+                            hideTitle();
+                            detachNextImage();
+                            clearCursorPosition();
+                            clearTicker();
+                            startTicker();
                             setDirectionRight();
                             clearTicker();
                             return doActionTransition('Inactive', 'run', event);
                         },
 
                         onprev: function onprev(event) {
+                            hideTitle();
+                            detachNextImage();
+                            clearCursorPosition();
+                            clearTicker();
+                            startTicker();
                             setDirectionLeft();
                             clearTicker();
                             return doActionTransition('Inactive', 'run', event);
