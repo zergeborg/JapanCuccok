@@ -38,7 +38,7 @@ public class ImageResourceUtil {
         String url = null;
         if(image.getImageData() instanceof BinaryImageData) {
             Long imageDataId = image.getImageData().getId();
-            imageParameters.set("imageFileNameWithExtension", imageDataId+".png");
+            imageParameters.set("imageFileNameWithExtension", imageDataId + ".png");
             CharSequence urlForImage =
                     component.getRequestCycle().urlFor(imagesResourceReference, imageParameters);
             url = urlForImage.toString();

@@ -42,7 +42,7 @@
             <file path="$MODULE_DIR$/src" />
           </files-to-enhance>
           <run-enhancer-on-make>true</run-enhancer-on-make>
-          <sdk-home-path>D:/Programok/appengine-java-sdk-1.7.0</sdk-home-path>
+          <sdk-home-path>D:/Programok/appengine-java-sdk-1.7.4</sdk-home-path>
           <email>fogetti@gmail.com</email>
         </configuration>
       </facet>

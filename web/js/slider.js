@@ -9,6 +9,32 @@ jQuery.fx.interval = 30;
         }
     }
 
+    var defaults = {
+        duration: 1500,
+        easing: ''
+    };
+
+    $.fn.redraw = function(){
+        $(this).each(function(){
+            var redraw = this.offsetHeight;
+        });
+    };
+
+    $.fn.emulateTransitionEnd = function(duration) {
+        var called = false, $el = this;
+        $(this).one('webkitTransitionEnd', function() { called = true; });
+        var callback = function() { if (!called) $($el).trigger('webkitTransitionEnd'); };
+        setTimeout(callback, duration);
+    };
+
+    $.fn.transition = function (properties, options, callback) {
+        options = $.extend({}, defaults, options);
+        properties['webkitTransition'] = 'all ' + options.duration + 'ms ' + options.easing;
+        $(this).one('webkitTransitionEnd', callback);
+        $(this).emulateTransitionEnd(options.duration + 50);
+        $(this).css(properties);
+    };
+
     $.fn.extend({
         transparentSlider: function(options) {
 
@@ -19,13 +45,16 @@ jQuery.fx.interval = 30;
                 elId                 : undefined,
                 ulObject             : undefined,
                 params               : [],
+                lastTitle            : undefined,
                 nextTitle            : undefined,
-                direction            : 'right', // Which direction?
-                lastDirection        : 'right', // The direction in the previous round
+                direction            : 'left', // Which direction?
+                lastDirection        : 'left', // The direction in the previous round
                 lastCursorX          : 0, // cursor x-position at most recent mouse event
                 lastCursorY          : 0, // cursor y-position at most recent mouse event
-                width                : 900,
-                height               : 675,
+                sliderWidth          : '60em',
+                sliderHeight         : '30em',
+                imageWidth           : '60em',
+                imageHeight          : '30em',
                 thumbnailWidth       : '200px',
                 thumbnailHeight      : '150px',
                 titleOpacity         : 1, // opacity of title and navigation
@@ -48,16 +77,17 @@ jQuery.fx.interval = 30;
 
                 var mySelf = this;
                 var randID = Math.round(Math.random()*100000000);
+                var numImages;
                 var curr = 1;
                 var dist = 0;
                 var o=options;
                 // createMovingUl()
-                var images;
+                var movingImages;
                 var movingUl;
                 o.elId = $(mySelf).attr('id');
                 o.params[o.elId] = $.extend({}, o);
-                o.width = o.params[o.elId].width;
-                o.height = o.params[o.elId].height;
+                o.sliderWidth = o.params[o.elId].sliderWidth;
+                o.sliderHeight = o.params[o.elId].sliderHeight;
 
                 setDirectionRight : function setDirectionRight() {
                     o.lastDirection = o.direction;
@@ -83,9 +113,10 @@ jQuery.fx.interval = 30;
                 }
 
                 initImages : function initImages() {
-                    var imgList = $('.ts-slideshow span div', '#slider');
+                    var imgList = $('.imageWrapper div', '#slider');
                     for(var i = 0, max = imgList.length; i < max; i += 1) {
-                        var $spanWithBgImage = $(imgList[i]).parent();
+                        var $placeHolderDiv = $(imgList[i]);
+                        var $spanWithBgImage = $placeHolderDiv.parent();
                         var $spanContainingTitle = $spanWithBgImage.next();
                         var $title = createTitleBar(i);
                         var $titleContent = $spanContainingTitle.is('span') ? $spanContainingTitle.html() : '';
@@ -93,42 +124,42 @@ jQuery.fx.interval = 30;
                         initTitleBar($title, $titleContent);
                         var $ts_li_child = $spanWithBgImage.parent();
                         var $ts_li = $ts_li_child.parent();
-                        $ts_li.css({'width':o.width}).hide();
+                        $placeHolderDiv.css( { 'width': o.imageWidth } );
+                        $placeHolderDiv.css( { 'height': o.imageHeight } );
+                        $placeHolderDiv.redraw();
+                        $ts_li.css( { 'width': o.imageWidth } ).hide();
                     }
                     return o;
                 }
 
                 //Event listener means the element which is used as the target to attach the content to
                 initEventListener : function initEventListener() {
-                    var imageWidth = o.width+40; //40px is the background
-                    var imageHeight = o.height; //80px is the background
+                    var sliderWidth = o.sliderWidth;
+                    var sliderHeight = o.sliderHeight;
                     // set panel
                     $('#' + o.elId).css({
-                        'margin'  :'auto',
-                        'clear'   :'both',
-                        'overflow':'hidden',
-                        'width'   :imageWidth,
-                        'height'  :imageHeight,
-                        'background-size': imageWidth+'px '+imageHeight+'px',
-                        'position':'relative',
-                        'padding-top':'30px',
-                        'left'    :'-10px'
+                        'width'   :sliderWidth,
+                        'height'  :sliderHeight
                     }).wrap("<div class='transparent-slider' id='transparent-slider-" + o.elId + "' />");
+
+                    o.imageWidth = $('#' + o.elId).css('width');
+                    o.imageHeight = $('#' + o.elId).css('height');
 
                     // add slideshow to the DOM tree
                     $('.ts-slideshow', '#' + o.elId).attr('id', 'ts-slideshow-' + o.elId);
                     o.ulObject = $('#ts-slideshow-' + o.elId);
+                    numImages = $('li', o.ulObject).length;
                     return o;
                 }
 
                 initSlideshowPanel : function initSlideshowPanel() {
-                    var imageWidth = o.width;
-                    var imageHeight = o.height;
+                    var slideshowWidth = o.sliderWidth;
+                    var slideshowHeight = o.sliderHeight;
                     // slideshow width should be the width of [image_width]*[nr of images]
                     o.ulObject.css(
                         {
-                            'width'  :(imageWidth * 3) + (20 * 3), // 20 equals to the left and right margins between images
-                            'height' :imageHeight-30 //30 pixels are needed to make sure the image fits in its container
+                            'width'  :300 + (10 * 3) + '%', // 10 equals to the left and right margins between images
+                            'height' :slideshowHeight
                         }
                     );
                     return o;
@@ -138,15 +169,18 @@ jQuery.fx.interval = 30;
                 {
                     var object = $("#sliderAndLabel");
                     var numImages = $('li', object).length;
-                    var imageWidth = o.width;
+                    var imageWidth = o.sliderWidth;
                     var thumb,i;
                     // Build thumbnail viewer and thumbnail divs
                     object.after('<div class="thumbs" id="thumbs'+randID+'"></div>');
-                    $('#thumbs'+randID).width(imageWidth);
+                    var $thumbs = $('#thumbs'+randID);
+                    $thumbs.css( { 'width': imageWidth } );
                     for(i=0;i<numImages;i++)
                     {
                         thumb = $('.ts-li .imageWrapper:eq('+(i)+')', object).css('background-image');
-                        $('#thumbs'+randID).append('<div class="thumb" id="thumb'+randID+'_'+(i)+'" style="background-image:'+thumb+';background-size:'+o.thumbnailWidth+';width:'+o.thumbnailWidth+';height:'+o.thumbnailHeight+';line-height:'+o.thumbnailHeight+';">'+(i)+'</div>');
+                        $thumbs.append('<div class="thumb" id="thumb'+randID+'_'+(i)+'" style="background-size:'+o.thumbnailWidth+';width:'+o.thumbnailWidth+';height:'+o.thumbnailHeight+';line-height:'+o.thumbnailHeight+';"></div>');
+                        var $thumb_i = $('#thumb'+randID+'_'+ i);
+                        $thumb_i.css({'background-image':thumb});
                         if(i===0) $('#thumb'+randID+'_1').css({'border-color':'#ff0000'});
                     }
                     // Next two lines are a special case to handle the first list element which was originally the last
@@ -162,6 +196,11 @@ jQuery.fx.interval = 30;
                     var $eventTarget = $(event.target);
                     var id = $eventTarget.attr('id');
                     var target_num = id.split('_')[1];
+                    hideTitle();
+                    detachNextImage();
+                    clearCursorPosition();
+                    clearTicker();
+                    startTicker();
                     if(curr != target_num)
                     {
                         $("[id*='thumb"+randID+"']").css({'border-color':'rgba(0, 0, 0, 0.3)'});
@@ -177,6 +216,7 @@ jQuery.fx.interval = 30;
                         dist = curr - target_num;
                         setDirectionRight();
                     }
+                    clearTicker();
                 }
 
                 setLeft : function setLeft(leftPosition) {
@@ -244,7 +284,7 @@ jQuery.fx.interval = 30;
                 }
 
                 hideTitle : function hideTitle() {
-                    $('.ts-title').hide();
+                    $('.ts-title', '#titleContainer').hide();
                 }
 
                 doActionTransition : function doActionTransition(anotherState, anotherEventType, event) {
@@ -311,37 +351,56 @@ jQuery.fx.interval = 30;
 
                     Inactive: {
                         init: function init(event) {
-                            initImages();
                             initEventListener();
                             initSlideshowPanel();
+                            initImages();
                             initThumbnails();
                             displaySlideshow();
                             return doActionTransition('Inactive', 'run', event);
                         },
 
                         run: function run(event) {
-                            if(images !== undefined && images.parent().attr('id') !== o.ulObject.attr('id')) {
-                                images.hide();
-                                images.unwrap();
-                                images.css({ 'position': 'absolute'});
-                            }
-                            // selectNextTitle()
-                            o.nextTitle = '#ts-title-' + $('li:first', o.ulObject).attr("id");
-                            // selectNextImage()
-                            if(o.direction === 'left') {
-                                images = $('li:first, li:first + li, li:first + li + li', o.ulObject);
-                                o.nextImage =  $('li:first', o.ulObject);
+                            if(o.lastDirection === o.direction) {
+                                if(movingImages !== undefined && movingImages.parent().attr('id') !== o.ulObject.attr('id')) {
+                                    movingImages.hide();
+                                    movingImages.unwrap();
+                                    movingImages.css({ 'position': 'absolute'});
+                                }
+                                // selectNextTitle()
+                                var $li_first = $('li:first', o.ulObject);
+                                var $li_last = $('li:last', o.ulObject);
+                                // selectNextImage()
+                                if(o.direction === 'left') {
+                                    movingImages = $('li:first, li:first + li, li:first + li + li', o.ulObject);
+                                    o.nextImage =  $li_first;
+                                    o.lastTitle = o.nextTitle;
+                                    o.nextTitle = '#ts-title-' + $('li:first + li + li', o.ulObject).attr("id");
+                                } else {
+                                    movingImages = $('li:first, li:first + li, li:last', o.ulObject);
+                                    o.nextImage = $li_last;
+                                    o.lastTitle = o.nextTitle;
+                                    o.nextTitle = '#ts-title-' + $li_last.attr("id");
+                                }
+                                movingImages.css({ 'position': 'static' });
+                                movingImages = movingImages.show().wrapAll("<ul />");
+                                movingUl = movingImages.parent();
+                                movingUl.attr('class', 'movingUl');
+                                movingUl.css({ 'position':'absolute' });
+                                // initPrev()
+                                $('#prev').css({'opacity':'0', 'z-index':'9999'});
+                                // initNext()
+                                $('#next').css({'opacity':'0', 'z-index':'9999'});
+                                // attachNextImage()
+                                if(o.direction === 'left') {
+                                    $('li:last', o.ulObject).after(o.nextImage.clone().css({'position': 'absolute'}).hide());
+                                } else {
+                                    $('li:first', o.ulObject).before(o.nextImage.clone().css({'position': 'absolute'}));
+                                }
                             } else {
-                                images = $('li:first, li:first + li, li:last', o.ulObject);
-                                o.nextImage = $('li:last', o.ulObject);
+                                o.nextTitle = o.lastTitle;
                             }
-                            images.css({ 'position': 'static'});
-                            images = images.show().wrapAll("<ul />");
-                            movingUl = images.parent();
-                            movingUl.css({ 'position':'absolute' });
                             // initCurrent()
                             var object = o.ulObject;
-                            var numImages = $('li', object).length;
                             if(o.direction === 'left') {
                                 if(curr === numImages-1) {
                                     curr = 0;
@@ -358,67 +417,93 @@ jQuery.fx.interval = 30;
                             // moveThumbnailBorder()
                             $("[id*='thumb"+randID+"']").css({'border-color':'rgba(0, 0, 0, 0.3)'});
                             $('#thumb'+randID+'_'+curr).css({'border-color':'#ccc'});
-                            // initPrev()
-                            $('#prev').css({'opacity':'0', 'z-index':'9999'});
-                            // initNext()
-                            $('#next').css({'opacity':'0', 'z-index':'9999'});
-                            // attachNextImage()
-                            if(o.direction === 'left') {
-                                $('li:last', o.ulObject).after(o.nextImage.clone().css({'position': 'absolute'}).hide());
-                            } else {
-                                $('li:first', o.ulObject).before(o.nextImage.clone().hide());
-                            }
                             // initLeft()
-                            var width = o.width;
+                            var width = o.imageWidth;
                             var direction = o.direction;
-                            // get the target position for the slideshow div
-                            if(o.lastDirection === direction) {
-                                if(direction === 'left') {
-                                    movingUl.css(
-                                        {
-                                            'left': - 30
-                                        }
-                                    );
-                                    o.left = - width - 50;
-                                } else {
-                                    movingUl.css(
-                                        {
-                                            'left': (width)-(numImages*10)-40
-                                        }
-                                    );
-                                    o.left = - 30;
-                                }
-                            } else {
-                                if(direction === 'left') {
-                                    o.left = o.lastLeft - width - 20;
-                                } else {
-                                    o.left = o.lastLeft + width + 20;
-                                }
-                                o.lastDirection = direction;
-                            }
-                            o.lastLeft = o.left;
-                            // initAnimateProps()
-                            // jQuery.animate() will use this one!
-                            o.animateProp = {
-                                'left' : o.left
-                            };
                             // animate()
                             var titleCB = animateTitle;
                             var buttonCB = animateButtons;
-                            movingUl.stop().animate(
-                                o.animateProp,
-                                {
-                                    easing: 'easeOutBack',
-                                    duration: o.animationDuraion,
-                                    complete: function() {
+                            if ('WebkitTransform' in document.body.style
+                                || 'MozTransform' in document.body.style
+                                || 'OTransform' in document.body.style
+                                || 'transform' in document.body.style)
+                            {
+                                // get the target position for the slideshow div
+                                if(o.lastDirection === direction) {
+                                    if(direction === 'left') {
+                                        var translateValue = '-50px';
+                                        movingUl.css({ 'transform' : 'translate('+ translateValue +', 0)' });
+                                        o.left = (- parseInt(width) - 50 - 20) + 'px';
+                                    } else {
+                                        var translateValue = (- parseInt(width) - 50 - 20) + 'px';
+                                        movingUl.css({ 'transform' : 'translate('+ translateValue +', 0)' });
+                                        o.left = '-50px';
+                                    }
+                                } else {
+                                    if(direction === 'left') {
+                                        o.left = (- parseInt(width) - 50 - 20) + 'px';
+                                    } else {
+                                        o.left = '-50px';
+                                    }
+                                    o.lastDirection = direction;
+                                }
+                                movingUl.redraw();
+                                o.lastLeft = o.left;
+                                movingUl.transition(
+                                    { 'transform' : 'translate('+o.left+', 0)' },
+                                    {},
+                                    function() {
                                         var callbackParam = o;
                                         var titleCallback = titleCB;
                                         var buttonCallback = buttonCB;
                                         titleCallback(callbackParam);
                                         buttonCallback(callbackParam);
                                     }
+                                );
+                            } else {
+                                // get the target position for the slideshow div
+                                if(o.lastDirection === direction) {
+                                    if(direction === 'left') {
+                                        movingUl.css(
+                                            {
+                                                'left': - 30
+                                            }
+                                        );
+                                        o.left = - width - 50;
+                                    } else {
+                                        movingUl.css(
+                                            {
+                                                'left': (width)-(numImages*10)-40
+                                            }
+                                        );
+                                        o.left = - 30;
+                                    }
+                                } else {
+                                    if(direction === 'left') {
+                                        o.left = o.lastLeft - width - 20;
+                                    } else {
+                                        o.left = o.lastLeft + width + 20;
+                                    }
+                                    o.lastDirection = direction;
                                 }
-                            );
+                                movingUl.redraw();
+                                o.lastLeft = o.left;
+                                // initAnimateProps()
+                                movingUl.stop().animate(
+                                    { 'left' : o.left },
+                                    {
+                                        easing: 'easeOutBack',
+                                        duration: o.animationDuraion,
+                                        complete: function() {
+                                            var callbackParam = o;
+                                            var titleCallback = titleCB;
+                                            var buttonCallback = buttonCB;
+                                            titleCallback(callbackParam);
+                                            buttonCallback(callbackParam);
+                                        }
+                                    }
+                                );
+                            }
                             hideTitle();
                             detachNextImage();
                             clearCursorPosition();
@@ -437,7 +522,7 @@ jQuery.fx.interval = 30;
                             clearCursorPosition();
                             clearTicker();
                             startTicker();
-                            setDirectionRight();
+                            setDirectionLeft();
                             clearTicker();
                             return doActionTransition('Inactive', 'run', event);
                         },
@@ -448,7 +533,7 @@ jQuery.fx.interval = 30;
                             clearCursorPosition();
                             clearTicker();
                             startTicker();
-                            setDirectionLeft();
+                            setDirectionRight();
                             clearTicker();
                             return doActionTransition('Inactive', 'run', event);
                         },

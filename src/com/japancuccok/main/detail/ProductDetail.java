@@ -41,9 +41,11 @@ public class ProductDetail extends ShopBasePage {
     private static final long serialVersionUID = 7400716818559396662L;
 
     transient private static final Logger logger = Logger.getLogger(ProductDetail.class.getName());
+    private Long productId;
     private Product.SIZE productSize;
 
-    public ProductDetail() {
+    public ProductDetail(final PageParameters parameters) {
+        productId = parameters.get("id").toLongObject();
     }
 
     public JapanCuccokSession getJapanSession() {
@@ -79,8 +81,6 @@ public class ProductDetail extends ShopBasePage {
     }
 
     private ProductModel getProductModel() {
-        PageParameters pageParameters = getPageParameters();
-        Long productId = pageParameters.get("id").toLongObject();
         return new ProductModel(productId, false);
     }
 

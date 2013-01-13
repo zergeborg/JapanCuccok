@@ -10,8 +10,6 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
@@ -75,24 +73,18 @@ public class SliderListView<T extends BaseImage> extends ListView<T> {
         WebMarkupContainer imageWrapper = new WebMarkupContainer("imageWrapper");
         String imageUrl = getUrl(image, this);
         imageWrapper.add(getPlaceHolder());
-        String bg = "background:url('"+imageUrl+"') no-repeat;";
-        String bgSize = "background-size: cover;";
-        String mozBgSize = "-moz-background-size: cover;";
-        String oBgSize = "-o-background-size: cover;";
-        String maxH = "max-height:100%;";
+        String bgImage = "background-image:url('"+imageUrl+"');";
+        String bgRepeat = "background-repeat:no-repeat;";
         String alphaImageLoader1 = "filter: progid:DXImageTransform.Microsoft.AlphaImageLoader( src='"+imageUrl+"', sizingMethod='scale');";
         String alphaImageLoader2 = "-ms-filter: \"progid:DXImageTransform.Microsoft.AlphaImageLoader( src='"+imageUrl+"', sizingMethod='scale')\";";
         imageWrapper.add(new AttributeModifier("style",
-                new Model<String>(bg+bgSize+mozBgSize+oBgSize+alphaImageLoader1+alphaImageLoader2)));
+                new Model<String>(bgImage+bgRepeat+alphaImageLoader1+alphaImageLoader2)));
         return imageWrapper;
     }
 
     private Component getPlaceHolder() {
         String componentId = "placeHolder";
         WebMarkupContainer placeHolder = new WebMarkupContainer(componentId);
-        String sliderW = "width:"+getString("sliderWidth")+"px;";
-        String sliderH = "height:"+getString("sliderHeight")+"px;";
-        placeHolder.add(new AttributeModifier("style", sliderW+sliderH));
         return placeHolder;
     }
 

@@ -32,12 +32,12 @@ hr {
     position: relative;
     float: left;
     width:386px;
-    height:414px;
     text-align: center;
     margin-top: 10px;
     margin-bottom: 10px;
     margin-left: 40px;
     margin-right: 40px;
+    overflow: hidden;
 }
 #selectedImageSpan img {
     position: relative;
@@ -53,27 +53,35 @@ hr {
     position: relative;
     float: left;
     width:97px;
-    height:104px;
     text-align: center;
     margin: 10px;
+    overflow: hidden;
 }
 #imgContainer img {
     position: relative;
     max-height: 97%;
     max-width: 97%;
-    top: 2px;
 }
 #infoPanel {
     position: relative;
     height: 30%;
     margin: 10px 40px;
 }
-#infoPanel:first-child {
-    position: relative;
-    text-align: left;
+#productDescription {
+    overflow: auto;
+    padding: 20px;
+    background-color: rgba(240, 10, 10, 0.2);
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -moz-box-shadow: 0px 0px 30px rgba(0,0,0,0.15);
+    -webkit-box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, .1);
 }
-#infoPanel > div > label {
-    color: brown;
+#productDescription > label {
+    display: block;
+    margin-bottom: 10px;
 }
 #sizeAnchors {
     text-align: center;

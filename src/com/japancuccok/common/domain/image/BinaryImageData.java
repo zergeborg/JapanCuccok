@@ -16,9 +16,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static com.japancuccok.db.DAOService.chunkFileDAO;
+import static com.japancuccok.db.DAOService.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,10 +67,9 @@ public class BinaryImageData extends BaseImageData<BinaryImage> implements
         }
         catch (IOException e)
         {
-            logger.severe("Something nasty and unexpected happened");
+            logger.log(Level.SEVERE, "Something nasty and unexpected happened", e);
             binaryContent = null;
-        }
-        finally
+        } finally
         {
             if (fis != null)
             {

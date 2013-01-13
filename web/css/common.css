@@ -160,7 +160,7 @@
 * {
     font-family: 'Indento', 'CodenameCoderFree4F', 'Schwabacher', 'Gyosho', 'Harakiri', 'MingImperial', 'MuseoSlab', 'ArsNovelty', 'WestonFree', 'LindenHillRegular', 'SansationBold', Arial, sans-serif;
     font-size: 16px;
-    color: slateGray;
+    color: seashell;
 }
 h1 {
     position: relative;
@@ -178,15 +178,12 @@ html,body {
     border: none;
     top: 0;
     left: 0;
-    /*overflow: hidden;*/
 }
 body {
-    width: 100em;
     max-width: 100%;
-    /*overflow-y: scroll;*/
     background-image: url('../img/bokeh.jpg');
-    background-size: cover;
 }
+
 a {
     text-decoration: none;
 }
@@ -200,6 +197,8 @@ div#main {
     width: 100%;
     position:relative;
     z-index:1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 div#main:after {
@@ -243,7 +242,7 @@ div#container {
 }
 .feedbackPanel {
     text-align: center;
-    list-style: circle;
+    list-style: none;
     list-style-position: inside;
 }
 .feedbackPanelERROR {
@@ -255,6 +254,6 @@ div#container {
     font-weight: bold;
 }
 .feedbackPanelINFO {
-    color: green;
+    color: yellow;
     font-weight: bold;
 }
