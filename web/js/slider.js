@@ -67,8 +67,8 @@ jQuery.fx.interval = 30;
                 initialState         : 'Inactive',
                 currentState         : 'Inactive',
                 animateProp          : undefined,
+                lastImage            : undefined,
                 nextImage            : undefined,
-                prevImage            : undefined,
                 currentTicker        : undefined // returned by setInterval, if a ticker is currently running
             };
             var options = $.extend(defaults, options);
@@ -237,6 +237,14 @@ jQuery.fx.interval = 30;
                     $(o.nextTitle).show();
                 }
 
+                cloneNextImage : function cloneNextImage() {
+                    if(o.direction === 'left') {
+                        $('li:last', o.ulObject).after(o.nextImage.clone().css({'position': 'absolute'}).hide());
+                    } else {
+                        $('li:first', o.ulObject).before(o.nextImage.clone().css({'position': 'absolute'}));
+                    }
+                }
+
                 detachNextImage : function detachNextImage() {
                     o.nextImage.remove();
                 }
@@ -371,34 +379,35 @@ jQuery.fx.interval = 30;
                                 var $li_last = $('li:last', o.ulObject);
                                 // selectNextImage()
                                 if(o.direction === 'left') {
-                                    movingImages = $('li:first, li:first + li, li:first + li + li', o.ulObject);
                                     o.nextImage =  $li_first;
+                                    o.lastImage = o.nextImage;
                                     o.lastTitle = o.nextTitle;
                                     o.nextTitle = '#ts-title-' + $('li:first + li + li', o.ulObject).attr("id");
                                 } else {
-                                    movingImages = $('li:first, li:first + li, li:last', o.ulObject);
                                     o.nextImage = $li_last;
+                                    o.lastImage = o.nextImage;
                                     o.lastTitle = o.nextTitle;
                                     o.nextTitle = '#ts-title-' + $li_last.attr("id");
+                                }
+                                cloneNextImage();
+                                if(o.direction === 'left') {
+                                    movingImages = $('li:first, li:first + li, li:first + li + li', o.ulObject);
+                                } else {
+                                    movingImages = $('li:first, li:first + li, li:last', o.ulObject);
                                 }
                                 movingImages.css({ 'position': 'static' });
                                 movingImages = movingImages.show().wrapAll("<ul />");
                                 movingUl = movingImages.parent();
                                 movingUl.attr('class', 'movingUl');
                                 movingUl.css({ 'position':'absolute' });
-                                // initPrev()
-                                $('#prev').css({'opacity':'0', 'z-index':'9999'});
-                                // initNext()
-                                $('#next').css({'opacity':'0', 'z-index':'9999'});
-                                // attachNextImage()
-                                if(o.direction === 'left') {
-                                    $('li:last', o.ulObject).after(o.nextImage.clone().css({'position': 'absolute'}).hide());
-                                } else {
-                                    $('li:first', o.ulObject).before(o.nextImage.clone().css({'position': 'absolute'}));
-                                }
                             } else {
                                 o.nextTitle = o.lastTitle;
+                                o.nextImage = o.lastImage;
                             }
+                            // initPrev()
+                            $('#prev').css({'opacity':'0', 'z-index':'9999'});
+                            // initNext()
+                            $('#next').css({'opacity':'0', 'z-index':'9999'});
                             // initCurrent()
                             var object = o.ulObject;
                             if(o.direction === 'left') {
@@ -429,26 +438,18 @@ jQuery.fx.interval = 30;
                                 || 'transform' in document.body.style)
                             {
                                 // get the target position for the slideshow div
-                                if(o.lastDirection === direction) {
-                                    if(direction === 'left') {
-                                        var translateValue = '-50px';
-                                        movingUl.css({ 'transform' : 'translate('+ translateValue +', 0)' });
-                                        o.left = (- parseInt(width) - 50 - 20) + 'px';
-                                    } else {
-                                        var translateValue = (- parseInt(width) - 50 - 20) + 'px';
-                                        movingUl.css({ 'transform' : 'translate('+ translateValue +', 0)' });
-                                        o.left = '-50px';
-                                    }
+                                if(direction === 'left') {
+                                    var translateValue = '-50px';
+                                    movingUl.css({ 'transform' : 'translate('+ translateValue +', 0)' });
+                                    o.left = (- parseInt(width) - 50 - 20) + 'px';
                                 } else {
-                                    if(direction === 'left') {
-                                        o.left = (- parseInt(width) - 50 - 20) + 'px';
-                                    } else {
-                                        o.left = '-50px';
-                                    }
-                                    o.lastDirection = direction;
+                                    var translateValue = (- parseInt(width) - 50 - 20) + 'px';
+                                    movingUl.css({ 'transform' : 'translate('+ translateValue +', 0)' });
+                                    o.left = '-50px';
                                 }
-                                movingUl.redraw();
+                                o.lastDirection = direction;
                                 o.lastLeft = o.left;
+                                movingUl.redraw();
                                 movingUl.transition(
                                     { 'transform' : 'translate('+o.left+', 0)' },
                                     {},

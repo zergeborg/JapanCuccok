@@ -4,11 +4,6 @@ div#padding {
     margin: auto;
     text-align: right;
 }
-div#padding > img {
-    top: 2px;
-    right: 2px;
-    position: relative;
-}
 div#headerBackground {
     height: 40px;
     position: relative;
@@ -34,6 +29,12 @@ div#header {
     -webkit-box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
     border: 1px solid rgba(0, 0, 0, .1);
+}
+#menuContainer > img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 3px 15px;
 }
 #menu {
     text-align: right;
