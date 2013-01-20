@@ -29,7 +29,6 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
-import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.session.HttpSessionStore;
 import org.apache.wicket.session.ISessionStore;
 import org.apache.wicket.settings.IRequestCycleSettings;
@@ -37,8 +36,6 @@ import org.apache.wicket.util.time.Duration;
 
 import java.util.List;
 import java.util.logging.Logger;
-
-import static org.apache.wicket.request.resource.ResourceReference.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,6 +49,7 @@ public class JapanCuccok extends WebApplication {
     private final ISessionStore sessionStore = new GaeMaintenanceAwareSessionStore(new HttpSessionStore());
 
     transient private static final Logger logger = Logger.getLogger(JapanCuccok.class.getName());
+    private final String CHARACTER_ENCODING_UTF8 = "UTF-8";
     private final boolean COMPRESS_WHITESPACE = true;
     private final boolean STORE_ASYNCHRONOUS = true;
     private final int PAGE_INSTANCE_NUMBER = 7;
@@ -118,8 +116,9 @@ public class JapanCuccok extends WebApplication {
     }
 
     private void initSettings() {
-        getRequestCycleSettings().setRenderStrategy(IRequestCycleSettings.RenderStrategy
-                                                            .REDIRECT_TO_RENDER);
+        getRequestCycleSettings().setRenderStrategy(IRequestCycleSettings.RenderStrategy.REDIRECT_TO_RENDER);
+        getRequestCycleSettings().setResponseRequestEncoding(CHARACTER_ENCODING_UTF8);
+        getMarkupSettings().setDefaultMarkupEncoding(CHARACTER_ENCODING_UTF8);
         getMarkupSettings().setCompressWhitespace(COMPRESS_WHITESPACE);
         getStoreSettings().setAsynchronous(STORE_ASYNCHRONOUS);
         getStoreSettings().setInmemoryCacheSize(PAGE_INSTANCE_NUMBER);

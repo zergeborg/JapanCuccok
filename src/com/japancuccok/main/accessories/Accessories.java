@@ -2,7 +2,6 @@ package com.japancuccok.main.accessories;
 
 import com.japancuccok.common.domain.category.CategoryType;
 import com.japancuccok.common.pattern.GeneralPageImageLoadStrategy;
-import com.japancuccok.common.wicket.component.CustomPagingNavigator;
 import com.japancuccok.common.wicket.component.ProductListView;
 import com.japancuccok.common.wicket.template.ShopBasePage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,11 +18,7 @@ public class Accessories extends ShopBasePage {
 
     public Accessories() {
         ProductListView productListView = new ProductListView("productRow", new GeneralPageImageLoadStrategy(CategoryType.ACCESSORIES));
-        CustomPagingNavigator upperNavigator = new CustomPagingNavigator("upperNavigator", productListView);
-        CustomPagingNavigator lowerNavigator = new CustomPagingNavigator("lowerNavigator", productListView);
-        add(upperNavigator);
         add(productListView);
-        add(lowerNavigator);
     }
 
     @Override

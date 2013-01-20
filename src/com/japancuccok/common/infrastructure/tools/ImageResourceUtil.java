@@ -7,9 +7,11 @@ import com.japancuccok.common.domain.image.UrlImageData;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.request.resource.ContextRelativeResource;
 import org.apache.wicket.request.resource.ResourceReference;
 
 /**
@@ -22,9 +24,10 @@ public class ImageResourceUtil {
 
     public static Component getImage(IImage image, String wicketImageName, Component component) {
         String imageUrl = getUrl(image, component);
-        WebComponent wicketImage = image.asWicketImage(wicketImageName);
+        WebComponent wicketImage = new Image(wicketImageName, new ContextRelativeResource("./img/grey.gif"));
         wicketImage.add(new AttributeModifier("style", ""));
-        wicketImage.add(new AttributeModifier("src", new Model<String>(imageUrl)));
+        wicketImage.add(new AttributeModifier("class", "lazy"));
+        wicketImage.add(new AttributeModifier("data-original", new Model<String>(imageUrl)));
         return wicketImage;
     }
 

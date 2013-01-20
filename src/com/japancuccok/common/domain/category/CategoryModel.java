@@ -4,10 +4,12 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.resource.ContextRelativeResource;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,6 +39,11 @@ public class CategoryModel<T extends Link> extends LoadableDetachableModel<List<
         for(CategoryType category : CategoryType.values()) {
             T link = (T) new BookmarkablePageLink("menuItemAnchor", category.getCategoryClass());
             link.setOutputMarkupId(true);
+            Component menuItemImg =
+                    new Image("menuItemImg",
+                              new ContextRelativeResource(
+                                    component.getString(category.getName() + ".icon.filepath")));
+            link.add(menuItemImg);
             Component menuItemLi =
                     new WebMarkupContainer("menuItemLi",
                             new Model<Serializable>(component.getString(category.getName() + ".title"))){
@@ -52,7 +59,7 @@ public class CategoryModel<T extends Link> extends LoadableDetachableModel<List<
                             replaceComponentTagBody(
                                     markupStream,
                                     openTag,
-                                    "<span>"+getDefaultModelObjectAsString()+"</span>");
+                                    getDefaultModelObjectAsString());
                         }
 
                     };

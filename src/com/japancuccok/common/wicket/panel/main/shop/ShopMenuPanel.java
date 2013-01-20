@@ -54,9 +54,9 @@ public class ShopMenuPanel extends BaseMenuPanel {
                             replaceComponentTagBody(
                                     markupStream,
                                     openTag,
-                                    "<li id=\"cart\"><span>"+
-                                            getDefaultModelObjectAsString(getBody().getObject())+
-                                            "</span></li>");
+                                    "<span>"+
+                                    getDefaultModelObjectAsString(getBody().getObject())+
+                                    "</span>");
                         }
                     }
                 };

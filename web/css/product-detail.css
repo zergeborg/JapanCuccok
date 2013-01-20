@@ -45,22 +45,28 @@ hr {
     max-width: 99%;
     top: 2px;
 }
+#selectedImageSpan + span > span > span {
+    display: inline-block;
+}
 #imgContainer {
     border-color: rgb(192, 44, 44);
     border-width: 2px;
     border-style: solid;
     background-color: rgba(192, 44, 44, 0.4);
     position: relative;
-    float: left;
     width:97px;
     text-align: center;
-    margin: 10px;
+    margin: 0px;
     overflow: hidden;
 }
 #imgContainer img {
-    position: relative;
-    max-height: 97%;
-    max-width: 97%;
+    display: block;
+    width: 97%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 #infoPanel {
     position: relative;

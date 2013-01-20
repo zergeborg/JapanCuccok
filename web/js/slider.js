@@ -23,6 +23,7 @@ jQuery.fx.interval = 30;
     $.fn.emulateTransitionEnd = function(duration) {
         var called = false, $el = this;
         $(this).one('webkitTransitionEnd', function() { called = true; });
+        $(this).one('transitionEnd', function() { called = true; });
         var callback = function() { if (!called) $($el).trigger('webkitTransitionEnd'); };
         setTimeout(callback, duration);
     };
@@ -30,7 +31,9 @@ jQuery.fx.interval = 30;
     $.fn.transition = function (properties, options, callback) {
         options = $.extend({}, defaults, options);
         properties['webkitTransition'] = 'all ' + options.duration + 'ms ' + options.easing;
+        properties['transition'] = 'all ' + options.duration + 'ms ' + options.easing;
         $(this).one('webkitTransitionEnd', callback);
+        $(this).one('transitionEnd', callback);
         $(this).emulateTransitionEnd(options.duration + 50);
         $(this).css(properties);
     };

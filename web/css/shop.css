@@ -21,7 +21,6 @@ html,body,a,div,img {
     left: 0;
 }
 div#main {
-    display: none;
     position:relative;
     width: 100%;
     margin: auto;
@@ -32,9 +31,6 @@ img#contentBackground {
     position: relative;
     height:941px;
     top: 10px;
-}
-div#content {
-    height: 100%;
 }
 div#content div#upperNavigator,
 div#content div#lowerNavigator{
@@ -54,17 +50,20 @@ div#content .productItem {
     height:231px;
     padding-top: 66px;
     padding-bottom: 66px;
-    padding-left: 34px;
-    padding-right: 34px;
+    padding-left: 30px;
+    padding-right: 30px;
     background-image: url('/img/productItem.png');
     background-repeat: no-repeat;
     background-position: center;
     text-align: center;
 }
 div#content .productItem span#containerSpan {
-    height: 76%;
-    float: left;
-    width: 100%;
+    height: 77%;
+    width: 99%;
+    margin: auto;
+    display: block;
+    position: relative;
+    background-color: rgba(255, 10, 10, 0.3);
 }
 div#content .productItem span#productItemName,
 div#content .productItem span#productItemPrice {
@@ -80,12 +79,16 @@ div#content #productUpperRow {
 }
 div#content #productUpperRow img,
 div#content #productLowerRow img {
-    position: relative;
+    position: absolute;
     padding-top: 3px;
     max-height: 100%;
     max-width: 97%;
-}
-div#bannerPanel {
-    width: 85%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     margin: auto;
+}
+div#container {
+    width: 100%;
 }

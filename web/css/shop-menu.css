@@ -1,9 +1,3 @@
-div#padding {
-    height: 40px;
-    width: 100%;
-    margin: auto;
-    text-align: right;
-}
 div#headerBackground {
     height: 40px;
     position: relative;
@@ -18,6 +12,7 @@ div#header {
 }
 #menuContainer {
     margin: auto;
+    padding: 0px 5px;
     position: relative;
     margin-bottom: 60px;
     background-color: rgba(240,10,10,0.2);
@@ -31,10 +26,11 @@ div#header {
     border: 1px solid rgba(0, 0, 0, .1);
 }
 #menuContainer > img {
+    width: 80px;
     position: absolute;
     top: 0;
     right: 0;
-    padding: 3px 15px;
+    padding: 9px 11px;
 }
 #menu {
     text-align: right;
@@ -51,14 +47,21 @@ div#header {
     float: left;
 }
 #sumTotal {
-    float: left;
     height: 20px;
-    padding: 13px 4px;
+    float: right;
+    padding: 15px 4px 5px 4px;
+    border: solid 0.5px rgba(137, 130, 48, .2);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 1px 0 rgba(0, 0, 0, .2);
+}
+#menu img {
+    float: left;
+    width: 16px;
+    padding: 15px 3px 5px 3px;
 }
 #menu li {
     height: 20px;
     float: right;
-    padding: 10px 4px;
+    padding: 15px 5px 5px 3px;
     transition: 0.5s;
     -moz-transition: 0.5s;
     -webkit-transition: 0.5s;
@@ -70,25 +73,13 @@ div#header {
     -moz-transform: translate3d(0,0,0);
     -webkit-transform: translate3d(0,0,0);
     -o-transform: translate3d(0,0,0);
+    position: relative;
 }
 #menu li:hover {
-    position: relative;
-    height: 60px;
-    bottom: 0px;
+    padding-top: 40px;
     text-shadow: 0 0 10px #fff,
     0 0 20px #fff,
     0 0 30px #fff;
-}
-#menu li:hover span {
-    transition: 0.5s;
-    -moz-transition: 0.5s;
-    -webkit-transition: 0.5s;
-    -o-transition: 0.5s;
-    -webkit-transform: translateZ(0);
-}
-#menu li:hover span {
-    position: relative;
-    top: 40px;
 }
 #menuLeft, #menuRight {
     display: block;
@@ -103,7 +94,7 @@ div#header {
 }
 #menuLeft {
     margin: auto;
-    max-width: 80%;
+    max-width: 85%;
 }
 #menuRight {
     margin: auto;
