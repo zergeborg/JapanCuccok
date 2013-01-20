@@ -1,7 +1,6 @@
 package com.japancuccok.main.shop;
 
 import com.japancuccok.common.pattern.ImageLoadStrategy;
-import com.japancuccok.common.wicket.component.CustomPagingNavigator;
 import com.japancuccok.common.wicket.component.ProductListView;
 import com.japancuccok.common.wicket.template.ShopBasePage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,13 +18,7 @@ public class Shop extends ShopBasePage {
     public Shop() {
         ProductListView productListView = new ProductListView("productRow",
                 new ImageLoadStrategy());
-        CustomPagingNavigator upperNavigator = new CustomPagingNavigator("upperNavigator",
-                productListView);
-        CustomPagingNavigator lowerNavigator = new CustomPagingNavigator("lowerNavigator",
-                productListView);
-        add(upperNavigator);
         add(productListView);
-        add(lowerNavigator);
     }
 
     @Override

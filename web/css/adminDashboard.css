@@ -2,9 +2,6 @@
     position: relative;
     font-size: 1.0em;
 }
-body {
-    behavior: url("/htc/csshover3.htc");
-}
 html,body {
     height: 100%;
     margin: 0;
@@ -17,6 +14,15 @@ html,body {
 html,body,a,div,img {
     border: none;
     padding: 0px;
+}
+input, select, textarea, option {
+    color: #000000;
+}
+html {
+    overflow-y: hidden;
+}
+body {
+    overflow-y: auto;
 }
 table {
     background-color: white;
@@ -40,9 +46,11 @@ div#title {
 div#main {
     display: none;
     position:relative;
+    height: auto;
     /* These values will be reset by jQuery */
     top: 10px;
     z-index:1;
+    overflow-y: hidden;
 }
 div#menu {
     text-align: center;
@@ -50,8 +58,6 @@ div#menu {
 div#content {
     z-index: 1;
     position: relative;
-    width:1032px;
-    height: 100%;
 }
 div#content > div#upperNavigator,
 div#content > div#lowerNavigator{

@@ -10,30 +10,28 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.PageableListView;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import java.util.List;
 import java.util.logging.Logger;
 
-import static com.japancuccok.common.infrastructure.tools.ImageResourceUtil.getImage;
+import static com.japancuccok.common.infrastructure.tools.ImageResourceUtil.*;
 /**
  * Created with IntelliJ IDEA.
  * User: Nagy Gergely
  * Date: 2012.07.08.
  * Time: 1:16
  */
-public class ProductListView extends PageableListView<IImage> {
+public class ProductListView extends ListView<IImage> {
 
     private static final long serialVersionUID = -4839647587005663893L;
     
-    private static final int ITEMS_PER_PAGE = 8;
-
     transient private static final Logger logger = Logger.getLogger(ProductListView.class.getName());
 
     public ProductListView(String id, IModel<? extends List<? extends IImage>> iModel) {
-        super(id, iModel, ITEMS_PER_PAGE);
+        super(id, iModel);
     }
 
     @Override
