@@ -68,12 +68,12 @@ div#slider > ul > li > a > img {
 #labelWrapper {
     position: absolute;
     margin: auto;
-    width: 50%;
+    width: 75%;
     padding-left: 10%;
     bottom: 15%;
 }
 #labelWrapper div {
-    color: slategray;
+    color: antiqueWhite;
 }
 #mottoWrapper {
     bottom: 20px;

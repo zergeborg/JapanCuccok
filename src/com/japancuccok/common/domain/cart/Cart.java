@@ -3,7 +3,6 @@ package com.japancuccok.common.domain.cart;
 import com.googlecode.objectify.annotation.*;
 import com.japancuccok.common.domain.product.Product;
 import com.japancuccok.common.domain.product.ProductMetaData;
-import com.japancuccok.db.GenericGaeDAO;
 
 import java.io.Serializable;
 import java.util.*;
@@ -128,6 +127,8 @@ public final class Cart implements Serializable {
             if(productMap != null) {
                 for(ProductMetaData productMetaData : productMap.values()) {
                     if(productMetaData != null) {
+                        //TODO: this line somehow throws NullPointerException,
+                        // it must be thoroughly investigated
                         total += productMetaData.getProduct().getPrice()*productMetaData.getChosenAmount();
                     }
                 }

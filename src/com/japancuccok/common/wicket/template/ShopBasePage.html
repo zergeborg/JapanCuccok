@@ -11,7 +11,9 @@
         <wicket:child />
         <script type="text/javascript">
             $("img.lazy").lazyload({
-                effect : "fadeIn"
+                effect : "fadeIn",
+                failure_limit : 10,
+                container: $("#main")
             });
         </script>
     </wicket:extend>

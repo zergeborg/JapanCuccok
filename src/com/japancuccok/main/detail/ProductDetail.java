@@ -18,9 +18,11 @@ import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -95,7 +97,9 @@ public class ProductDetail extends ShopBasePage {
         LoadableDetachableModel imageListModel
                 = new ProductDetailImageLoadStrategy<IImage>(productToShow);
         List<IImage> imageList = (List<IImage>) imageListModel.getObject();
-        return getImage(imageList.get(0), "selectedImage", this);
+        ExternalLink imageLink = new ExternalLink("selectedImageAnchor", new Model(getUrl(imageList.get(0), this)));
+        imageLink.add(getImage(imageList.get(0), "selectedImage", this));
+        return imageLink;
     }
 
     private Component getImagePanel(ProductModel productToShow) {

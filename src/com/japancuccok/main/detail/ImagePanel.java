@@ -1,8 +1,10 @@
 package com.japancuccok.main.detail;
 
 import com.japancuccok.common.domain.image.IImage;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import static com.japancuccok.common.infrastructure.tools.ImageResourceUtil.*;
 
@@ -26,8 +28,10 @@ public class ImagePanel<T extends IImage> extends Panel {
     public void onInitialize() {
         super.onInitialize();
         setMarkupId(getId()+index);
-        final IImage image = (IImage) getDefaultModelObject();
-        add(getImage(image, "smallImage", this));
+        IImage image = (IImage) getDefaultModelObject();
+        ExternalLink imageLink = new ExternalLink("smallImageAnchor", new Model(getUrl(image, this)));
+        imageLink.add(getImage(image, "smallImage", this));
+        add(imageLink);
     }
 
 }

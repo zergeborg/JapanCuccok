@@ -3,27 +3,46 @@
       xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <body>
 <wicket:panel>
-    <span id="deleteContainer">
-        <a id="deleteLink" wicket:id="deleteLink"><wicket:message key="delete">x</wicket:message></a>
-    </span>
-    <span id="imgContainer">
+    <div id="deleteContainer">
+        <a id="deleteLink" wicket:id="deleteLink">
+            <img src="./img/icons/48_round_delete.png" alt="Delete" />
+        </a>
+    </div>
+    <div id="imgContainer">
         <img src="ProductCheckoutPanel.html" alt="product image" id="productImg" wicket:id="productImg" />
-    </span>
-    <span id="detailContainer">
-        <span id="productName" wicket:id="productName" />
-        <span id="productSize" wicket:id="productSize" />
-        <span id="productAmountContainer">
-            <label for="productAmount"><wicket:message key="productAmount">productAmount</wicket:message></label>
-            <input id="productAmount" wicket:id="productAmount" type="text" />
-            <a id="plusLink" wicket:id="plusLink"><wicket:message key="plus">+</wicket:message></a>
-            <wicket:message key="forwardSlash">/</wicket:message>
-            <a id="minusLink" wicket:id="minusLink"><wicket:message key="minus">-</wicket:message></a>
-        </span>
-        <span id="productPriceContainer">
+    </div>
+    <div id="detailContainer">
+        <div>
+            <img src="./img/icons/32_size_both.png" alt="Product size" />
+            <label for="productSize"><wicket:message key="productSize" /></label>
+            <span id="productSize" wicket:id="productSize" />
+        </div>
+        <div>
+            <img src="./img/icons/64_account.png" alt="Product name" />
+            <label for="productName"><wicket:message key="productName" /></label>
+            <span id="productName" wicket:id="productName" />
+        </div>
+        <div>
+            <img src="./img/icons/64_carousel.png" alt="Product amount" />
+            <label for="productAmount"><wicket:message key="productAmount" /></label>
+            <span id="productAmountContainer">
+                <input id="productAmount" wicket:id="productAmount" type="text" />
+                <a id="plusLink" wicket:id="plusLink"><wicket:message key="plus">+</wicket:message></a>
+                <wicket:message key="forwardSlash">/</wicket:message>
+                <a id="minusLink" wicket:id="minusLink"><wicket:message key="minus">-</wicket:message></a>
+            </span>
+        </div>
+        <div>
+            <img src="./img/icons/32_cost.png" alt="Product unit price" />
+            <label for="productUnitPrice"><wicket:message key="productUnitPrice" /></label>
             <input id="productUnitPrice" wicket:id="productUnitPrice" type="text" />
+        </div>
+        <div>
+            <img src="./img/icons/24_sum.png" alt="Product price to pay" />
+            <label class="productPriceToPay" for="productPriceToPay"><wicket:message key="productPriceToPay" /></label>
             <span id="productPriceToPay" wicket:id="productPriceToPay" ></span>
-        </span>
-    </span>
+        </div>
+    </div>
 
 </wicket:panel>
 </body>

@@ -6,7 +6,9 @@
     <wicket:head>
         <link rel="stylesheet" type="text/css" href="css/shop.css"/>
         <link rel="stylesheet" type="text/css" href="css/product-detail.css"/>
-        <link rel="stylesheet" type="text/css" href="css/pagination.css"/>
+        <link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css" />
+        <script src="./js/jquery.mousewheel.js" type="text/javascript"></script>
+        <script src="./js/jquery.fancybox.pack.js" type="text/javascript"></script>
     </wicket:head>
 </head>
 <body>
@@ -21,7 +23,9 @@
     <div id="productDetail">
         <div id="left">
             <span id="selectedImageSpan">
-                <img id="selectedImage" wicket:id="selectedImage" src="#" alt="selected product's image" />
+                <a class="fancybox" rel="group" href="#" wicket:id="selectedImageAnchor">
+                    <img id="selectedImage" wicket:id="selectedImage" src="#" alt="selected product's image" />
+                </a>
             </span>
             <span wicket:id="dummyRepeaterContainer">
                 <span wicket:id="imgRepeatingView">
@@ -41,6 +45,11 @@
         </div>
         <br/>
     </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".fancybox").fancybox();
+        });
+    </script>
 </wicket:extend>
 </body>
 </html>
