@@ -36,7 +36,7 @@ public class DescriptionPropertyModel extends PropertyModel<String> {
             String firstLetter = description.substring(0,1);
             String theRestOfTheText = description.substring(1,description.length());
             firstLetter = firstLetter.toUpperCase();
-            description = getNewDescription(firstLetter, theRestOfTheText);
+//            description = getNewDescription(firstLetter, theRestOfTheText);
         }
         return description;
     }

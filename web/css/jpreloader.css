@@ -2,7 +2,7 @@ body{
 	display:none;
 }
 #jpreOverlay {
-	background-color: #000000;
+	background-color: #FFFFFF;
 }
 #jpreSlide{
 	font-size:22px;
@@ -15,9 +15,9 @@ body{
 #jpreLoader{
 	width:300px;
 	height:25px;
-	box-shadow:0 0 7px 3px #fff;
-	-moz-box-shadow:0 0 7px 3px #fff;
-	-webkit-box-shadow:0 0 7px 3px #fff;
+	box-shadow:0 0 7px 3px rgba(200, 0, 0, 0.6);
+	-moz-box-shadow:0 0 7px 3px rgba(200, 0, 0, 0.6);
+	-webkit-box-shadow:0 0 7px 3px rgba(200, 0, 0, 0.6);
 	border-radius:25px;
 	-moz-border-radius:25px;
 	-webkit-border-radius:25px;
@@ -46,59 +46,59 @@ body{
       endColorstr='#33000000',
       GradientType=0 );
 
-	background-color:#E07300;
+	background-color:#FF5300;
 	background-image: -moz-linear-gradient(-45deg, 
-		rgba(255,255,255,0.15) 0%, 
-		rgba(255,255,255,0.15) 25%, 
+		rgba(255,255,255,0.75) 0%,
+		rgba(255,255,255,0.75) 25%,
 		rgba(255,255,255,0) 25%, 
 		rgba(255,255,255,0) 50%, 
-		rgba(255,255,255,0.15) 50%, 
-		rgba(255,255,255,0.15) 75%, 
+		rgba(255,255,255,0.75) 50%,
+		rgba(255,255,255,0.75) 75%,
 		rgba(255,255,255,0) 75%, 
 		rgba(255,255,255,0) 100%);
 	background-image: -webkit-gradient(linear, left top, right bottom, 
-		color-stop(0%,rgba(255,255,255,0.2)), 
-		color-stop(25%,rgba(255,255,255,0.2)), 
+		color-stop(0%,rgba(255,255,255,0.8)),
+		color-stop(25%,rgba(255,255,255,0.8)),
 		color-stop(25%,rgba(255,255,255,0)), 
 		color-stop(50%,rgba(255,255,255,0)), 
-		color-stop(50%,rgba(255,255,255,0.2)), 
-		color-stop(75%,rgba(255,255,255,0.2)),
+		color-stop(50%,rgba(255,255,255,0.8)),
+		color-stop(75%,rgba(255,255,255,0.8)),
 		color-stop(75%,rgba(255,255,255,0)),
 		color-stop(100%,rgba(255,255,255,0)));
 	background-image: -webkit-linear-gradient(-45deg, 
-		rgba(255,255,255,0.3) 0%,
-		rgba(255,255,255,0.3) 25%,
+		rgba(255,255,255,0.9) 0%,
+		rgba(255,255,255,0.9) 25%,
 		rgba(255,255,255,0) 25%,
 		rgba(255,255,255,0) 50%,
-		rgba(255,255,255,0.3) 50%,
-		rgba(255,255,255,0.3) 75%,
+		rgba(255,255,255,0.9) 50%,
+		rgba(255,255,255,0.9) 75%,
 		rgba(255,255,255,0) 75%,
 		rgba(255,255,255,0) 100%);
 	background-image: -o-linear-gradient(-45deg, 
-		rgba(255,255,255,0.15) 0%,
-		rgba(255,255,255,0.15) 25%,
+		rgba(255,255,255,0.75) 0%,
+		rgba(255,255,255,0.75) 25%,
 		rgba(255,255,255,0) 25%,
 		rgba(255,255,255,0) 50%,
-		rgba(255,255,255,0.15) 50%,
-		rgba(255,255,255,0.15) 75%,
+		rgba(255,255,255,0.75) 50%,
+		rgba(255,255,255,0.75) 75%,
 		rgba(255,255,255,0) 75%,
 		rgba(255,255,255,0) 100%);
 	background-image: -ms-linear-gradient(-45deg, 
-		rgba(255,255,255,0.15) 0%,
-		rgba(255,255,255,0.15) 25%,
+		rgba(255,255,255,0.75) 0%,
+		rgba(255,255,255,0.75) 25%,
 		rgba(255,255,255,0) 25%,
 		rgba(255,255,255,0) 50%,
-		rgba(255,255,255,0.15) 50%,
-		rgba(255,255,255,0.15) 75%,
+		rgba(255,255,255,0.75) 50%,
+		rgba(255,255,255,0.75) 75%,
 		rgba(255,255,255,0) 75%,
 		rgba(255,255,255,0) 100%);
 	background-image: linear-gradient(135deg, 
-		rgba(255,255,255,0.15) 0%,
-		rgba(255,255,255,0.15) 25%,
+		rgba(255,255,255,0.75) 0%,
+		rgba(255,255,255,0.75) 25%,
 		rgba(255,255,255,0) 25%,
 		rgba(255,255,255,0) 50%,
-		rgba(255,255,255,0.15) 50%,
-		rgba(255,255,255,0.15) 75%,
+		rgba(255,255,255,0.75) 50%,
+		rgba(255,255,255,0.75) 75%,
 		rgba(255,255,255,0) 75%,
 		rgba(255,255,255,0) 100%);
 		
@@ -109,11 +109,11 @@ body{
 	-o-animation: progress 2s linear infinite;	
 }
 #jprePercentage {
-	color:#ccc;
+	color:#777;
 	font-family:"Trebuchet MS",Arial,Helvetica,sans-serif;
 	font-weight:bold;
 	text-align:center;
-	text-shadow:1px 1px 1px #333;
+	text-shadow:1px 1px 1px #ddd;
 	top:-100%;
 }
 

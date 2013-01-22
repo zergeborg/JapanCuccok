@@ -45,34 +45,35 @@ jQuery.fx.interval = 30;
 
             var defaults =
             {
-                elId                 : undefined,
-                ulObject             : undefined,
-                params               : [],
-                lastTitle            : undefined,
-                nextTitle            : undefined,
-                direction            : 'left', // Which direction?
-                lastDirection        : 'left', // The direction in the previous round
-                lastCursorX          : 0, // cursor x-position at most recent mouse event
-                lastCursorY          : 0, // cursor y-position at most recent mouse event
-                sliderWidth          : '60em',
-                sliderHeight         : '30em',
-                imageWidth           : '60em',
-                imageHeight          : '30em',
-                thumbnailWidth       : '200px',
-                thumbnailHeight      : '150px',
-                titleOpacity         : 1, // opacity of title and navigation
-                titleSpeed           : 1000, // speed of title display
-                titleHeight          : 90, // height of the titles
-                animationFrequency   : 6000,
-                animationDuraion     : 1500,
-                left                 : 0,
-                lastLeft             : 0,
-                initialState         : 'Inactive',
-                currentState         : 'Inactive',
-                animateProp          : undefined,
-                lastImage            : undefined,
-                nextImage            : undefined,
-                currentTicker        : undefined // returned by setInterval, if a ticker is currently running
+                elId                    : undefined,
+                ulObject                : undefined,
+                params                  : [],
+                lastTitle               : undefined,
+                nextTitle               : undefined,
+                direction               : 'left', // Which direction?
+                lastDirection           : 'left', // The direction in the previous round
+                lastCursorX             : 0, // cursor x-position at most recent mouse event
+                lastCursorY             : 0, // cursor y-position at most recent mouse event
+                sliderWidth             : '60em',
+                sliderHeight            : '30em',
+                imageWidth              : '60em',
+                imageHeight             : '30em',
+                thumbnailContainerWidth : '25%',
+                thumbnailWidth          : '200px',
+                thumbnailHeight         : '150px',
+                titleOpacity            : 1, // opacity of title and navigation
+                titleSpeed              : 1000, // speed of title display
+                titleHeight             : 90, // height of the titles
+                animationFrequency      : 6000,
+                animationDuraion        : 1500,
+                left                    : 0,
+                lastLeft                : 0,
+                initialState            : 'Inactive',
+                currentState            : 'Inactive',
+                animateProp             : undefined,
+                lastImage               : undefined,
+                nextImage               : undefined,
+                currentTicker           : undefined // returned by setInterval, if a ticker is currently running
             };
             var options = $.extend(defaults, options);
 
@@ -175,9 +176,9 @@ jQuery.fx.interval = 30;
                     var imageWidth = o.sliderWidth;
                     var thumb,i;
                     // Build thumbnail viewer and thumbnail divs
-                    object.after('<div class="thumbs" id="thumbs'+randID+'"></div>');
+                    object.prepend('<div class="thumbs" id="thumbs'+randID+'"></div>');
                     var $thumbs = $('#thumbs'+randID);
-                    $thumbs.css( { 'width': imageWidth } );
+                    $thumbs.css( { 'width': o.thumbnailContainerWidth } );
                     for(i=0;i<numImages;i++)
                     {
                         thumb = $('.ts-li .imageWrapper:eq('+(i)+')', object).css('background-image');

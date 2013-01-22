@@ -1,7 +1,7 @@
 package com.japancuccok.main.done;
 
 import com.japancuccok.common.wicket.component.DummyStatelessLink;
-import com.japancuccok.common.wicket.panel.main.base.BaseMenuPanel;
+import com.japancuccok.common.wicket.panel.main.base.MenuLeftPanel;
 import com.japancuccok.common.wicket.panel.main.shop.ShopMenuPanel;
 import com.japancuccok.common.wicket.template.BasePage;
 import com.japancuccok.common.wicket.template.ShopBasePage;
@@ -10,10 +10,8 @@ import com.japancuccok.main.contact.Contact;
 import com.japancuccok.main.stuff.Stuff;
 import com.japancuccok.main.tshirt.Tshirt;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.StringResourceModel;
 
 /**
@@ -53,6 +51,7 @@ public class Goodbye extends ShopBasePage {
                 add(new DummyStatelessLink("accessories", Accessories.class).setBody(new StringResourceModel("accessories", findParent(BasePage.class), null)));
                 add(new DummyStatelessLink("stuff", Stuff.class).setBody(new StringResourceModel("stuff", findParent(BasePage.class), null)));
                 add(new DummyStatelessLink("contact", Contact.class).setBody(new StringResourceModel("contact", findParent(BasePage.class), null)));
+                add(new MenuLeftPanel("menuLeftPanel"));
                 add(getCartLink());
             }
 

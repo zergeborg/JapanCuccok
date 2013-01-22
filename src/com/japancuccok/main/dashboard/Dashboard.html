@@ -20,6 +20,9 @@
 </head>
 <body>
 <wicket:extend>
+    <div id="pageTitleBackground">
+        <div id="pageTitle">@{fogetti}\></div>
+    </div>
     <div id="sliderAndLabel">
         <span id="slider-wrapper">
             <div id="titleContainer">
@@ -79,6 +82,40 @@
             </div>
         </span>
     </div>
+    <div id="infoContainer">
+        <div id="info1" class="info">
+            <div class="header">
+                <img src="./img/icons/128_car_electricity.png" alt="Car electricity">
+                Lorem Ipsum
+            </div>
+            <div class="column">"...Lorem ipsum dolor sit amet, consectetur adepisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua"</div>
+        </div>
+        <div id="info2" class="info">
+            <div class="header">
+                <img src="./img/icons/128_co2.png" alt="CO2">
+                Dolor Sit Amet
+            </div>
+            <div class="column">"...Lorem ipsum dolor sit amet, consectetur adepisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua"</div>
+        </div>
+        <div id="info3" class="info">
+            <div class="header">
+                <img src="./img/icons/128_leaf.png" alt="Leaf">
+                Set Eiusmod
+            </div>
+            <div class="column">"...Lorem ipsum dolor sit amet, consectetur adepisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua"</div>
+        </div>
+        <div id="info4" class="info">
+            <div class="header">
+                <img src="./img/icons/128_recycle.png" alt="Recycle">
+                Consectetur Adepisicing
+            </div>
+            <div class="column">"...Lorem ipsum dolor sit amet, consectetur adepisicing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua"</div>
+        </div>
+    </div>
     <div id="mottoWrapper">
         <div id="motto">"...Lorem ipsum dolor sit amet, consectetur adepisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"</div>
     </div>
@@ -93,10 +130,10 @@
     <script type="text/javascript">
         $(function(){
             $('#slider').transparentSlider({
-                'sliderWidth': '75%',
-                'sliderHeight': '20em',
-                'thumbnailWidth': '100px',
-                'thumbnailHeight': '75px'
+                'sliderWidth': '600px',
+                'sliderHeight': '343px',
+                'thumbnailWidth': '80px',
+                'thumbnailHeight': '60px'
             });
         });
     </script>

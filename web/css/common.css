@@ -9,6 +9,18 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'ArchitectsDaughterRegular';
+    src: url('/font/ArchitectsDaughter/ArchitectsDaughter-webfont.eot');
+    src: url('../font/ArchitectsDaughter/ArchitectsDaughter-webfont.eot?#iefix') format('embedded-opentype'),
+    local("Architects Daughter"),
+    local("Architects Daughter Regular"),
+    url('../font/ArchitectsDaughter/ArchitectsDaughter-webfont.woff') format('woff'),
+    url('../font/ArchitectsDaughter/ArchitectsDaughter-webfont.ttf') format('truetype'),
+    url('../font/ArchitectsDaughter/ArchitectsDaughter-webfont.svg#ArchitectsDaughterRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
 /* A font by Jos Buivenga (exljbris) -> www.exljbris.com */
 @font-face {
     font-family: 'MuseoSlab';
@@ -25,11 +37,14 @@
 .LindenHillRegular {
     font-family: 'LindenHillRegular', verdana, helvetica, sans-serif;
 }
+.ArchitectsDaughterRegular {
+    font-family: 'ArchitectsDaughterRegular', verdana, helvetica, sans-serif;
+}
 .MuseoSlab {
     font-family: 'MuseoSlab', verdana, helvetica, sans-serif;
 }
 * {
-    font-family: 'MuseoSlab', 'LindenHillRegular', Arial, sans-serif;
+    font-family: 'MuseoSlab', 'ArchitectsDaughterRegular', 'LindenHillRegular', Arial, sans-serif;
     font-size: 14px;
     color: seashell;
 }
@@ -97,8 +112,6 @@ div#content {
 div#container {
     position: relative;
     margin: auto;
-    padding-left: 10px;
-    padding-right: 10px;
     width: 90%;
     height: 100%;
     overflow: hidden;

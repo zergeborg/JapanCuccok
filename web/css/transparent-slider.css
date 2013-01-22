@@ -4,26 +4,20 @@
 
 .ts-title {
     padding: 5px 10px;
-    background-color: rgba(248, 90, 80, 0.7);
     font-weight: bold;
-    font-size: 2.1em;
     line-height: 1em;
-    text-shadow: 0 0 0.4em rgba(200, 200, 200, 1), 0 0 0.4em rgba(200, 200, 200, 1);
     text-align: left;
     text-indent: -5px;
     vertical-align: baseline;
     bottom: 0px;
     left: 0px;
     overflow: hidden;
-
-    border: 1px solid rgba(0, 0, 0, .1);
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-
-    -moz-box-shadow: 0px 0px 6px rgba(0,0,0,0.15);
-    -webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
-    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
+    font-size: 2.1em;
+    font-family: 'ArchitectsDaughterRegular';
+    padding: 15px;
+    padding-left: 60px;
+    background-image: url('../img/slideshowContent.png');
+    background-repeat: no-repeat;
 }
 
 .ts-slideshow {
@@ -116,6 +110,7 @@ a#next {
     overflow:auto;
     text-align:left;
     padding-top:5px;
+    float: left;
 }
 
 .thumb {
