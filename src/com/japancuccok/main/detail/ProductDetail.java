@@ -23,7 +23,6 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.model.StringResourceModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
@@ -74,8 +73,6 @@ public class ProductDetail extends ShopBasePage {
         feedbackPanel.setOutputMarkupId(true);
         feedbackPanel.setOutputMarkupPlaceholderTag(true);
         add(feedbackPanel);
-        WebMarkupContainer productDetailPanel = getProductDetailPanel(productToShow);
-        add(productDetailPanel);
         add(getSelectedImage(productToShow));
         add(getImagePanel(productToShow));
         add(getInfoPanel(productToShow));
@@ -84,13 +81,6 @@ public class ProductDetail extends ShopBasePage {
 
     private ProductModel getProductModel() {
         return new ProductModel(productId, false);
-    }
-
-    private WebMarkupContainer getProductDetailPanel(ProductModel productToShow) {
-        WebMarkupContainer detailPanel = new WebMarkupContainer("selectedProduct");
-        detailPanel.add(new Label("selectedProductName", new PropertyModel<Product>(productToShow, "name")));
-        detailPanel.add(new Label("selectedProductPrice", new PropertyModel<Product>(productToShow, "price")));
-        return detailPanel;
     }
 
     private Component getSelectedImage(ProductModel productToShow) {

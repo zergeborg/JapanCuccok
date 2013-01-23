@@ -61,6 +61,10 @@ public class InfoPanel extends Panel {
     public InfoPanel(String id, FeedbackPanel feedbackPanel, IModel<Product> model) {
         super(id, model);
         setOutputMarkupId(true);
+        add(new Label("selectedProductName"
+                , new PropertyModel<Product>(getDefaultModel(), "name")));
+        add(new Label("selectedProductPrice"
+                , new PropertyModel<Product>(getDefaultModel(), "price")));
         add(new Label("description"
                 , new PropertyModel<Object>(getDefaultModel(), "description")));
         InfoPanelLink sLink = new InfoPanelLink("S", (IModel<Product>) getDefaultModel(),

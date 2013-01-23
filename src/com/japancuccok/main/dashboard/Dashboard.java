@@ -81,5 +81,5 @@ public class Dashboard extends BasePage {
     public Panel getBannerPanel() {
         return new DashboardBannerPanel("bannerPanel");
     }
-
+    
 }

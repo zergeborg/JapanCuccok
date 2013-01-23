@@ -44,7 +44,7 @@ div#content>a {
 }
 #sliderAndLabel {
     overflow: auto;
-    padding: 20px 20px;
+    padding: 20px 30px 20px 5px;
     background-color: rgba(240, 10, 10, 0.2);
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -56,8 +56,7 @@ div#content>a {
 }
 span#slider-wrapper {
     position: relative;
-    display: inline;
-    float: left;
+    display: inline-block;
 }
 div#titleContainer {
     position: relative;
@@ -102,8 +101,9 @@ div#slider > ul > li > a > img {
 }
 .info {
     width: 20%;
-    height: 250px;
+    height: 350px;
     display: inline-block;
+    vertical-align: text-bottom;
     margin: 10px 10px;
     text-align: left;
     background-color: rgba(240, 10, 10, 0.2);
@@ -113,12 +113,12 @@ div#slider > ul > li > a > img {
     -moz-box-shadow: 0px 0px 30px rgba(0,0,0,0.15);
     -webkit-box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
     box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
-    background-image: -ms-linear-gradient(top left, rgba(186, 163, 71, 0.8) 0%, rgba(199, 172, 66, 0.8) 20%, rgba(209, 209, 52, 0.4) 80%);
-    background-image: -moz-linear-gradient(top left, rgba(186, 163, 71, 0.8) 0%, rgba(199, 172, 66, 0.8) 20%, rgba(209, 209, 52, 0.4) 80%);
-    background-image: -o-linear-gradient(top left, rgba(186, 163, 71, 0.8) 0%, rgba(199, 172, 66, 0.8) 20%, rgba(209, 209, 52, 0.4) 80%);
-    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, rgba(186, 163, 71, 0.8)), color-stop(0.2, rgba(199, 172, 66, 0.8)), color-stop(0.8, rgba(209, 209, 52, 0.4)));
-    background-image: -webkit-linear-gradient(top left, rgba(186, 163, 71, 0.8) 0%, rgba(199, 172, 66, 0.8) 20%, rgba(209, 209, 52, 0.4) 80%);
-    background-image: linear-gradient(to bottom right, rgba(186, 163, 71, 0.8) 0%, rgba(199, 172, 66, 0.8) 20%, rgba(209, 209, 52, 0.4) 80%);
+    background-image: -ms-linear-gradient(top left, rgba(219, 22, 22, 0.2) 0%, rgba(112, 22, 55, 0.4) 20%, rgba(186, 7, 73, 0.6) 80%);
+    background-image: -moz-linear-gradient(top left, rgba(219, 22, 22, 0.2) 0%, rgba(112, 22, 55, 0.4) 20%, rgba(186, 7, 73, 0.6) 80%);
+    background-image: -o-linear-gradient(top left, rgba(219, 22, 22, 0.2) 0%, rgba(112, 22, 55, 0.4) 20%, rgba(186, 7, 73, 0.6) 80%);
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, rgba(219, 22, 22, 0.2)), color-stop(0.2, rgba(112, 22, 55, 0.4)), color-stop(0.8, rgba(186, 7, 73, 0.6)));
+    background-image: -webkit-linear-gradient(top left, rgba(219, 22, 22, 0.2) 0%, rgba(112, 22, 55, 0.4) 20%, rgba(186, 7, 73, 0.6) 80%);
+    background-image: linear-gradient(to bottom right, rgba(219, 22, 22, 0.2) 0%, rgba(112, 22, 55, 0.4) 20%, rgba(186, 7, 73, 0.6) 80%);
 }
 .header {
     padding: 5px 10px;

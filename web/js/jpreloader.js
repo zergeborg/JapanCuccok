@@ -72,7 +72,7 @@
 			jContent = $('<div></div>')
 			.attr('id', 'jpreSlide')
 			.appendTo(jOverlay);
-			
+
 			var conWidth = $(window).width() - $(jContent).width();
 			$(jContent).css({
 				position: "absolute",
@@ -81,20 +81,20 @@
 			});
 			$(jContent).html($(jpreOptions.splashID).wrap('<div/>').parent().html());
 			$(jpreOptions.splashID).remove();
-			jpreOptions.splashFunction()			
+			jpreOptions.splashFunction()
 		}
-		
+
 		jLoader = $('<div></div>')
 		.attr('id', 'jpreLoader')
 		.appendTo(jOverlay);
-		
+
 		var posWidth = $(window).width() - $(jLoader).width();
 		$(jLoader).css({
 			position: 'absolute',
 			top: jpreOptions.loaderVPos,
 			left: Math.round((50 / $(window).width()) * posWidth) + '%'
 		});
-		
+
 		jBar = $('<div></div>')
 		.attr('id', 'jpreBar')
 		.css({
@@ -102,7 +102,7 @@
 			height: '100%'
 		})
 		.appendTo(jLoader);
-		
+
 		if(jpreOptions.showPercentage) {
 			jPer = $('<div></div>')
 			.attr('id', 'jprePercentage')
@@ -177,7 +177,7 @@
 		$(jBar).stop().animate({
 			width: per + '%'
 		}, 500, 'linear');
-		
+
 		if(jpreOptions.showPercentage) {
 			$(jPer).text(per+"%");
 		}
@@ -196,7 +196,7 @@
 				var error = debug();
 			}
 			
-			
+
 			//max progress bar
 			$(jBar).stop().animate({
 				width: '100%'
@@ -206,8 +206,8 @@
 					loadComplete();
 				else
 					$(jButton).fadeIn(1000);
-			});	
-		}	
+			});
+		}
 	}
 	
 	//triggered when all images are loaded

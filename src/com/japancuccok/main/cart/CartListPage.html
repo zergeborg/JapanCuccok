@@ -15,7 +15,11 @@
             <span wicket:id="feedback"/>
         </div>
         <div id="orderPanel">
-            <div id="titleContainer"><wicket:message key="orderPanelTitle" /></div>
+            <wicket:enclosure>
+                <div id="titleContainer">
+                    <label wicket:id="orderPanelTitle"></label>
+                </div>
+            </wicket:enclosure>
             <div id="positioningContainer">
                 <div id="orderItemRepeatContainer" wicket:id="orderItemRepeatContainer">
                     <fieldset id="orderItemRepeatingView" wicket:id="orderItemRepeatingView">

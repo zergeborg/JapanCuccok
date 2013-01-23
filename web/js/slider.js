@@ -62,7 +62,7 @@ jQuery.fx.interval = 30;
                 thumbnailWidth          : '200px',
                 thumbnailHeight         : '150px',
                 titleOpacity            : 1, // opacity of title and navigation
-                titleSpeed              : 1000, // speed of title display
+                titleSpeed              : 500, // speed of title display
                 titleHeight             : 90, // height of the titles
                 animationFrequency      : 6000,
                 animationDuraion        : 1500,
@@ -250,7 +250,9 @@ jQuery.fx.interval = 30;
                 }
 
                 detachNextImage : function detachNextImage() {
-                    o.nextImage.remove();
+                    if(o.nextImage) {
+                        o.nextImage.remove();
+                    }
                 }
 
                 clearCursorPosition : function clearCursorPosition() {
@@ -279,6 +281,7 @@ jQuery.fx.interval = 30;
                             duration: o.titleSpeed,
                             complete: function() {
                                 $('#next').css({ 'opacity':1 });
+                                $('#next').addClass('hovered');
                             }
                         }
                     );
@@ -290,6 +293,7 @@ jQuery.fx.interval = 30;
                             duration: o.titleSpeed,
                             complete: function() {
                                 $('#prev').css({ 'opacity':1 });
+                                $('#prev').addClass('hovered');
                             }
                         }
                     );
@@ -410,8 +414,10 @@ jQuery.fx.interval = 30;
                             }
                             // initPrev()
                             $('#prev').css({'opacity':'0', 'z-index':'9999'});
+                            $('#prev').removeClass('hovered');
                             // initNext()
                             $('#next').css({'opacity':'0', 'z-index':'9999'});
+                            $('#next').removeClass('hovered');
                             // initCurrent()
                             var object = o.ulObject;
                             if(o.direction === 'left') {

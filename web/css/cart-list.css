@@ -11,7 +11,10 @@
     float: right;
 }
 #titleContainer {
-    padding-left: 45px;
+    padding-top: 20px;
+}
+#titleContainer * {
+    font-size: 1.5em;
 }
 #orderPanel {
     width: 734px;

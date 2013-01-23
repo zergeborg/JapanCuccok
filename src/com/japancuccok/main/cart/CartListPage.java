@@ -51,7 +51,7 @@ public class CartListPage extends ShopBasePage {
     }
 
     private WebMarkupContainer getOrderPanel() {
-        RepeatingView orderItemRepeatingView = new RepeatingView("orderItemRepeatingView") {
+        final RepeatingView orderItemRepeatingView = new RepeatingView("orderItemRepeatingView") {
 
             private static final long serialVersionUID = 4902769900581056402L;
 
@@ -78,6 +78,30 @@ public class CartListPage extends ShopBasePage {
                 i++;
             }
         }
+        if(i == 0) {
+            warn(getString("noProductInTheCart"));
+        }
+        final int flag = i;
+        Label pageTitleLabel = new Label("orderPanelTitle",getString("orderPanelTitle")){
+            private static final long serialVersionUID = -9081130219766921461L;
+
+            @Override
+            protected void onConfigure()
+            {
+                super.onConfigure();
+                setVisible(flag != 0);
+            }
+
+            @Override
+            public void onEvent(IEvent<?> event) {
+                super.onEvent(event);
+                onConfigure();
+            }
+
+        };
+        pageTitleLabel.setOutputMarkupId(true);
+        pageTitleLabel.setOutputMarkupPlaceholderTag(true);
+        add(pageTitleLabel);
         final WebMarkupContainer orderItemRepeatContainer = new WebMarkupContainer("orderItemRepeatContainer");
         orderItemRepeatContainer.add(orderItemRepeatingView);
         orderItemRepeatContainer.setVisible(true);
