@@ -51,6 +51,7 @@ div#main {
     top: 10px;
     z-index:1;
     overflow-y: hidden;
+    overflow-x: hidden;
 }
 div#menu {
     text-align: center;
