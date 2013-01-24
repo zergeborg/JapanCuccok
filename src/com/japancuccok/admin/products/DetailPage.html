@@ -3,6 +3,10 @@
       xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.4-strict.dtd">
 <head>
     <title></title>
+    <wicket:head>
+        <script src="./js/jquery.lazyload.js" type="text/javascript"></script>
+        <script src="./js/jquery.blockui.js" type="text/javascript"></script>
+    </wicket:head>
 </head>
 <body>
 <wicket:extend>
@@ -13,9 +17,7 @@
         <form wicket:id="editProductForm">
             <div id="left">
                 <span wicket:id="dummyRepeaterContainer">
-                    <span wicket:id="imgRepeatingView">
-                        <!-- The content is moved to ImagePanel -->
-                    </span>
+                    <span class="imgRepeatingView" wicket:id="imgRepeatingView"/>
                 </span>
             </div>
             <div id="right">
@@ -24,6 +26,13 @@
             <br/>
         </form>
     </div>
+    <script type="text/javascript">
+        $("img.lazy").lazyload({
+            effect : "fadeIn",
+            failure_limit : 10,
+            container: "div#main"
+        });
+    </script>
 </wicket:extend>
 </body>
 </html>

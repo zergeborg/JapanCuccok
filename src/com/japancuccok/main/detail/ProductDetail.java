@@ -8,14 +8,16 @@ import com.japancuccok.common.domain.product.ProductModel;
 import com.japancuccok.common.events.CartUpdate;
 import com.japancuccok.common.events.SizeChoose;
 import com.japancuccok.common.pattern.ProductDetailImageLoadStrategy;
+import com.japancuccok.common.wicket.component.BlockUIDecorator;
 import com.japancuccok.common.wicket.session.JapanCuccokSession;
 import com.japancuccok.common.wicket.template.ShopBasePage;
 import com.japancuccok.main.JapanCuccok;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.event.Broadcast;
 import org.apache.wicket.event.IEvent;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.ExternalLink;
@@ -109,7 +111,7 @@ public class ProductDetail extends ShopBasePage {
     }
 
     private Component getSubmitButton(ProductModel productToShow) {
-        AjaxFallbackLink submitLink = new AjaxFallbackLink<Product>("putIntoCart", productToShow) {
+        IndicatingAjaxLink submitLink = new IndicatingAjaxLink<Product>("putIntoCart", productToShow) {
 
             private static final long serialVersionUID = 5212167386862636225L;
 
@@ -139,6 +141,11 @@ public class ProductDetail extends ShopBasePage {
                     StringResourceModel model = new StringResourceModel("productAlreadyInCart",this,null);
                     error(model.getString());
                 }
+            }
+
+            @Override
+            protected IAjaxCallDecorator getAjaxCallDecorator() {
+                return new BlockUIDecorator();
             }
 
         };

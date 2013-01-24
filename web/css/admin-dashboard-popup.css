@@ -1,0 +1,50 @@
+#productList > .show {
+    width: 100%;
+    position:relative;
+    white-space: normal;
+    word-wrap: normal;
+}
+#productList > .show .field {
+    color:#fff;
+    cursor:pointer;
+    font-family:'lucida sans unicode',sans-serif; font-size:1em;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+#productList > .show .field:hover {
+    border:solid 1px #fff;
+    -moz-box-shadow:0 0 5px #999;
+    -webkit-box-shadow:0 0 5px #999;
+    box-shadow:0 0 5px #999
+}
+#productList div.show {
+    display:none;
+    position:relative;
+    top:-30px;
+    z-index:999;
+    margin:0;
+    padding:10px;
+    background:#fff;
+    color:#333;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+    -moz-box-shadow:0 0 5px #999;
+    -webkit-box-shadow:0 0 5px #999;
+    box-shadow:0 0 5px #999
+}
+#productList > .show > ul.list li {
+    display: inline;
+    padding:10px;
+    border-bottom: solid 1px #ccc;
+}
+#productList > .show > ul.list li:hover {
+    color:#fff;
+}
+#productList > .show > ul.list li:last-child {
+    border:none;
+}
+#productList > .show > ul.list li img {
+    position: relative;
+    display: inline;
+}

@@ -1,9 +1,11 @@
 package com.japancuccok.common.domain.image;
 
-import com.googlecode.objectify.annotation.*;
+import com.googlecode.objectify.annotation.Cache;
+import com.googlecode.objectify.annotation.EntitySubclass;
+import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Load;
 import com.japancuccok.common.domain.category.CategoryType;
 import org.apache.wicket.markup.html.WebComponent;
-import org.apache.wicket.request.resource.IResource;
 
 import java.io.Serializable;
 
@@ -15,6 +17,7 @@ import java.io.Serializable;
  */
 @EntitySubclass(index=true)
 @Cache
+@Index
 public class BinaryImage extends BaseImage implements Serializable {
 
     private static final long serialVersionUID = -7269686191560842505L;

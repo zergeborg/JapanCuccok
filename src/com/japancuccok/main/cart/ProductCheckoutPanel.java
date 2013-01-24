@@ -1,17 +1,20 @@
 package com.japancuccok.main.cart;
 
 import com.japancuccok.common.domain.cart.Cart;
+import com.japancuccok.common.domain.image.IImage;
+import com.japancuccok.common.domain.product.Product;
 import com.japancuccok.common.domain.product.ProductMetaData;
 import com.japancuccok.common.events.CartItemDelete;
 import com.japancuccok.common.events.CartUpdate;
-import com.japancuccok.common.domain.image.IImage;
-import com.japancuccok.common.domain.product.Product;
+import com.japancuccok.common.wicket.component.BlockUIDecorator;
 import com.japancuccok.common.wicket.session.JapanCuccokSession;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.event.Broadcast;
+import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxFallbackLink;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.basic.Label;
@@ -128,7 +131,7 @@ public class ProductCheckoutPanel extends Panel {
     }
 
     private Component getDeleteLink() {
-        AjaxFallbackLink deleteLink = new AjaxFallbackLink("deleteLink", getDefaultModel()) {
+        IndicatingAjaxFallbackLink deleteLink = new IndicatingAjaxFallbackLink("deleteLink", getDefaultModel()) {
 
             private static final long serialVersionUID = -8054686106943046581L;
 
@@ -138,6 +141,13 @@ public class ProductCheckoutPanel extends Panel {
                 send(getPage(), Broadcast.BREADTH, new CartUpdate(target, null));
                 send(getPage(), Broadcast.BREADTH, new CartItemDelete(target, ProductCheckoutPanel.this));
             }
+            
+            @Override
+            protected IAjaxCallDecorator getAjaxCallDecorator()
+            {
+                return new BlockUIDecorator();
+            }
+
         };
         deleteLink.setOutputMarkupId(true);
         deleteLink.setVersioned(true);

@@ -10,7 +10,7 @@
         return this.each(function(){
             var obj = $(this)
 //            obj.find('.show').click(function() { //onclick event, 'list' fadein
-                obj.find('.show').fadeIn(400).css("display","inline-block");;
+                obj.find('.show').fadeIn(400).css("display","inline-block");
 
                 $(document).keyup(function(event) { //keypress event, fadeout on 'escape'
                     if(event.keyCode == 27) {

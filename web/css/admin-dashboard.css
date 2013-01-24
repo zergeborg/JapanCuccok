@@ -175,6 +175,12 @@ input[type=submit] {
     white-space: -o-pre-wrap;   /* Opera 7 */
     word-wrap: break-word;      /* IE */
 }
+.deleteContainer {
+    text-align: right;
+}
+.deleteContainer img {
+    width: 16px;
+}
 #productList {
     width: 100%;
     overflow: hidden;

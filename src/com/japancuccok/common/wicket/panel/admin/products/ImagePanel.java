@@ -1,9 +1,9 @@
 package com.japancuccok.common.wicket.panel.admin.products;
 
+import com.japancuccok.admin.dashboard.base.ImageUpdateHelper;
 import com.japancuccok.common.domain.image.BinaryImage;
-import com.japancuccok.common.domain.image.DatastoreImage;
 import com.japancuccok.common.domain.image.IImage;
-import com.japancuccok.common.domain.image.ResourceProvider;
+import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -26,10 +26,15 @@ public abstract class ImagePanel<T extends IImage> extends Panel {
         this.image = image;
     }
 
+    protected abstract Panel getOptionsPanel();
+    protected abstract Component getDeleteLink();
+
     @Override
     public void onInitialize() {
         super.onInitialize();
-        DatastoreImage wicketImage = (DatastoreImage)((BinaryImage)getDefaultModelObject()).asWicketImage("editedImage");
+        add(getDeleteLink());
+        Component wicketImage =
+                ImageUpdateHelper.getWicketImage("editedImage", (BinaryImage)getDefaultModelObject(), null, this);
         add(wicketImage);
         IModel dashboardModel = ((CompoundPropertyModel)getDefaultModel()).bind("imageOptions.productDashboard");
         IModel generalPageModel = ((CompoundPropertyModel)getDefaultModel()).bind("imageOptions.productGeneralPage");
@@ -39,6 +44,7 @@ public abstract class ImagePanel<T extends IImage> extends Panel {
         add(getOptionsPanel());
     }
 
-    protected abstract Panel getOptionsPanel();
-
+    protected T getImage() {
+        return image;
+    }
 }

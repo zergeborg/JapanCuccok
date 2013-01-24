@@ -53,6 +53,7 @@ public class UploadedProductListView extends ListView<Product> {
     public UploadedProductListView(String name, final IModel<List<Product>> products)
     {
         super(name, products);
+        setReuseItems(true);
     }
 
     /**

@@ -7,6 +7,8 @@
     <wicket:head>
         <link rel="stylesheet" type="text/css" href="css/adminDashboard.css"/>
         <link rel="stylesheet" type="text/css" href="css/adminDashboard-popup.css"/>
+        <script src="./js/jquery.lazyload.js" type="text/javascript"></script>
+        <script src="./js/jquery.blockui.js" type="text/javascript"></script>
     </wicket:head>
 </head>
 <body>
@@ -76,7 +78,7 @@
                             <div>
                                 <a id="showLink" href="#" wicket:id="showLink" class="showLink"><img src="../img/camera_icon.png" border="0"/></a>
                             </div>
-                            <span wicket:id="showSpan">
+                            <span wicket:id="showSpan" class="showSpan">
                             </span>
                         </div>
                     </div>
@@ -84,6 +86,15 @@
             </form>
             <script type="text/javascript">
                 $('select option:first-child').attr("selected", "selected");
+            </script>
+            <script type="text/javascript">
+                $("img.lazy").lazyload({
+                    effect : "fadeIn",
+                    event: "fadeInComplete",
+                    failure_limit : 10,
+                    container: ".showSpan",
+                    skip_invisible: false
+                });
             </script>
     </wicket:extend>
 </body>

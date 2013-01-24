@@ -1,8 +1,10 @@
 package com.japancuccok.admin.dashboard;
 
 import com.japancuccok.admin.dashboard.base.ProductUploadModel;
+import com.japancuccok.common.wicket.component.BlockUIDecorator;
 import com.japancuccok.common.wicket.panel.admin.dashboard.UploadFormPanel;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.Form;
@@ -24,7 +26,7 @@ public class NewImageAjaxButton extends AjaxButton {
     private RepeatingView uploadRepeatingView;
     private CompoundPropertyModel<ProductUploadModel> uploadPanelModel;
     private WebMarkupContainer dummyRepeaterContainer;
-    private static final int MAX_NUMBER_OF_UPLOADS = 5;
+    public static final int MAX_NUMBER_OF_UPLOADS = 5;
     private int currentNumberOfUploads = 0;
 
     public NewImageAjaxButton(String id, IModel<String> model, RepeatingView uploadRepeatingView, CompoundPropertyModel<ProductUploadModel> uploadPanelModel, WebMarkupContainer dummyRepeaterContainer) {
@@ -32,6 +34,20 @@ public class NewImageAjaxButton extends AjaxButton {
         this.uploadRepeatingView = uploadRepeatingView;
         this.uploadPanelModel = uploadPanelModel;
         this.dummyRepeaterContainer = dummyRepeaterContainer;
+        setVisibilityAllowed(true);
+        setOutputMarkupPlaceholderTag(true);
+    }
+
+    public void increase() {
+        if(currentNumberOfUploads < MAX_NUMBER_OF_UPLOADS) {
+            currentNumberOfUploads++;
+        }
+    }
+
+    public void decrease() {
+        if(currentNumberOfUploads > 0) {
+            currentNumberOfUploads--;
+        }
     }
 
     @Override
@@ -50,8 +66,19 @@ public class NewImageAjaxButton extends AjaxButton {
     }
 
     @Override
+    protected IAjaxCallDecorator getAjaxCallDecorator()
+    {
+        return new BlockUIDecorator();
+    }
+
+    @Override
     protected void onError(AjaxRequestTarget target, Form<?> form) {
         System.out.println("Error in newImageDiv");
+    }
+
+    @Override
+    protected void onConfigure() {
+        setVisible(currentNumberOfUploads < MAX_NUMBER_OF_UPLOADS);
     }
 
     private Panel createUploadPanel(String childId, CompoundPropertyModel<ProductUploadModel> model, AjaxRequestTarget target) {

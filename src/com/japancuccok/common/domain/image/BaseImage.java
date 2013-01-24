@@ -18,6 +18,7 @@ import java.util.Collection;
  */
 @Entity
 @Cache
+@Index
 public class BaseImage implements IImage, Serializable {
 
     private static final long serialVersionUID = -1455087740482925457L;

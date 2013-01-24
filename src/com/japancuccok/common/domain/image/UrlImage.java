@@ -2,6 +2,7 @@ package com.japancuccok.common.domain.image;
 
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.EntitySubclass;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.japancuccok.common.domain.category.CategoryType;
 import com.japancuccok.common.wicket.component.StaticImage;
@@ -18,6 +19,7 @@ import java.io.Serializable;
  */
 @EntitySubclass(index=true)
 @Cache
+@Index
 public class UrlImage extends BaseImage implements Serializable {
 
     private static final long serialVersionUID = 4951497829438091896L;

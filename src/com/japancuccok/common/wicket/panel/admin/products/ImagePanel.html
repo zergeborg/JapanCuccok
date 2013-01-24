@@ -4,21 +4,34 @@
 <head>
     <title></title>
     <wicket:head>
+        <link rel="stylesheet" type="text/css" href="css/admin-detailpage.css"/>
     </wicket:head>
 </head>
 <body>
 <wicket:panel>
-    <div id="imgContainer"><img src="#" alt="editedImage" wicket:id="editedImage"></div>
-    <div id="imgDetail">
+    <div class="deleteContainer">
+        <a class="deleteLink" wicket:id="deleteLink">
+            <img src="./img/icons/48_round_delete.png" alt="Delete" />
+        </a>
+    </div>
+    <div class="imgPosition">
+        <div class="imgContainer">
+            <img src="#" alt="editedImage" wicket:id="editedImage">
+        </div>
+    </div>
+    <div class="imgDetail">
         <div>
+            <img src="./img/icons/64_carousel.png" alt="Dashboard icon">
             <label for="dashboard"><wicket:message key="dashboard" /></label>
             <input id="dashboard" wicket:id="dashboard" type="checkbox" />
         </div>
         <div>
+            <img src="./img/icons/64_thumbnails.png" alt="General page icon">
             <label for="productGeneralPage"><wicket:message key="generalPage" /></label>
             <input id="productGeneralPage" wicket:id="productGeneralPage" type="checkbox" />
         </div>
         <div>
+            <img src="./img/icons/64_account.png" alt="Image name icon">
             <label for="imgName"><wicket:message key="imgName" /></label>
             <span id="imgName" wicket:id="name" />
         </div>

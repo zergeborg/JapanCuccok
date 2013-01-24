@@ -20,27 +20,27 @@ public class ProductMetaData implements Serializable {
         this.product = product;
     }
 
-    public Product getProduct() {
+    public synchronized Product getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public synchronized void setProduct(Product product) {
         this.product = product;
     }
 
-    public Product.SIZE getChosenSize() {
+    public synchronized Product.SIZE getChosenSize() {
         return chosenSize;
     }
 
-    public void setChosenSize(Product.SIZE chosenSize) {
+    public synchronized void setChosenSize(Product.SIZE chosenSize) {
         this.chosenSize = chosenSize;
     }
 
-    public int getChosenAmount() {
+    public synchronized int getChosenAmount() {
         return chosenAmount;
     }
 
-    public void setChosenAmount(int chosenAmount) {
+    public synchronized void setChosenAmount(int chosenAmount) {
         this.chosenAmount = chosenAmount;
     }
 

@@ -4,7 +4,6 @@ import com.google.appengine.api.images.ImagesServiceFactory;
 import com.japancuccok.common.domain.image.BinaryImageData;
 import com.japancuccok.common.domain.image.IImageData;
 import com.japancuccok.common.domain.image.ImageDataModel;
-import com.japancuccok.common.domain.image.ImageResourceReference;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.http.WebResponse;
@@ -13,6 +12,7 @@ import org.apache.wicket.request.resource.DynamicImageResource;
 import org.apache.wicket.util.time.Time;
 import org.apache.wicket.util.time.TimeOfDay;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -35,19 +35,10 @@ public class MyDynamicImageResource extends DynamicImageResource {
             byte[] data = imageData.getBytes();
 
             com.google.appengine.api.images.Image oldImage = ImagesServiceFactory.makeImage(data);
-
-            // TODO: this is not really needed
-//                Transform resize = ImagesServiceFactory.makeResize(options.getWidth(), options.getHeight(), true);
-//                com.google.appengine.api.images.Image newImage = imagesService.applyTransform
-//                        (resize, oldImage, ImagesService.OutputEncoding.PNG);
-//                newWidth = newImage.getWidth();
-//                newHeight = newImage.getHeight();
-//
-//                newFileSize = newImage.getImageData().length;
             data = oldImage.getImageData();
             return data;
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "", e);
             throw new WicketRuntimeException(e);
         } finally {
             // ...

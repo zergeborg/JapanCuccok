@@ -1,0 +1,120 @@
+body {
+    overflow-y: auto;
+}
+
+div#main {
+    display: none;
+    position: relative;
+    height: auto;
+    top: 10px;
+    z-index: 1;
+    overflow-y: hidden;
+}
+
+#editProductDiv {
+    text-align: left;
+}
+
+#left {
+    padding-top: 10px;
+    max-width: 50%;
+    display: inline-block;
+}
+
+.imgRepeatingView {
+    display: inline-block;
+    overflow: hidden;
+    max-width: 42%;
+    margin: 5px;
+    vertical-align: text-top;
+    padding: 10px;
+    background-color: rgba(240, 10, 10, 0.2);
+    border: 2px groove threedface;
+    border-radius: 5px;
+}
+
+.deleteContainer {
+    text-align: right;
+}
+
+.deleteContainer img {
+    width: 16px;
+}
+
+.imgPosition {
+    text-align: center;
+}
+
+.imgContainer {
+    display: inline-block;
+    border-color: rgb(192, 44, 44);
+    border-width: 2px;
+    border-style: solid;
+    background-color: rgba(192, 44, 44, 0.4);
+    position: relative;
+    width: 95px;
+    height: 90px;
+    text-align: center;
+    margin: 0px;
+    overflow: hidden;
+}
+
+.imgContainer img {
+    display: inline-block;
+    max-width: 100%;
+    max-height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+}
+
+.imgDetail {
+    max-width: 100%;
+    display: inline-block;
+    word-wrap: break-word;
+    line-height: 1.3em;
+}
+
+.imgDetail > div {
+    margin-bottom: 5px;
+}
+
+.imgDetail img {
+    width: 12px;
+    vertical-align: -5%;
+}
+
+#right {
+    max-width: 50%;
+    min-height: 300px;
+    display: inline-block;
+}
+
+#infoPanel {
+    position: absolute;
+    top: 15px;
+    width: 45%;
+    padding: 10px;
+    background-color: rgba(240, 10, 10, 0.2);
+    border: 2px groove threedface;
+    border-radius: 5px;
+}
+
+#infoPanel img {
+    width: 12px;
+    vertical-align: -5%;
+}
+
+label {
+    display: inline-block;
+    vertical-align: text-top;
+    width: 65%;
+}
+
+label + span {
+    display: inline-block;
+    max-width: 100%;
+}

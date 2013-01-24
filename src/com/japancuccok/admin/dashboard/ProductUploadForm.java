@@ -2,15 +2,14 @@ package com.japancuccok.admin.dashboard;
 
 import com.japancuccok.admin.dashboard.base.*;
 import com.japancuccok.common.domain.category.CategoryType;
-import com.japancuccok.common.domain.image.*;
+import com.japancuccok.common.domain.image.IImage;
+import com.japancuccok.common.events.ImageUploadItemDelete;
 import com.japancuccok.common.wicket.component.UrlTextField;
 import com.japancuccok.common.wicket.panel.admin.dashboard.UploadFormPanel;
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.form.*;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
-import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -30,7 +29,7 @@ import java.util.List;
 public class ProductUploadForm extends Form<ProductUploadModel> {
 
     private static final long serialVersionUID = 1369884133215778766L;
-    private RepeatingView uploadRepeatingView;
+    private ImageUploadRepeatingView uploadRepeatingView;
 
     public ProductUploadForm(final String name, final CompoundPropertyModel<ProductUploadModel> model) {
         super(name, model);
@@ -51,21 +50,41 @@ public class ProductUploadForm extends Form<ProductUploadModel> {
 
         add(new Button("newProductUpload", new StringResourceModel("finished", this, null)));
 
-        uploadRepeatingView = new RepeatingView("uploadRepeatingView");
-        final WebMarkupContainer dummyRepeaterContainer = new WebMarkupContainer("dummyRepeaterContainer");
+        uploadRepeatingView = new ImageUploadRepeatingView("uploadRepeatingView", null) {
+
+            private static final long serialVersionUID = 4571776041672933315L;
+
+            @Override
+            public void onEvent(org.apache.wicket.event.IEvent<?> event) {
+                super.onEvent(event);
+
+                // check if this is a item delete update event and if so repaint self
+                if (event.getPayload() instanceof ImageUploadItemDelete)
+                {
+                    ImageUploadItemDelete update = (ImageUploadItemDelete)event.getPayload();
+                    remove(update.getUploadFormPanel());
+                    update.getTarget().add(this.getParent());
+                    getImageAjaxButton().decrease();
+                    update.getTarget().add(getImageAjaxButton());
+                }
+            }
+
+        };
+
+        WebMarkupContainer dummyRepeaterContainer = new WebMarkupContainer("dummyRepeaterContainer");
         dummyRepeaterContainer.add(uploadRepeatingView);
         dummyRepeaterContainer.setVisible(true);
         dummyRepeaterContainer.setOutputMarkupId(true);
         add(dummyRepeaterContainer);
 
-        AjaxButton newImageButton = createAjaxButton(model, dummyRepeaterContainer);
+        NewImageAjaxButton newImageButton = createAjaxButton(model, dummyRepeaterContainer);
         newImageButton.setOutputMarkupId(true);
         newImageButton.setDefaultFormProcessing(false);
+        uploadRepeatingView.setImageAjaxButton(newImageButton);
         add(newImageButton);
-
     }
 
-    private AjaxButton createAjaxButton(CompoundPropertyModel<ProductUploadModel> uploadPanelModel,
+    private NewImageAjaxButton createAjaxButton(CompoundPropertyModel<ProductUploadModel> uploadPanelModel,
                                         WebMarkupContainer dummyRepeaterContainer) {
         IModel<String> buttonModel = new StringResourceModel("newImage",this,null);
         return new NewImageAjaxButton("newImageDiv", buttonModel, uploadRepeatingView, uploadPanelModel, dummyRepeaterContainer);

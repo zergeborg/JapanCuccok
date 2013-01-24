@@ -142,13 +142,6 @@ public final class Cart implements Serializable {
         logger.info("Cart detach called");
         synchronized (productMap) {
             if(productMap != null) {
-//                for(Product product : productMap.values()) {
-//                    if(product != null) {
-//                        product.setSessionId(Session.get().getId());
-//                        productDao.put(product);
-//                        logger.info(product+" DETACHED");
-//                    }
-//                }
                 clear();
                 cartDao.put(this);
             }
