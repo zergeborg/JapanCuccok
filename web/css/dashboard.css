@@ -52,6 +52,7 @@ div#content>a {
 span#slider-wrapper {
     position: relative;
     display: inline-block;
+    margin-left: 50px;
 }
 div#titleContainer {
     position: relative;
@@ -59,7 +60,7 @@ div#titleContainer {
 div#titleContainer::after {
     content: '';
     position: absolute;
-    width: 600px;
+    width: 550px;
     height: 343px;
     top: 0px;
     left: 0px;
