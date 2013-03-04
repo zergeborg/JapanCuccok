@@ -31,7 +31,7 @@ public final class GenericGaeDAO<T> implements GenericGaeDAOIf<T> {
 
     public GenericGaeDAO(Class<T> clazz, boolean cacheNeeded) {
         this.clazz = clazz;
-        this.objectify = ObjectifyService.begin().consistency(ReadPolicy.Consistency.EVENTUAL).cache(cacheNeeded);
+        this.objectify = ObjectifyService.ofy().consistency(ReadPolicy.Consistency.EVENTUAL).cache(cacheNeeded);
         this.binaryDao = new BinaryGaeDAO<T>(clazz, objectify);
     }
 

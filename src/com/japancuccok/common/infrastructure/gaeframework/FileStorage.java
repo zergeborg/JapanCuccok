@@ -52,7 +52,7 @@ public class FileStorage<T> {
 
     public List<T> list(Class<T> clazz) {
         List<T> entities = new ArrayList<T>();
-        Objectify ofy = ObjectifyService.begin();
+        Objectify ofy = ObjectifyService.ofy();
         com.googlecode.objectify.cmd.Query<T> q = ofy.load().type(clazz);
         for (T item: q) {
             System.out.println(item.toString());

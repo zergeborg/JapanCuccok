@@ -6,7 +6,7 @@
     <!--async-session-persistence enabled="true"/-->
     <threadsafe>true</threadsafe>
     <system-properties>
-      <property name="java.util.logging.config.file" value="WEB-INF/logging.properties" />
+        <property name="java.util.logging.config.file" value="WEB-INF/logging.properties" />
     </system-properties>
     <static-files>
         <include path="/**.css" expiration="7d" />

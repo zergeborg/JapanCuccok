@@ -49,3 +49,5 @@ gae-main/
 lib/
 log/
 wicket-core/
+out/
+.idea/

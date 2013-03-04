@@ -51,9 +51,8 @@ But it:
 - IS FREE
 - IS carefully designed
 - IS responsive
-- IS performing on client side
+- IS performing well on client side on weaker architectures
 - IS lightweight (with small memory footprint)
-- IS unit tested
 - IS loosely coupled under the hood
 
 
