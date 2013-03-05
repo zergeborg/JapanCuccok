@@ -30,7 +30,7 @@ public class TestServiceProvider {
     }
 
     public static void setUpServlet() throws IOException, SAXException {
-        final File webXml = new File("JapanCuccok\\web\\WEB-INF\\web.xml");
+        final File webXml = new File("web\\WEB-INF\\web.xml");
         ServletRunner sr = null;
         sr = new ServletRunner(webXml);
         ServletUnitClient client = sr.newClient();
