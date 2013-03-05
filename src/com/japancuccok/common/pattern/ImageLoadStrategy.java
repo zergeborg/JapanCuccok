@@ -40,7 +40,7 @@ public class ImageLoadStrategy<T extends IImage> extends AbstractLoadStrategy<T>
         List<Product> products = null;
         if(categoryType == null) {
             products = productDao.load(
-                        new Class<?>[]{
+            		(Class<Product>[])new Class<?>[]{
                                     Product.WithBinaryImage.class,
                                     Product.WithUrlImage.class,
                                     BaseImage.WithImageOptions.class,
@@ -48,7 +48,7 @@ public class ImageLoadStrategy<T extends IImage> extends AbstractLoadStrategy<T>
                                     UrlImage.WithUrlImageData.class});
         } else {
             products = productDao.load(getConditions(),
-                                    new Class<?>[]{Product.WithBinaryImage.class,
+            		(Class<Product>[])new Class<?>[]{Product.WithBinaryImage.class,
                                                   Product.WithUrlImage.class,
                                                   BaseImage.WithImageOptions.class,
                                                   BinaryImage.WithBinaryImageData.class,

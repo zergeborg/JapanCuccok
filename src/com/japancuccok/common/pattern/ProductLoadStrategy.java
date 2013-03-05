@@ -30,7 +30,7 @@ public class ProductLoadStrategy extends AbstractLoadStrategy<Product> {
     @Override
     public List<Product> load() {
         List<Product> binaryProducts = productDao.load(
-                new Class<?>[]{
+        		(Class<Product>[])new Class<?>[]{
                         Product.WithBinaryImage.class,
                         Product.WithUrlImage.class,
                         BinaryImage.WithBinaryImageData.class,

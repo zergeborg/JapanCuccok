@@ -1,6 +1,7 @@
 package com.japancuccok.common.pattern;
 
 import com.japancuccok.common.domain.category.CategoryType;
+import com.japancuccok.common.domain.image.BaseImage;
 import com.japancuccok.common.domain.image.BinaryImage;
 import com.japancuccok.common.domain.product.Product;
 
@@ -16,7 +17,7 @@ import static com.japancuccok.db.DAOService.*;
  * Date: 2013.01.23.
  * Time: 20:13
  */
-public class BinaryImageLoadStrategy<T extends BinaryImage> extends AbstractLoadStrategy {
+public class BinaryImageLoadStrategy<T extends BinaryImage> extends AbstractLoadStrategy<T> {
 
     private static final long serialVersionUID = 2099622144447399155L;
 
@@ -34,7 +35,7 @@ public class BinaryImageLoadStrategy<T extends BinaryImage> extends AbstractLoad
     @Override
     public List<T> load() {
         productToEdit = productDao.load(productToEdit,
-                                        new Class<?>[]{Product.WithBinaryImage.class});
+        		(Class<Product>[]) new Class<?>[]{Product.WithBinaryImage.class});
         List<T> images = new ArrayList<T>();
         if(productToEdit.getBinaryImageList() != null) {
             images.addAll((Collection<? extends T>) productToEdit.getBinaryImageList());

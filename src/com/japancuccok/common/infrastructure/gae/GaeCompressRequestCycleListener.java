@@ -55,7 +55,7 @@ public class GaeCompressRequestCycleListener extends AbstractRequestCycleListene
         for(Long productId : cart.getProductIds()) {
             Product product = productDao.find(Key.create(Product.class, productId));
             product = productDao.load(product,
-                    new Class<?>[]{
+            		(Class<Product>[])new Class<?>[]{
                             Product.WithBinaryImage.class,
                             Product.WithUrlImage.class,
                             BinaryImage.WithBinaryImageData.class,

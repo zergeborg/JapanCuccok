@@ -37,7 +37,7 @@ public class DashboardImageLoadStrategy<T extends BaseImage> extends AbstractLoa
         List<BaseImage> images =
                 baseImageDao.load(
                 conditions,
-                new Class<?>[] {
+                (Class<BaseImage>[]) new Class<?>[] {
                         Product.WithBinaryImage.class,
                         Product.WithUrlImage.class,
                         BinaryImage.WithBinaryImageData.class,

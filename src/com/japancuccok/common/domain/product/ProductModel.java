@@ -31,7 +31,7 @@ public class ProductModel extends LoadableDetachableModel<Product> {
             Key<Product> productKey = Key.create(Product.class, productId);
             Product productToFullyLoad = productDao.get(productKey).get(productKey);
             return productDao.load(productToFullyLoad,
-                    new Class<?>[]{
+            		(Class<Product>[])new Class<?>[]{
                             Product.WithBinaryImage.class,
                             Product.WithUrlImage.class,
                             BinaryImage.WithBinaryImageData.class,

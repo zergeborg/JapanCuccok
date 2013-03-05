@@ -46,7 +46,7 @@ public class ProductDetailImageLoadStrategy<T extends IImage> extends AbstractLo
 
     private List<IImage> loadBy(Product product) {
         Product loadedProduct = productDao.load(product,
-                new Class<?>[]{
+        		(Class<Product>[])new Class<?>[]{
                         Product.WithBinaryImage.class,
                         Product.WithUrlImage.class,
                         BinaryImage.WithBinaryImageData.class,
