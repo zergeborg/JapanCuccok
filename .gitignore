@@ -48,3 +48,7 @@ log/
 wicket-core/
 out/
 .idea/
+.settings/
+META-INF/
+appengine-generated/
+classes/
